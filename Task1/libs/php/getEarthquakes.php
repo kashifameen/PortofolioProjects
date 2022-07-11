@@ -5,7 +5,7 @@
 
     $executionStartTime = microtime(true);
 
-    $url='api.geonames.org/earthquakesJSON' . 'north=' . $_REQUEST['north'] . '&south=' . $_REQUEST['south'] . '&east=' . $_REQUEST['east'] . '&west=' . $_REQUEST['west'] . '&username=kashifameen'; 
+    $url='api.geonames.org/earthquakesJSON?' . 'north=' . $_REQUEST['north'] . '&south=' . $_REQUEST['south'] . '&east=' . $_REQUEST['east'] . '&west=' . $_REQUEST['west'] . '&username=kashifameen'; 
 
 	$ch = curl_init();
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
