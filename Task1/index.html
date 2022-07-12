@@ -23,25 +23,68 @@
             <td> <h4>Co-ordinates</h4>
                 <form>
                  <label>North</label>
-                <input id= "north" type="number"> 
+                <input id= "north" type="number" step="1.000"> 
                 <label>South</label>
-                <input id="south" type="number">
+                <input id="south" type="number" step="1.000">
                 <label>East</label>
-                <input id="east" type="number">
+                <input id="east" type="number" step="1.000">
                 <label>West</label>
-                <input id="west" type="number">  
-                 <button id="btnSubmit">Submit</button>
+                <input id="west" type="number" step="1.000">
+                <td>
+                  <button id="earthquakeBtn">Submit</button>
                   
-                </form>
-                
-                
-    </td>
-            <td></td>
+                </form>    
+                </td>                                
+            </td>
         </tr>
+        <tr>
+            <td>2. Oceans</td>
+            <td> <h4>Co-ordinates</h4>
+                <form>
+                 <label>Latitude</label>
+                <input id= "latitude" type="number"> 
+                <label>Longitude</label>
+                <input id="longitude" type="number">
+                <td>
+                  <button id="oceanBtn">Submit</button>
+                  
+                </form>    
+                </td>                                
+            </td>
+        </tr>
+        <tr>
+            <td>3. Wikipedia Search</td>
+            <td> <h4>Enter a placename</h4>
+                <form>
+                 <label>Name of a place</label>
+                <input id= "placename" type="text"> 
+                
+                <td>
+                  <button id="wikiBtn">Submit</button>
+                  
+                </form>    
+                </td>                                
+            </td>
+        </tr>
+
     </table>
-    <div>
-        <h1 id="listOfEarthquakes"></h1>
+    <div class="earthquakeBox">
+        <h1>Date and time of Earthquake:</h1>
+        <h4 id="listOfEarthquakes"></h4>
+        <h1>Magnitude of Earthquake:</h1>
+        <h4 id="earthquakeMagnitude"></h4>
     </div>
+    <div id="ocean" class="oceanBox">
+        <h1>Name of Ocean:</h1>
+        <h4 id="nameOfOcean"></h4>
+        <h1>geoName Id:</h1>
+        <h4 id="geonameId"></h4>
+    </div>
+    <div>
+        <h1 id="placenameEntered">Test</h1>
+        <p id="summary">aaaa</p>
+    </div>
+
         <script type="application/javascript" src="libs/js/jquery-2.2.3.min.js"></script>
         <script type="application/javascript" src="libs/js/script.js" ></script>
     </body>

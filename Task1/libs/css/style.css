@@ -1,3 +1,7 @@
+*{
+    box-sizing: border-box;
+    margin: 0 auto;
+}
 table {
     width: 100%;
     
@@ -10,5 +14,32 @@ th, td {
 button {
     margin: auto;
     display: block;
+    padding: 10px;
+    border-radius: 16px;
+}
+
+.earthquakeBox {
+    border: 2px solid black;
+    border-radius: 4px;
     padding: 20px;
+    text-align: center;
+    margin-top: 0;
+}
+.earthquakeBox h1 {
+    line-height: 70px;
+}
+
+.oceanBox{
+    border: 2px solid black;
+    border-radius: 4px;
+    padding: 20px;
+    text-align: center;
+    
+}
+
+.oceanBox h1 {
+    line-height: 70px;
+}
+form {
+    display: block;
 }
