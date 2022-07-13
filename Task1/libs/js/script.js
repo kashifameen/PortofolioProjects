@@ -16,7 +16,6 @@ $('#earthquakeBtn').click(function() {
             console.log(JSON.stringify(result));
 
             if (result.status.name == "ok") {
-                console.log('Working')
                 $('#listOfEarthquakes').html(result['data'][0]['datetime']);
                 $('#earthquakeMagnitude').html(result['data'][0]['magnitude']);
             }
@@ -37,13 +36,10 @@ $('#oceanBtn').click(function() {
         success: function(result) {
             
             console.log(JSON.stringify(result));
-               console.log(result.data.status.value)
                if (result.data.status.value == 15) {
-                   console.log(result.data.status.message)
                    $('#ocean').html(result.data.status.message)
                }
              else if (result.status.name == "ok") {
-                console.log('Working')
                 $('#nameOfOcean').html(result['data']['ocean']['name']);
                 console.log(result['data']['ocean'])
                 $('#geonameId').html(result['data']['ocean']['geonameId']);
@@ -64,12 +60,12 @@ $('#wikiBtn').click(function() {
         },
         
         success: function(result) {
-            console.log(result)
             console.log(JSON.stringify(result));
+            console.log()
              if (result.status.name == "ok") {
-                console.log('Working')
                 $('#placenameEntered').html(result['data'][0]['title']);
                 $('#summary').html(result['data'][0]['summary']);
+                $('#wikiUrl').attr("href", result['data'][0]['wikipediaUrl'])
             }
            
             

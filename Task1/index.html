@@ -7,22 +7,26 @@
         <title>Task 1</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel='stylesheet' href="libs/css/bootstrap.min.css">
         <link rel="stylesheet" href="libs/css/style.css">
     </head> 
     <body>
-    <table>
+    <table class="table">
+        <thead>
+            
+        </thead>
         <tr>
-            <th>API Name</th>
-            <th>
+            <th scope="col">API Name</th>
+            <th scope="col">
                 Description
             </th>
-            <th></th>
+            <th scope="col"></th>
         </tr>
         <tr>
             <td>1.  Earthquakes</td>
             <td> <h4>Co-ordinates</h4>
-                <form>
-                 <label>North</label>
+                
+                <label>North</label>
                 <input id= "north" type="number" step="1.000"> 
                 <label>South</label>
                 <input id="south" type="number" step="1.000">
@@ -30,39 +34,35 @@
                 <input id="east" type="number" step="1.000">
                 <label>West</label>
                 <input id="west" type="number" step="1.000">
-                <td>
-                  <button id="earthquakeBtn">Submit</button>
-                  
-                </form>    
+                <td class="text-center">
+                   <button type="button" id="earthquakeBtn" class="btn btn-primary">Submit</button>
                 </td>                                
             </td>
         </tr>
         <tr>
             <td>2. Oceans</td>
             <td> <h4>Co-ordinates</h4>
-                <form>
+               
                  <label>Latitude</label>
                 <input id= "latitude" type="number"> 
                 <label>Longitude</label>
                 <input id="longitude" type="number">
-                <td>
-                  <button id="oceanBtn">Submit</button>
+                <td class="text-center"> 
+                  <button type="button" id="oceanBtn" class="btn btn-primary">Submit</button>
                   
-                </form>    
+                   
                 </td>                                
             </td>
         </tr>
         <tr>
             <td>3. Wikipedia Search</td>
             <td> <h4>Enter a placename</h4>
-                <form>
+                
                  <label>Name of a place</label>
                 <input id= "placename" type="text"> 
                 
-                <td>
-                  <button id="wikiBtn">Submit</button>
-                  
-                </form>    
+                <td class="text-center">
+                    <button type="button" id="wikiBtn" class="btn btn-primary">Submit</button>
                 </td>                                
             </td>
         </tr>
@@ -80,12 +80,14 @@
         <h1>geoName Id:</h1>
         <h4 id="geonameId"></h4>
     </div>
-    <div>
-        <h1 id="placenameEntered">Test</h1>
-        <p id="summary">aaaa</p>
+    <div class="wikipediaBox"">
+        <h1 id="placenameEntered">Information about placename</h1>
+        <p id="summary"></p>
+        <a id="wikiUrl">Read More</h6>
     </div>
 
         <script type="application/javascript" src="libs/js/jquery-2.2.3.min.js"></script>
+        <script type="application/javascript" src="libs/js/bootstrap.bundle.min.js"></script>
         <script type="application/javascript" src="libs/js/script.js" ></script>
     </body>
 </html>

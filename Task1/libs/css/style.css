@@ -12,14 +12,12 @@ th, td {
 }
 
 button {
-    margin: auto;
-    display: block;
-    padding: 10px;
-    border-radius: 16px;
-}
+    display: flex;
+    justify-content: center;
+  }
 
 .earthquakeBox {
-    border: 2px solid black;
+    border: 2px solid #000000;
     border-radius: 4px;
     padding: 20px;
     text-align: center;
@@ -30,7 +28,7 @@ button {
 }
 
 .oceanBox{
-    border: 2px solid black;
+    border: 2px solid #000000;
     border-radius: 4px;
     padding: 20px;
     text-align: center;
@@ -42,4 +40,16 @@ button {
 }
 form {
     display: block;
+}
+
+.wikipediaBox {
+    border: 2px solid #000000;
+    border-radius: 4px;
+    padding: 20px;
+    margin-top: 0;
+}
+
+.wikipediaBox h1 {
+    text-align: center;
+    padding-bottom: 10px;
 }
