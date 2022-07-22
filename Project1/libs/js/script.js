@@ -51,9 +51,11 @@ selectField.prop('selectedIndex', 0);
      type:'GET',
      dataType: 'json',
      success: function(result) {
+       console.log(result)
        $.each(result.features, function(i, item){
-         selectField.append($('<option></option>').text(result.features[i].properties.name).attr(item, result.features[i].properties.iso_a2))
-       })
+         selectField.append($('<option></option>').text(result.features[i].properties.name).attr(item, result.features[i].geometry))
+        console.log(result.features[i].geometry.type.polygon)
+        })
      } 
    })
 })
@@ -70,3 +72,25 @@ function onLocationFound(e) {
 }
 map.on('locationfound', onLocationFound);
 map.locate({setView: true, maxZoom: 16});
+
+$('select').on('change', function() {
+  const chosenValue = this.value
+  $.ajax({
+    url:"libs/getCountryBorders.geo.json",
+    type: 'GET',
+    dataType: 'json',
+    data:{
+      q: chosenValue
+    },
+  
+    success: function(response) {
+      console.log(this.value)
+      if(response.features.properties.name == chosenValue){
+        console.log('Yes')
+      }
+    }
+
+  })
+  let chosen =this.value
+  console.log(chosenValue)
+});
