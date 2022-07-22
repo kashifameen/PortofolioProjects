@@ -9,13 +9,30 @@ $(document).ready(function(){
                 maxZoom: 19,
                 attribution: '© OpenStreetMap'
             }).addTo(map);
+                L.easyButton( '<span class="star">&starf;</span>', function(){
+                alert('you just clicked the html entity \&starf;');
+              }).addTo(map);
             });
+
+
+
 	}else{
 		console.log("Browser doesn't support geolocation!");
 	}
-//     let map = L.map('map').setView([51.505, -0.09], 13);
-//     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-//     maxZoom: 19,
-//     attribution: '© OpenStreetMap'
-// }).addTo(map);
+  
+  
 })
+
+function onLocationFound(e) {
+    var radius = e.accuracy;
+
+    L.marker(e.latlng).addTo(map)
+        .bindPopup("You are within " + radius + " meters from this point").openPopup();
+
+    L.circle(e.latlng, radius).addTo(map);
+}
+
+map.on('locationfound', onLocationFound);
+	map.on('locationerror', onLocationError);
+
+	map.locate({setView: true, maxZoom: 16});

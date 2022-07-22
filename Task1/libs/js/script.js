@@ -65,12 +65,10 @@ $('#wikiBtn').click(function() {
              if (result.status.name == "ok") {
                 $('#placenameEntered').html(result['data'][0]['title']);
                 $('#summary').html(result['data'][0]['summary']);
-                $('#wikiUrl').attr("href", result['data'][0]['wikipediaUrl'])
-            }
-           
+                $('#wikiUrl').attr("href", "https://" +result['data'][0]['wikipediaUrl'])
             
+            }
         }
-        
     })
 })
 
