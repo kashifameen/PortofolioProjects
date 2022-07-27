@@ -1,26 +1,15 @@
 let map = L.map('map').setView([0.0, 0.0], 13);
-
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-
-maxZoom: 19,
-
+maxZoom: 100,
 attribution: '© OpenStreetMap'
-
 }).addTo(map);
-
-
 
 L.easyButton( '<span class="star">&starf;</span>', function(){
-
 alert('you just clicked the html entity \&starf;');
-
 }).addTo(map);
 
-
-
 $(document).ready(function(){
-
-   console.log("ready")
+  console.log("ready")
 
    if ("geolocation" in navigator){ //check geolocation available
 
@@ -47,15 +36,16 @@ selectField.empty();
 selectField.append('<option selected="true" disabled>Choose Country</option>')
 selectField.prop('selectedIndex', 0);
    $.ajax({
-     url:"libs/json/countryBorders.geo.json",
+     url:"libs/php/populateSelectFields.php",
      type:'GET',
      dataType: 'json',
      success: function(result) {
-       console.log(result)
-       $.each(result.features, function(i, item){
-         selectField.append($('<option></option>').text(result.features[i].properties.name).attr(item, result.features[i].geometry))
-        console.log(result.features[i].geometry.type.polygon)
+      console.log(result.data)
+    
+       $.each(result.data, function(i, item){
+         selectField.append($('<option></option>').text(result.data[i].name).attr('value', result.data[i].iso))
         })
+
      } 
    })
 })
@@ -71,26 +61,35 @@ function onLocationFound(e) {
 
 }
 map.on('locationfound', onLocationFound);
-map.locate({setView: true, maxZoom: 16});
+map.locate({setView: true, maxZoom: 20});
 
 $('select').on('change', function() {
-  const chosenValue = this.value
-  $.ajax({
-    url:"libs/getCountryBorders.geo.json",
-    type: 'GET',
-    dataType: 'json',
-    data:{
-      q: chosenValue
-    },
-  
-    success: function(response) {
-      console.log(this.value)
-      if(response.features.properties.name == chosenValue){
-        console.log('Yes')
-      }
-    }
+  const chosenValue = this.value;
+$.ajax({
+  url:"libs/php/getCountryBorder.php",
+  type:'GET',
+  dataType: 'json',
+  success: function(result) {
+    console.log(result.data)
+    $.each(result.data, function(i, item){
+    // console.log(item.features.properties)
+        if(item.features.properties.iso_a2 == chosenValue){
+          console.log(item)
+        //   var geojsonFeature = {
+        //     "type": item.features.type,
+        //     "properties": item.features.properties,
+        //     "geometry": item.features.geometry
+        // };
 
-  })
-  let chosen =this.value
-  console.log(chosenValue)
-});
+        console.log(item.features.geometry)
+          L.geoJSON(item.features.geometry).addTo(map);
+
+      
+    }
+     
+
+    })      
+   
+  }
+})
+})

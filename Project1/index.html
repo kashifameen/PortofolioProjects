@@ -1,3 +1,7 @@
+<?php 
+echo file_get_contents('./json/countryBordersGeo.json');
+
+?>
 <!DOCTYPE html>
 
 <html>
@@ -35,4 +39,4 @@
         <script type="application/javascript" src="libs/js/script.js" ></script>
         
     </body>
-</html>
+    <?php include '/libs/php/getCountryBorder.php'; echo 'Hello'; ?>
