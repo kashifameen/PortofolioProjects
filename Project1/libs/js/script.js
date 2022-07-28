@@ -1,11 +1,11 @@
 let map = L.map('map').setView([0.0, 0.0], 13);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-maxZoom: 100,
+maxZoom: 25,
 attribution: '© OpenStreetMap'
 }).addTo(map);
 
-L.easyButton( '<span class="star">&starf;</span>', function(){
-alert('you just clicked the html entity \&starf;');
+L.easyButton( '<span class="star" data-toggle="modal" data-target="#myModal">&starf;</span>', function(){
+  $("#myModal").modal("show");
 }).addTo(map);
 
 $(document).ready(function(){
@@ -20,6 +20,21 @@ $(document).ready(function(){
                console.log("Found your location <br />Lat : "+position.coords.latitude+" </br>Lang :"+ position.coords.longitude);
 
               map.setView([position.coords.latitude, position.coords.longitude], 13);
+              $.ajax({
+                url:"libs/php/getOpencageApi.php",
+                type:'POST',
+                dataType: 'json',
+                data: {
+                  lat: position.coords.latitude,
+                  lng: position.coords.longitude
+                },
+                success: function(result){
+                  console.log(result.data)
+                  document.getElementById('country').innerHTML = "<h5>Location: " + result.data.results[0].components.city +", " +result.data.results[0].components.country + " " +result.data.results[0].annotations.flag + "</h5>";
+                  document.getElementById('currency').innerHTML="<h5>Currency: " + result.data.results[0].annotations.currency.name +"</h5>"
+                  // document.getElementById('currentTime').innerHTML="<h5>Current Time: " + result.data.
+                }
+              })
 
            });
 
@@ -75,14 +90,9 @@ $.ajax({
     // console.log(item.features.properties)
         if(item.features.properties.iso_a2 == chosenValue){
           console.log(item)
-        //   var geojsonFeature = {
-        //     "type": item.features.type,
-        //     "properties": item.features.properties,
-        //     "geometry": item.features.geometry
-        // };
-
-        console.log(item.features.geometry)
-          L.geoJSON(item.features.geometry).addTo(map);
+     
+        console.log(item.features)
+          L.geoJSON(item.features.geometry).addTo(map)
 
       
     }

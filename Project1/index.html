@@ -31,7 +31,32 @@ echo file_get_contents('./json/countryBordersGeo.json');
               </div>
             </div>
           </nav>
-        <div id="map"></div>
+        <div id="map"><!-- Button trigger modal -->
+          
+          
+          <!-- Modal -->
+          <!-- Modal HTML -->
+<div id="myModal" class="modal fade" tabindex="-1">
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title">Information about your location</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body">
+             <div id="country"></div>
+             <div id="currency"></div>
+             <div id="currentTime"></div>
+              
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          </div>
+      </div>
+  </div>
+</div>
+  
+
         <script type="application/javascript" src="libs/js/jquery-2.2.3.min.js"></script>
         <script type="application/javascript" src="libs/js/bootstrap.bundle.min.js"></script>
         <script type="application/javascript" src="libs/js/leaflet.js"></script>
@@ -39,4 +64,3 @@ echo file_get_contents('./json/countryBordersGeo.json');
         <script type="application/javascript" src="libs/js/script.js" ></script>
         
     </body>
-    <?php include '/libs/php/getCountryBorder.php'; echo 'Hello'; ?>
