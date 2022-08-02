@@ -3,6 +3,9 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 maxZoom: 25,
 attribution: '© OpenStreetMap'
 }).addTo(map);
+console.log(map.getBounds().getNorth())
+console.log(map.getBounds())
+
 
 L.easyButton( '<span class="star" data-toggle="modal" data-target="#myModal">&starf;</span>', function(){
   $("#myModal").modal("show");
@@ -12,11 +15,10 @@ $(document).ready(function(){
   console.log("ready")
 
    if ("geolocation" in navigator){ //check geolocation available
-
        //try to get user current location using getCurrentPosition() method
 
        navigator.geolocation.getCurrentPosition(function(position){
-        console.log(navigator.geolocation.getCurrentPosition)
+        console.log(navigator.geolocation)
                console.log("Found your location <br />Lat : "+position.coords.latitude+" </br>Lang :"+ position.coords.longitude);
                 console.log(position)
               map.setView([position.coords.latitude, position.coords.longitude], 13);
@@ -70,10 +72,22 @@ $(document).ready(function(){
 
                   }
               })
+              $.ajax({
+                url:"libs/php/getLocalHighlights.php",
+                type: 'POST',
+                dataType: 'json',
+                data:{
+                  lat: position.coords.latitude,
+                  lng: position.coords.longitude,
+                },
+                success: function(result){
+                  console.log(result)
+                }
+              })
 
 
            });
-
+           
 
 
 
