@@ -40,14 +40,17 @@ echo file_get_contents('./json/countryBordersGeo.json');
   <div class="modal-dialog">
       <div class="modal-content">
           <div class="modal-header">
-              <h5 class="modal-title">Information about your location</h5>
+              <h5 class="modal-title">Information about your location </h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
           </div>
           <div class="modal-body">
              <div id="country"></div>
              <div id="currency"></div>
              <div id="currentTime"></div>
-              
+             <div id="weather">
+              <div id="weatherDescription"></div>
+              <div id="currentTemp"></div>
+             </div>
           </div>
           <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>

@@ -27,17 +27,7 @@ header('Content-Type: application/json; charset=UTF-8');
 echo json_encode($output);
 
 
-	// $countries= array();
-	// $countryIso=array();
-	// foreach($countryBorders->features as $country) {
-	// 	$countryName = $country->properties->name;
-	// 	$countries[] = $countryName;
-	// 	$countryIso1 = $country->properties->iso_a2;
-	// 	$countryIso[] = $countryIso1;
-	// }
-	// $newArray = array_combine($countryIso, $countries);
-	// header('Content-Type: application/json; charset=UTF-8');
-	// echo json_encode($newArray);
+
 ?>
 
 

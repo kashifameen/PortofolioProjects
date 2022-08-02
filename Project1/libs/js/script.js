@@ -16,9 +16,9 @@ $(document).ready(function(){
        //try to get user current location using getCurrentPosition() method
 
        navigator.geolocation.getCurrentPosition(function(position){
-
+        console.log(navigator.geolocation.getCurrentPosition)
                console.log("Found your location <br />Lat : "+position.coords.latitude+" </br>Lang :"+ position.coords.longitude);
-
+                console.log(position)
               map.setView([position.coords.latitude, position.coords.longitude], 13);
               $.ajax({
                 url:"libs/php/getOpencageApi.php",
@@ -31,10 +31,46 @@ $(document).ready(function(){
                 success: function(result){
                   console.log(result.data)
                   document.getElementById('country').innerHTML = "<h5>Location: " + result.data.results[0].components.city +", " +result.data.results[0].components.country + " " +result.data.results[0].annotations.flag + "</h5>";
-                  document.getElementById('currency').innerHTML="<h5>Currency: " + result.data.results[0].annotations.currency.name +"</h5>"
-                  // document.getElementById('currentTime').innerHTML="<h5>Current Time: " + result.data.
+                  document.getElementById('currency').innerHTML="<h5>Currency: "  + result.data.results[0].annotations.currency.name + "<br>" + "Symbol: " 
+                  + result.data.results[0].annotations.currency.html_entity+"</h5>"
+                  document.getElementById('currentTime').innerHTML="<h5>Current Time: " + new Date().toLocaleString("en-US", {timeZone: result.data.results[0].annotations.timezone.name})
                 }
               })
+              console.log(position.coords.longitude)
+              $.ajax({
+                url:"libs/php/getCurrentWeatherData.php",
+                type:'POST',
+                dataType:'json',
+                data: {
+                  lat: position.coords.latitude,
+                  lon: position.coords.longitude,
+                },
+                success: function(result){
+                  console.log(result)
+                  document.getElementById('weatherDescription').innerHTML = "<h5>Current Weather: " + result.data.weather[0].description + "</h5>"
+                  document.getElementById('currentTemp').innerHTML = "<h5>Current Temperature: " + result.data.main.temp +"°C"+"</h5>";
+                }
+
+              })
+              $.ajax({
+                url:"libs/php/getWikipediaSearch.php",
+                type: 'POST',
+                dataType:'json',
+                data: {
+                  lat: position.coords.latitude,
+                  lng: position.coords.longitude,
+                },
+                  success: function(result){
+                    console.log(result)
+                    L.marker([result.data[0].lat, result.data[0].lng]).addTo(map).bindPopup(result.data[0].title +"<br> <a href=https://" + result.data[0].wikipediaUrl + ">Wikipedia Link</a>").openPopup();
+                    L.marker([result.data[1].lat, result.data[1].lng]).addTo(map).bindPopup(result.data[1].title +"<br> <a href=https://" + result.data[1].wikipediaUrl + ">Wikipedia Link</a>").openPopup();
+                    L.marker([result.data[2].lat, result.data[2].lng]).addTo(map).bindPopup(result.data[2].title +"<br> <a href=https://" + result.data[2].wikipediaUrl + ">Wikipedia Link</a>").openPopup();
+                    L.marker([result.data[3].lat, result.data[3].lng]).addTo(map).bindPopup(result.data[3].title +"<br> <a href=https://" + result.data[3].wikipediaUrl + ">Wikipedia Link</a>").openPopup();
+                    L.marker([result.data[4].lat, result.data[4].lng]).addTo(map).bindPopup(result.data[4].title +"<br> <a href=https://" + result.data[4].wikipediaUrl + ">Wikipedia Link</a>").openPopup();
+
+                  }
+              })
+
 
            });
 
