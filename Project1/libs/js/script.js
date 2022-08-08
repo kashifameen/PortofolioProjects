@@ -64,11 +64,11 @@ $(document).ready(function(){
                 },
                   success: function(result){
                     console.log(result)
-                    L.marker([result.data[0].lat, result.data[0].lng]).addTo(map).bindPopup(result.data[0].title +"<br> <a href=https://" + result.data[0].wikipediaUrl + ">Wikipedia Link</a>").openPopup();
-                    L.marker([result.data[1].lat, result.data[1].lng]).addTo(map).bindPopup(result.data[1].title +"<br> <a href=https://" + result.data[1].wikipediaUrl + ">Wikipedia Link</a>").openPopup();
-                    L.marker([result.data[2].lat, result.data[2].lng]).addTo(map).bindPopup(result.data[2].title +"<br> <a href=https://" + result.data[2].wikipediaUrl + ">Wikipedia Link</a>").openPopup();
-                    L.marker([result.data[3].lat, result.data[3].lng]).addTo(map).bindPopup(result.data[3].title +"<br> <a href=https://" + result.data[3].wikipediaUrl + ">Wikipedia Link</a>").openPopup();
-                    L.marker([result.data[4].lat, result.data[4].lng]).addTo(map).bindPopup(result.data[4].title +"<br> <a href=https://" + result.data[4].wikipediaUrl + ">Wikipedia Link</a>").openPopup();
+                    L.marker([result.data[0].lat, result.data[0].lng]).addTo(map).bindPopup(result.data[0].title +"<br> <a href=https://" + result.data[0].wikipediaUrl + ">Wikipedia Link</a>");
+                    L.marker([result.data[1].lat, result.data[1].lng]).addTo(map).bindPopup(result.data[1].title +"<br> <a href=https://" + result.data[1].wikipediaUrl + ">Wikipedia Link</a>");
+                    L.marker([result.data[2].lat, result.data[2].lng]).addTo(map).bindPopup(result.data[2].title +"<br> <a href=https://" + result.data[2].wikipediaUrl + ">Wikipedia Link</a>");
+                    L.marker([result.data[3].lat, result.data[3].lng]).addTo(map).bindPopup(result.data[3].title +"<br> <a href=https://" + result.data[3].wikipediaUrl + ">Wikipedia Link</a>");
+                    L.marker([result.data[4].lat, result.data[4].lng]).addTo(map).bindPopup(result.data[4].title +"<br> <a href=https://" + result.data[4].wikipediaUrl + ">Wikipedia Link</a>");
 
                   }
               })
@@ -84,7 +84,7 @@ $(document).ready(function(){
                   console.log(result.data)
                   $.each(result.data[0].pois, function(i, item){
               
-                    L.marker([item.coordinates.latitude, item.coordinates.longitude]).addTo(map).bindPopup(item.name +"<br>" + item.snippet).openPopup();
+                    L.marker([item.coordinates.latitude, item.coordinates.longitude]).addTo(map).bindPopup(item.name +"<br>" + item.snippet);
           
                   })
                 }
