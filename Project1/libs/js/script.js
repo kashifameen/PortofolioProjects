@@ -1,6 +1,6 @@
 let map = L.map('map').setView([0.0, 0.0], 13);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-maxZoom: 18,
+maxZoom: 16,
 attribution: '© OpenStreetMap'
 }).addTo(map);
 console.log(map.getBounds().getNorth())
