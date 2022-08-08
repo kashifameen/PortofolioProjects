@@ -5,7 +5,7 @@
 
     $executionStartTime = microtime(true);
 
-    $url='https://www.triposo.com/api/20220705/local_highlights.json?' . 'max_distance=100' . '&latitude'. $_REQUEST['lat'] .'&longitude'. $_REQUEST['lng'] . '&account=D2EA23HJ'.'&token=y10rh758lfhs8u6rqlmbo0tmbyvlpqqr'; 
+    $url='https://www.triposo.com/api/20220705/local_highlights.json?' . 'max_distance=1500' . '&latitude='. $_REQUEST['lat'] .'&longitude='. $_REQUEST['lng'] . '&account=D2EA23HJ'.'&token=y10rh758lfhs8u6rqlmbo0tmbyvlpqqr'; 
 
 	$ch = curl_init();
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
@@ -23,6 +23,6 @@
 	$output['status']['returnedIn'] = intval((microtime(true) - $executionStartTime) * 1000) . " ms";
 	$output['data'] = $decode['results'];
 	
-	header("Content-Type: application/json; charset=UTF-8'");
+	header('Content-Type: application/json; charset=UTF-8');
 
 	echo json_encode($output); 

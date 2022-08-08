@@ -1,6 +1,6 @@
 let map = L.map('map').setView([0.0, 0.0], 13);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-maxZoom: 25,
+maxZoom: 18,
 attribution: '© OpenStreetMap'
 }).addTo(map);
 console.log(map.getBounds().getNorth())
@@ -74,17 +74,31 @@ $(document).ready(function(){
               })
               $.ajax({
                 url:"libs/php/getLocalHighlights.php",
-                type: 'POST',
+                type: 'GET',
                 dataType: 'json',
                 data:{
                   lat: position.coords.latitude,
                   lng: position.coords.longitude,
                 },
                 success: function(result){
-                  console.log(result)
+                  console.log(result.data)
+                  $.each(result.data[0].pois, function(i, item){
+              
+                    L.marker([item.coordinates.latitude, item.coordinates.longitude]).addTo(map).bindPopup(item.name +"<br>" + item.snippet).openPopup();
+          
+                  })
                 }
               })
+              $.ajax({
+                url:"libs/php/getIpGeoLocation.php",
+                type:'GET',
+                dataType: 'json',
+               success: function(result){
+                 console.log(result.city.population)
+                 document.getElementById('population').innerHTML="<h5>Population: " + result.city.population + "</h5>"
 
+               }
+              })
 
            });
            
@@ -149,7 +163,7 @@ $.ajax({
      
 
     })      
-   
+  
   }
 })
 })
