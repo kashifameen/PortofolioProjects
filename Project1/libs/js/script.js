@@ -39,9 +39,12 @@ $(document).ready(function(){
                   document.getElementById('currency').innerHTML="<h5>Currency: "  + result.data.results[0].annotations.currency.name + "<br>" + "Symbol: " 
                   + result.data.results[0].annotations.currency.html_entity+"</h5>"
                   document.getElementById('currentTime').innerHTML="<h5>Current Time: " + new Date().toLocaleString("en-US", {timeZone: result.data.results[0].annotations.timezone.name})
+                  var city = result.data.results[0].components.city
+                  document.getElementById('wrapper-name').innerHTML = city
+                    console.log(city)
                 }
               })
-              console.log(position.coords.longitude)
+              
               $.ajax({
                 url:"libs/php/getCurrentWeatherData.php",
                 type:'POST',
@@ -51,12 +54,133 @@ $(document).ready(function(){
                   lon: position.coords.longitude,
                 },
                 success: function(result){
-                  console.log(result)
-                  document.getElementById('weatherDescription').innerHTML = "<h5>Current Weather: " + result.data.weather[0].description + "</h5>"
-                  document.getElementById('currentTemp').innerHTML = "<h5>Current Temperature: " + result.data.main.temp +"°C"+"</h5>";
-                  document.getElementById('maxTemp').innerHTML = "<h5>Max Temp: " + result.data.main.temp_max +"°C"+"</h5>";
-                  document.getElementById('feelsLike').innerHTML = "<h5>Feels Like: " + result.data.main.feels_like +"°C"+"</h5>";
-                  document.getElementById('windSpeed').innerHTML = "<h5>Wind Speed: " + result.data.wind.speed +"mph"+"</h5>";
+                  // Weather main data
+                  let main = result.data.current.weather[0].main;
+                  let description = result.data.current.weather[0].description;
+                  let temp = Math.round(result.data.current.temp);
+                  let pressure = result.data.current.pressure;
+                  let humidity = result.data.current.humidity;
+                  if(result.data.current.weather[0].id = 800){
+                    document.getElementById('wrapper-bg').style.backgroundImage="url('images/clear.gif')"
+                  } else if (result.data.current.weather[0].id >= 200 && result.data.current.weather[0].id <= 232){
+                    document.getElementById('wrapper-bg').style.backgroundImage="url('images/thunderstorm.gif')"
+                  } else if (result.data.current.weather[0].id >= 300 && result.data.urrent.weather[0].id <= 531){
+                    document.getElementById('wrapper-bg').style.backgroundImage="url('images/rain.gif')"
+
+                  } else if(result.data.current.weather[0].id >= 600 && result.data.current.weather[0].id <= 622){
+                    document.getElementById('wrapper-bg').style.backgroundImage="url('images/snow.gif')"
+
+                  } else if(result.data.current.weather[0].id == 701 && result.data.current.weather[0].id == 711 && result.data.current.weather[0].id == 741){
+                    document.getElementById('wrapper-bg').style.backgroundImage="url('images/fog.gif')"
+
+                  } else if(result.data.current.weather[0].id >=801 && result.data.current.weather[0].id <= 804){
+                    document.getElementById('wrapper-bg').style.backgroundImage="url('images/cloudy.gif')"
+
+                  }
+                                    
+
+                  document.getElementById("wrapper-description").innerHTML = description;
+                  document.getElementById("wrapper-temp").innerHTML = temp + "°C";
+                  document.getElementById("wrapper-pressure").innerHTML = pressure;
+                  document.getElementById("wrapper-humidity").innerHTML = humidity + "°C";
+                  document.getElementById("wrapper-name").innerHTML = name;
+
+                  // Weather hourly data
+                  let hourNow = Math.round(result.data.hourly[0].temp);
+                  let hour1 = Math.round(result.data.hourly[1].temp);
+                  let hour2 = Math.round(result.data.hourly[2].temp);
+                  let hour3 = Math.round(result.data.hourly[3].temp);
+                  let hour4 = Math.round(result.data.hourly[4].temp);
+                  let hour5 = Math.round(result.data.hourly[5].temp);
+
+                  document.getElementById("wrapper-hour-now").innerHTML = hourNow + "°C";
+                  document.getElementById("wrapper-hour1").innerHTML = hour1 + "°C";
+                  document.getElementById("wrapper-hour2").innerHTML = hour2 + "°C";
+                  document.getElementById("wrapper-hour3").innerHTML = hour3 + "°C";
+                  document.getElementById("wrapper-hour4").innerHTML = hour4 + "°C";
+                  document.getElementById("wrapper-hour5").innerHTML = hour5 + "°C";
+
+                  // Time
+                  let timeNow = new Date().getHours();
+                  let time1 = timeNow + 1;
+                  let time2 = time1 + 1;
+                  let time3 = time2 + 1;
+                  let time4 = time3 + 1;
+                  let time5 = time4 + 1;
+
+                  document.getElementById("wrapper-time1").innerHTML = time1;
+                  document.getElementById("wrapper-time2").innerHTML = time2;
+                  document.getElementById("wrapper-time3").innerHTML = time3;
+                  document.getElementById("wrapper-time4").innerHTML = time4;
+                  document.getElementById("wrapper-time5").innerHTML = time5;
+
+                  // Weather daily data
+                  let tomorrowTemp = Math.round(result.data.daily[0].temp.day);
+                  let dATTemp = Math.round(result.data.daily[1].temp.day);
+                  let tomorrowMain = result.data.daily[0].weather[0].main;
+                  let dATTempMain = result.data.daily[1].weather[0].main;
+
+                  document.getElementById("wrapper-forecast-temp-today").innerHTML =
+                  temp + "°C";
+                  document.getElementById("wrapper-forecast-temp-tomorrow").innerHTML =
+                  tomorrowTemp + "°C";
+                  document.getElementById("wrapper-forecast-temp-dAT").innerHTML =
+                  dATTemp + "°C";
+
+                  // Icons
+                  let iconBaseUrl = "http://openweathermap.org/img/wn/";
+                  let iconFormat = ".png";
+
+                  // Today
+                  let iconCodeToday = result.data.current.weather[0].icon;
+                  let iconFullyUrlToday = iconBaseUrl + iconCodeToday + iconFormat;
+                  document.getElementById("wrapper-icon-today").src = iconFullyUrlToday;
+
+                  // Tomorrow
+                  let iconCodeTomorrow = result.data.daily[0].weather[0].icon;
+                  let iconFullyUrlTomorrow = iconBaseUrl + iconCodeTomorrow + iconFormat;
+                  document.getElementById(
+                  "wrapper-icon-tomorrow"
+                  ).src = iconFullyUrlTomorrow;
+
+                  // Day after tomorrow
+                  let iconCodeDAT = result.data.daily[1].weather[0].icon;
+                  let iconFullyUrlDAT = iconBaseUrl + iconCodeDAT + iconFormat;
+                  document.getElementById("wrapper-icon-dAT").src = iconFullyUrlDAT;
+
+                  // Icons hourly
+
+                  // Hour now
+                  let iconHourNow = result.data.hourly[0].weather[0].icon;
+                  let iconFullyUrlHourNow = iconBaseUrl + iconHourNow + iconFormat;
+                  document.getElementById(
+                  "wrapper-icon-hour-now"
+                  ).src = iconFullyUrlHourNow;
+
+                  // Hour1
+                  let iconHour1 = result.data.hourly[1].weather[0].icon;
+                  let iconFullyUrlHour1 = iconBaseUrl + iconHour1 + iconFormat;
+                  document.getElementById("wrapper-icon-hour1").src = iconFullyUrlHour1;
+
+                  // Hour2
+                  let iconHour2 = result.data.hourly[2].weather[0].icon;
+                  let iconFullyUrlHour2 = iconBaseUrl + iconHour2 + iconFormat;
+                  document.getElementById("wrapper-icon-hour2").src = iconFullyUrlHour1;
+
+                  // Hour3
+                  let iconHour3 = result.data.hourly[3].weather[0].icon;
+                  let iconFullyUrlHour3 = iconBaseUrl + iconHour3 + iconFormat;
+                  document.getElementById("wrapper-icon-hour3").src = iconFullyUrlHour3;
+
+                  // Hour4
+                  let iconHour4 = result.data.hourly[4].weather[0].icon;
+                  let iconFullyUrlHour4 = iconBaseUrl + iconHour4 + iconFormat;
+                  document.getElementById("wrapper-icon-hour4").src = iconFullyUrlHour4;
+
+                  // Hour5
+                  let iconHour5 = result.data.hourly[5].weather[0].icon;
+                  let iconFullyUrlHour5 = iconBaseUrl + iconHour5 + iconFormat;
+                  document.getElementById("wrapper-icon-hour5").src = iconFullyUrlHour5;
 
                 }
 
@@ -130,17 +254,24 @@ selectField.prop('selectedIndex', 0);
       let countries = result.data;
       console.log(countries)
       typeof countries;
+
       countries.sort((a, b) => {
-        const nameA = a.toLowerCase(); 
-        const nameB = b.toLowerCase();
-            if (nameA < nameB) {
-              return -1;
-            } 
-            if(nameA > nameB){
-              return 1;
-            }
-            return 0;
-      })
+
+        if(a.name.toString().toLowerCase() < b.name.toString().toLowerCase()){
+
+          return -1;
+
+        }
+
+        if(a.name.toString().toLowerCase() > b.name.toString().toLowerCase()){
+
+          return 1;
+
+        }
+
+        return 0;
+
+      });
     
       // countries.sort((a, b) => b[1] - a[1]);
       console.log(countries);
@@ -174,19 +305,12 @@ $.ajax({
   type:'GET',
   dataType: 'json',
   success: function(result) {
-    console.log(result.data)
+    console.log(result)
     $.each(result.data, function(i, item){
-    // console.log(item.features.properties)
         if(item.features.properties.iso_a2 == chosenValue){
-          console.log(item.features.geometry.coordinates)
-     var latlngs = 
-        item.features.geometry.coordinates[0]
-          // L.geoJSON(item.features.geometry).addTo(map)
-          var polyline = L.polyline(latlngs, {color: 'red'}).addTo(map);
-
-          map.fitBounds(polyline.getBounds());
-          console.log(latlngs)
-          
+          let border = L.geoJSON(item.features.geometry).addTo(map)
+          map.fitBounds(border.getBounds());
+        
     }
 
     })      
