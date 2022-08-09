@@ -1,7 +1,3 @@
-<?php 
-echo file_get_contents('./json/countryBordersGeo.json');
-
-?>
 <!DOCTYPE html>
 
 <html>
@@ -15,7 +11,10 @@ echo file_get_contents('./json/countryBordersGeo.json');
         <link rel="stylesheet" href="libs/css/bootstrap.min.css">
         <link rel="stylesheet" href="libs/css/leaflet.css">
         <link rel="stylesheet" href="libs/css/easy-button.css">
-        
+        <script src="https://kit.fontawesome.com/734a4f38c0.js" crossorigin="anonymous"></script>;
+
+        <title>Gazetteer</title>
+        <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
 
     </head>
     <body>
@@ -47,9 +46,6 @@ echo file_get_contents('./json/countryBordersGeo.json');
              <div id="country"></div>
              <div id="currency"></div>
              <div id="currentTime"></div>
-             <div id="weather">
-              <div id="weatherDescription"></div>
-              <div id="currentTemp"></div>
               <div id="population"></div>
              </div>
           </div>
@@ -59,8 +55,30 @@ echo file_get_contents('./json/countryBordersGeo.json');
       </div>
   </div>
 </div>
+<div id="weatherModal" class="modal fade" tabindex="-1">
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title">Information about your location </h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body">
+            <div>
+             <div id="weather">
+              <div id="weatherDescription"></div>
+              <div id="currentTemp"></div>
+              <div id="maxTemp"></div>
+              <div id="feelsLike"></div>
+              <div id="windSpeed"></div>
+             </div>
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+      </div>
+  </div>
+</div>
   
-
         <script type="application/javascript" src="libs/js/jquery-2.2.3.min.js"></script>
         <script type="application/javascript" src="libs/js/bootstrap.bundle.min.js"></script>
         <script type="application/javascript" src="libs/js/leaflet.js"></script>

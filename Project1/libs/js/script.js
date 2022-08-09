@@ -10,6 +10,9 @@ console.log(map.getBounds())
 L.easyButton( '<span class="star" data-toggle="modal" data-target="#myModal">&starf;</span>', function(){
   $("#myModal").modal("show");
 }).addTo(map);
+L.easyButton( 'fa-cloud-sun-rain fa-lg', function(){
+  $("#weatherModal").modal("show");
+}).addTo(map);
 
 $(document).ready(function(){
   console.log("ready")
@@ -51,6 +54,10 @@ $(document).ready(function(){
                   console.log(result)
                   document.getElementById('weatherDescription').innerHTML = "<h5>Current Weather: " + result.data.weather[0].description + "</h5>"
                   document.getElementById('currentTemp').innerHTML = "<h5>Current Temperature: " + result.data.main.temp +"°C"+"</h5>";
+                  document.getElementById('maxTemp').innerHTML = "<h5>Max Temp: " + result.data.main.temp_max +"°C"+"</h5>";
+                  document.getElementById('feelsLike').innerHTML = "<h5>Feels Like: " + result.data.main.feels_like +"°C"+"</h5>";
+                  document.getElementById('windSpeed').innerHTML = "<h5>Wind Speed: " + result.data.wind.speed +"mph"+"</h5>";
+
                 }
 
               })
@@ -119,12 +126,31 @@ selectField.prop('selectedIndex', 0);
      type:'GET',
      dataType: 'json',
      success: function(result) {
-      console.log(result.data)
+      // console.log(result.data)
+      let countries = [];
+      countries = result.data
+      console.log(countries)
+      typeof countries;
+      countries.sort((a, b) => {
+        const nameA = a.toString().toUpperCase(); 
+        const nameB = b.toString().toUpperCase();
+            if (nameA < nameB) {
+              return -1;
+            } 
+            if(nameA > nameB){
+              return 1;
+            }
+            return 0;
+      })
     
-       $.each(result.data, function(i, item){
-         selectField.append($('<option></option>').text(result.data[i].name).attr('value', result.data[i].iso))
-        })
+      // countries.sort((a, b) => b[1] - a[1]);
+      console.log(countries);
 
+       $.each(countries, function(i, item){     
+        selectField.append($('<option></option>').text(countries[i].name).attr('value', countries[i].iso))
+
+        })
+        
      } 
    })
 })
@@ -153,14 +179,16 @@ $.ajax({
     $.each(result.data, function(i, item){
     // console.log(item.features.properties)
         if(item.features.properties.iso_a2 == chosenValue){
-          console.log(item)
-     
-        console.log(item.features)
-          L.geoJSON(item.features.geometry).addTo(map)
+          console.log(item.features.geometry.coordinates)
+     var latlngs = 
+        item.features.geometry.coordinates[0]
+          // L.geoJSON(item.features.geometry).addTo(map)
+          var polyline = L.polyline(latlngs, {color: 'red'}).addTo(map);
 
-      
+          map.fitBounds(polyline.getBounds());
+          console.log(latlngs)
+          
     }
-     
 
     })      
   
