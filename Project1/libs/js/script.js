@@ -127,13 +127,12 @@ selectField.prop('selectedIndex', 0);
      dataType: 'json',
      success: function(result) {
       // console.log(result.data)
-      let countries = [];
-      countries = result.data
+      let countries = result.data;
       console.log(countries)
       typeof countries;
       countries.sort((a, b) => {
-        const nameA = a.toString().toUpperCase(); 
-        const nameB = b.toString().toUpperCase();
+        const nameA = a.toLowerCase(); 
+        const nameB = b.toLowerCase();
             if (nameA < nameB) {
               return -1;
             } 
