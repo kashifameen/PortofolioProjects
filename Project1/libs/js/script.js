@@ -13,7 +13,9 @@ L.easyButton( '<span class="star" data-toggle="modal" data-target="#myModal">&st
 L.easyButton( 'fa-cloud-sun-rain fa-lg', function(){
   $("#weatherModal").modal("show");
 }).addTo(map);
-
+L.easyButton('fa-newspaper fa-lg', function(){
+  $("newsModal").modal("show");
+}).addTo(map)
 $(document).ready(function(){
   console.log("ready")
 
@@ -55,6 +57,7 @@ $(document).ready(function(){
                 },
                 success: function(result){
                   // Weather main data
+                  console.log(result)
                   let main = result.data.current.weather[0].main;
                   let description = result.data.current.weather[0].description;
                   let temp = Math.round(result.data.current.temp);
@@ -83,7 +86,6 @@ $(document).ready(function(){
                   document.getElementById("wrapper-temp").innerHTML = temp + "°C";
                   document.getElementById("wrapper-pressure").innerHTML = pressure;
                   document.getElementById("wrapper-humidity").innerHTML = humidity + "°C";
-                  document.getElementById("wrapper-name").innerHTML = name;
 
                   // Weather hourly data
                   let hourNow = Math.round(result.data.hourly[0].temp);
@@ -288,6 +290,7 @@ map.locate({setView: true, maxZoom: 20});
 $('select').on('change', function() {
   const chosenValue = this.value;
   console.log(chosenValue)
+ let selectedText = $('select :selected').text()
 $.ajax({
   url:"libs/php/getCountryBorder.php",
   type:'GET',
@@ -302,7 +305,14 @@ $.ajax({
     })      
   }
 })
-
+var airportIcon = L.ExtraMarkers.icon({
+    extraClasses: 'fa-regular',
+    icon: 'fa-plane-departure',
+     iconColor: 'black',
+     shape: 'penta',
+     prefix: 'fa'
+    });
+   
 $.ajax({
   url:"libs/php/getAirports.php",
   type:'GET',
@@ -312,16 +322,53 @@ $.ajax({
   },
   success: function(result){
     console.log(result)
-    let airportIcon = L.divIcon({
-      html:'<i class="fa-solid fa-plane-departure"></i>',
-      iconSize: [10, 10],
-      className:'myDivIcon'
-
-    })
+    
     $.each(result.data, function(i, item){
       L.marker([result.data[i].latitude, result.data[i].longitude],{icon: airportIcon}).addTo(map).bindPopup(result.data[i].name +"<br> <a href=https://" + result.data[i].wikipedia_page + ">Wikipedia Link</a>");
 
     })
+  }
+})
+$.ajax({
+  url:"libs/php/getNews.php",
+  type:'GET',
+  dataType: 'json',
+  data: {
+    country: chosenValue
+  },
+  success: function(result){
+    console.log(result)
+    //Main News Article
+    document.getElementById('mainNewsImage').src= result.articles[0].media
+    document.getElementById('mainNewspaperName').innerHTML = result.articles[0].rights
+    document.getElementById('mainNewspaperName').href = result.articles[0].link
+    document.getElementById('mainNewsArticleDate').innerHTML = result.articles[0].published_date
+    document.getElementById('headArticle').innerHTML = "<h5>" + result.articles[0].title + "</h5>" + "<p>" + result.articles[0].summary + "</p>"
+
+    //Second News Article
+    document.getElementById('article2image').src = result.articles[1].media
+    document.getElementById('article2title').innerHTML = result.articles[1].title
+    document.getElementById('article2title').href = result.articles[1].link
+    document.getElementById('article2date').innerHTML = result.articles[1].published_date
+
+
+    //Third News Article
+    document.getElementById('article3image').src = result.articles[2].media
+    document.getElementById('article3title').innerHTML = result.articles[2].title
+    document.getElementById('article3title').href = result.articles[2].link
+    document.getElementById('article3date').innerHTML = result.articles[2].published_date
+  
+    //Fourth News Article
+    document.getElementById('article4image').src = result.articles[3].media
+    document.getElementById('article4title').innerHTML = result.articles[3].title
+    document.getElementById('article4title').href = result.articles[3].link
+    document.getElementById('article4date').innerHTML = result.articles[3].published_date
+  
+  //Fifth News Article
+  document.getElementById('article5image').src = result.articles[4].media
+  document.getElementById('article5title').innerHTML = result.articles[4].title
+  document.getElementById('article5title').href = result.articles[4].link
+  document.getElementById('article5date').innerHTML = result.articles[4].published_date
   }
 })
 })
