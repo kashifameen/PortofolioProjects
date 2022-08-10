@@ -117,8 +117,7 @@ $(document).ready(function(){
                   // Weather daily data
                   let tomorrowTemp = Math.round(result.data.daily[0].temp.day);
                   let dATTemp = Math.round(result.data.daily[1].temp.day);
-                  let tomorrowMain = result.data.daily[0].weather[0].main;
-                  let dATTempMain = result.data.daily[1].weather[0].main;
+                 
 
                   document.getElementById("wrapper-forecast-temp-today").innerHTML =
                   temp + "°C";
@@ -256,30 +255,18 @@ selectField.prop('selectedIndex', 0);
       typeof countries;
 
       countries.sort((a, b) => {
-
         if(a.name.toString().toLowerCase() < b.name.toString().toLowerCase()){
-
           return -1;
-
         }
-
         if(a.name.toString().toLowerCase() > b.name.toString().toLowerCase()){
-
           return 1;
-
         }
-
         return 0;
 
       });
-    
-      // countries.sort((a, b) => b[1] - a[1]);
-      console.log(countries);
-
-       $.each(countries, function(i, item){     
+      $.each(countries, function(i, item){     
         selectField.append($('<option></option>').text(countries[i].name).attr('value', countries[i].iso))
-
-        })
+      })
         
      } 
    })
@@ -300,21 +287,41 @@ map.locate({setView: true, maxZoom: 20});
 
 $('select').on('change', function() {
   const chosenValue = this.value;
+  console.log(chosenValue)
 $.ajax({
   url:"libs/php/getCountryBorder.php",
   type:'GET',
   dataType: 'json',
   success: function(result) {
-    console.log(result)
     $.each(result.data, function(i, item){
         if(item.features.properties.iso_a2 == chosenValue){
           let border = L.geoJSON(item.features.geometry).addTo(map)
           map.fitBounds(border.getBounds());
-        
-    }
+        }
 
     })      
-  
+  }
+})
+
+$.ajax({
+  url:"libs/php/getAirports.php",
+  type:'GET',
+  dataType: 'json',
+  data: {
+    countryCode: chosenValue,
+  },
+  success: function(result){
+    console.log(result)
+    let airportIcon = L.divIcon({
+      html:'<i class="fa-solid fa-plane-departure"></i>',
+      iconSize: [10, 10],
+      className:'myDivIcon'
+
+    })
+    $.each(result.data, function(i, item){
+      L.marker([result.data[i].latitude, result.data[i].longitude],{icon: airportIcon}).addTo(map).bindPopup(result.data[i].name +"<br> <a href=https://" + result.data[i].wikipedia_page + ">Wikipedia Link</a>");
+
+    })
   }
 })
 })

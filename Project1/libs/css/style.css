@@ -17,3 +17,9 @@ html, body, #map {
     max-height: 200px;
     overflow-x: hidden;
 }
+.myDivIcon {
+    text-align: center;
+    /* Horizontally center the text (icon) */
+    line-height: 20px;
+    /* Vertically center the text (icon) */
+  }
