@@ -11,6 +11,7 @@
         <link rel="stylesheet" href="libs/css/bootstrap.min.css">
         <link rel="stylesheet" href="libs/css/leaflet.css">
         <link rel="stylesheet" href="libs/css/easy-button.css">
+        <link rel="stylesheet" href="libs/css/leaflet.extra-markers.min.css">
         <link rel="stylesheet" href="libs/css/style.css">
         <script src="https://kit.fontawesome.com/734a4f38c0.js" crossorigin="anonymous"></script>;
 
@@ -31,7 +32,7 @@
               </div>
             </div>
           </nav>
-        <div id="map"><!-- Button trigger modal -->
+        <div id="map"></div><!-- Button trigger modal -->
           
           
           <!-- Modal -->
@@ -42,11 +43,10 @@
               <div class="modal-content" id="modal-content">
                 <div class="modal-header">
                   <h5 class="modal-title" id="modalTitle">News Of Today</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
+                  <button type="button" class="btn-close btn-close-black" data-bs-dismiss="modal"></button>
+                
                 </div>
-                <div id="foreachedData">
+                <div id="newsData">
 
                 </div>
                <!-- Section: News of the day
@@ -69,13 +69,12 @@
       sapiente illo possimus, commodi dignissimos obcaecati illum maiores corporis.
     </p>
     <button type="button" class="btn btn-primary">Read more</button>
-  </div> -->
+  </div> -->      
 </div>
 
 <!--Section: News of the day-->
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                </div>
+                
+              
               </div>
             </div>
           </div>
@@ -226,6 +225,7 @@
         <script type="application/javascript" src="libs/js/bootstrap.bundle.min.js"></script>
         <script type="application/javascript" src="libs/js/leaflet.js"></script>
         <script type="application/javascript" src="libs/js/easy-button.js"></script>
+        <script type="application/javascript" src="libs/js/leaflet.extra-markers.min.js"></script>
         <script type="application/javascript" src="libs/js/script.js" ></script>
         
     </body>

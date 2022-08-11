@@ -37,13 +37,12 @@ $(document).ready(function(){
                 },
                 success: function(result){
                   console.log(result.data)
-                  document.getElementById('country').innerHTML = "<h5>Location: " + result.data.results[0].components.city +", " +result.data.results[0].components.country + " " +result.data.results[0].annotations.flag + "</h5>";
-                  document.getElementById('currency').innerHTML="<h5>Currency: "  + result.data.results[0].annotations.currency.name + "<br>" + "Symbol: " 
-                  + result.data.results[0].annotations.currency.html_entity+"</h5>"
-                  document.getElementById('currentTime').innerHTML="<h5>Current Time: " + new Date().toLocaleString("en-US", {timeZone: result.data.results[0].annotations.timezone.name})
+                  // document.getElementById('country').innerHTML = "<h5>Location: " + result.data.results[0].components.city +", " +result.data.results[0].components.country + " " +result.data.results[0].annotations.flag + "</h5>";
+                  // document.getElementById('currency').innerHTML="<h5>Currency: "  + result.data.results[0].annotations.currency.name + "<br>" + "Symbol: " 
+                  // + result.data.results[0].annotations.currency.html_entity+"</h5>"
+                  // document.getElementById('currentTime').innerHTML="<h5>Current Time: " + new Date().toLocaleString("en-US", {timeZone: result.data.results[0].annotations.timezone.name})
                   var city = result.data.results[0].components.city
                   document.getElementById('wrapper-name').innerHTML = city
-                    console.log(city)
                 }
               })
               
@@ -305,20 +304,20 @@ $.ajax({
     })      
   }
 })
-// var airportIcon = L.ExtraMarkers.icon({
-//     extraClasses: 'fa-regular',
-//     icon: 'fa-plane-departure',
-//     iconColor: 'black',
-//      shape: 'penta',
-//      prefix: 'fa'
-//     });
+var airportIcon = L.ExtraMarkers.icon({
+    extraClasses: 'fa-regular',
+    icon: 'fa-plane-departure',
+    iconColor: 'black',
+     shape: 'penta',
+     prefix: 'fa'
+    });
    
 $.ajax({
   url:"libs/php/getAirports.php",
   type:'GET',
   dataType: 'json',
   data: {
-    countryCode: chosenValue,
+    countryCode: selectedText,
   },
   success: function(result){
     console.log(result)
@@ -338,8 +337,9 @@ $.ajax({
   },
   success: function(result){
     console.log(result)
+    document.getElementById('modalTitle').innerText = `News of ${selectedText}`;
     $.each(result.articles, function(i, item){
-      $('#foreachedData').append( 
+      $('#newsData').append( 
       `<div class="row gx-5">
     <div class="col-md-6 mb-4">
       <div class="bg-image hover-overlay ripple shadow-2-strong rounded-5" data-mdb-ripple-color="light">
@@ -359,39 +359,6 @@ $.ajax({
   </div>`
   )
     })
-
-  //   document.getElementById('mainNewsImage').src= result.articles[0].media
-  //   document.getElementById('mainNewspaperName').innerHTML = result.articles[0].rights
-  //   document.getElementById('mainNewspaperName').href = result.articles[0].link
-  //   document.getElementById('mainNewsArticleDate').innerHTML = result.articles[0].published_date
-  //   document.getElementById('headArticle').innerHTML = "<h4>" + result.articles[0].title + "</h4>" + "<p>" + result.articles[0].summary + "</p>"
-
-  //   //Second News Article
-  //   document.getElementById('article2image').src = result.articles[1].media
-  //   document.getElementById('article2title').innerHTML = result.articles[1].title
-  //   document.getElementById('article2title').href = result.articles[1].link
-  //   document.getElementById('article2date').innerHTML = result.articles[1].published_date
-  //   document.getElementById('article2header').innerHTML = "<h5>" + result.articles[1].title + "</h5>" + "<p>" + result.articles[1].summary + "</p>"
-
-
-  //   //Third News Article
-  //   document.getElementById('article3image').src = result.articles[2].media
-  //   document.getElementById('article3title').innerHTML = result.articles[2].title
-  //   document.getElementById('article3title').href = result.articles[2].link
-  //   document.getElementById('article3date').innerHTML = result.articles[2].published_date
-  //   document.getElementById('article3header').innerHTML = "<h5>" + result.articles[2].title + "</h5>" + "<p>" + result.articles[2].summary + "</p>"
-
-  //   //Fourth News Article
-  //   document.getElementById('article4image').innerHTML = result.articles[3].media
-  //   document.getElementById('article4title').innerHTML = result.articles[3].title
-  //   document.getElementById('article4title').href = result.articles[3].link
-  //   document.getElementById('article4date').innerHTML = result.articles[3].published_date
-  
-  // //Fifth News Article
-  // document.getElementById('article5image').innerHTML = result.articles[4].media
-  // document.getElementById('article5title').innerHTML = result.articles[4].title
-  // document.getElementById('article5title').href = result.articles[4].link
-  // document.getElementById('article5date').innerHTML = result.articles[4].published_date
   }
 })
 })
