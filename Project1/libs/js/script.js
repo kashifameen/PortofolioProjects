@@ -13,9 +13,9 @@ L.easyButton( '<span class="star" data-toggle="modal" data-target="#myModal">&st
 L.easyButton( 'fa-cloud-sun-rain fa-lg', function(){
   $("#weatherModal").modal("show");
 }).addTo(map);
-L.easyButton('fa-newspaper fa-lg', function(){
-  $("newsModal").modal("show");
-}).addTo(map)
+// L.easyButton({icon: airportIcon}, function(){
+//   $("newsModal").modal("show");
+// }).addTo(map)
 $(document).ready(function(){
   console.log("ready")
 
@@ -317,7 +317,7 @@ $.ajax({
   type:'GET',
   dataType: 'json',
   data: {
-    countryCode: selectedText,
+    countryCode: chosenValue,
   },
   success: function(result){
     console.log(result)
@@ -327,7 +327,9 @@ $.ajax({
 
     })
   }
+ 
 })
+
 $.ajax({
   url:"libs/php/getNews.php",
   type:'GET',
@@ -355,7 +357,7 @@ $.ajax({
     <p class="text-muted">
       ${result.articles[i].summary}
     </p>
-    <button href="${result.articles[i].link}" type="button" class="btn btn-primary">Read more</button>
+    <a href="${result.articles[i].link}" type="button" class="btn btn-primary">Read more</a>
   </div>`
   )
     })
