@@ -30,3 +30,72 @@ html, body, #map {
   a {
       text-decoration: none;
   }
+
+  h5{ 
+      color: black;
+  }
+
+  p {
+      color: black;
+  }
+
+  body{margin-top:20px;}
+  .news-item img {
+      width: 100%;
+      max-height: 250px;
+      height: 250px;
+      overflow: hidden;
+      object-fit: cover;
+  }
+  
+  .news-item .descr {
+      padding: 30px;
+      color: #fff;
+      text-align: center;
+      height: 250px;
+  }
+  
+  .decor-success {
+      background-color: #46be8a !important;
+  }
+  
+  .decor-info {
+      background-color: #39bee8 !important;
+  }
+  
+  .decor-primary {
+      background-color: #7266ba !important;
+  }
+  
+  .decor-warning {
+      background-color: #f2a654 !important;
+  }
+  
+  .decor-danger {
+      background-color: #ff69b4 !important;
+  }
+  
+  .decor-primary-hue {
+      background-color: #585b9c !important;
+  }
+  
+  .news-item .descr h5 a {
+      color: #fff;
+      text-decoration: none;
+  }
+  
+  .m-b-md, .news-item {
+      margin-bottom: 30px !important;
+  }
+  
+  .news-item .descr a.readmore:hover {
+      text-decoration: none;
+  }
+  .news-item .descr a.readmore {
+      display: inline-block;
+      border: 1px solid #fff;
+      border-radius: 30px;
+      color: #fff;
+      font-size: 24px;
+      padding: 8px 22px;
+  }

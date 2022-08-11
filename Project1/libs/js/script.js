@@ -227,7 +227,7 @@ $(document).ready(function(){
                 dataType: 'json',
                success: function(result){
                  console.log(result.city.population)
-                 document.getElementById('population').innerHTML="<h5>Population: " + result.city.population + "</h5>"
+                //  document.getElementById('population').innerHTML="<h5>Population: " + result.city.population + "</h5>"
 
                }
               })
@@ -305,13 +305,13 @@ $.ajax({
     })      
   }
 })
-var airportIcon = L.ExtraMarkers.icon({
-    extraClasses: 'fa-regular',
-    icon: 'fa-plane-departure',
-     iconColor: 'black',
-     shape: 'penta',
-     prefix: 'fa'
-    });
+// var airportIcon = L.ExtraMarkers.icon({
+//     extraClasses: 'fa-regular',
+//     icon: 'fa-plane-departure',
+//     iconColor: 'black',
+//      shape: 'penta',
+//      prefix: 'fa'
+//     });
    
 $.ajax({
   url:"libs/php/getAirports.php",
@@ -338,37 +338,59 @@ $.ajax({
   },
   success: function(result){
     console.log(result)
-    //Main News Article
-    document.getElementById('mainNewsImage').src= result.articles[0].media
-    document.getElementById('mainNewspaperName').innerHTML = result.articles[0].rights
-    document.getElementById('mainNewspaperName').href = result.articles[0].link
-    document.getElementById('mainNewsArticleDate').innerHTML = result.articles[0].published_date
-    document.getElementById('headArticle').innerHTML = "<h5>" + result.articles[0].title + "</h5>" + "<p>" + result.articles[0].summary + "</p>"
+    $.each(result.articles, function(i, item){
+      document.getElementById('foreachedData').innerHTML = 
+      `<div class="row gx-5">
+    <div class="col-md-6 mb-4">
+      <div class="bg-image hover-overlay ripple shadow-2-strong rounded-5" data-mdb-ripple-color="light">
+        <img src="${result.articles[i].media}" class="img-fluid" />
+        <a href="${result.articles[i].link}">
+          <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
+        </a>
+      </div>
+    </div>
+    <div class="col-md-6 mb-4">
+    <span class="badge bg-danger px-2 py-1 shadow-1-strong mb-3">${result.articles[i].author}</span>
+    <h4><strong>${result.articles[i].title}</strong></h4>
+    <p class="text-muted">
+      ${result.articles[i].summary}
+    </p>
+    <button href="${result.articles[i].link}" type="button" class="btn btn-primary">Read more</button>
+  </div>`
+    })
 
-    //Second News Article
-    document.getElementById('article2image').src = result.articles[1].media
-    document.getElementById('article2title').innerHTML = result.articles[1].title
-    document.getElementById('article2title').href = result.articles[1].link
-    document.getElementById('article2date').innerHTML = result.articles[1].published_date
+  //   document.getElementById('mainNewsImage').src= result.articles[0].media
+  //   document.getElementById('mainNewspaperName').innerHTML = result.articles[0].rights
+  //   document.getElementById('mainNewspaperName').href = result.articles[0].link
+  //   document.getElementById('mainNewsArticleDate').innerHTML = result.articles[0].published_date
+  //   document.getElementById('headArticle').innerHTML = "<h4>" + result.articles[0].title + "</h4>" + "<p>" + result.articles[0].summary + "</p>"
+
+  //   //Second News Article
+  //   document.getElementById('article2image').src = result.articles[1].media
+  //   document.getElementById('article2title').innerHTML = result.articles[1].title
+  //   document.getElementById('article2title').href = result.articles[1].link
+  //   document.getElementById('article2date').innerHTML = result.articles[1].published_date
+  //   document.getElementById('article2header').innerHTML = "<h5>" + result.articles[1].title + "</h5>" + "<p>" + result.articles[1].summary + "</p>"
 
 
-    //Third News Article
-    document.getElementById('article3image').src = result.articles[2].media
-    document.getElementById('article3title').innerHTML = result.articles[2].title
-    document.getElementById('article3title').href = result.articles[2].link
-    document.getElementById('article3date').innerHTML = result.articles[2].published_date
+  //   //Third News Article
+  //   document.getElementById('article3image').src = result.articles[2].media
+  //   document.getElementById('article3title').innerHTML = result.articles[2].title
+  //   document.getElementById('article3title').href = result.articles[2].link
+  //   document.getElementById('article3date').innerHTML = result.articles[2].published_date
+  //   document.getElementById('article3header').innerHTML = "<h5>" + result.articles[2].title + "</h5>" + "<p>" + result.articles[2].summary + "</p>"
+
+  //   //Fourth News Article
+  //   document.getElementById('article4image').innerHTML = result.articles[3].media
+  //   document.getElementById('article4title').innerHTML = result.articles[3].title
+  //   document.getElementById('article4title').href = result.articles[3].link
+  //   document.getElementById('article4date').innerHTML = result.articles[3].published_date
   
-    //Fourth News Article
-    document.getElementById('article4image').src = result.articles[3].media
-    document.getElementById('article4title').innerHTML = result.articles[3].title
-    document.getElementById('article4title').href = result.articles[3].link
-    document.getElementById('article4date').innerHTML = result.articles[3].published_date
-  
-  //Fifth News Article
-  document.getElementById('article5image').src = result.articles[4].media
-  document.getElementById('article5title').innerHTML = result.articles[4].title
-  document.getElementById('article5title').href = result.articles[4].link
-  document.getElementById('article5date').innerHTML = result.articles[4].published_date
+  // //Fifth News Article
+  // document.getElementById('article5image').innerHTML = result.articles[4].media
+  // document.getElementById('article5title').innerHTML = result.articles[4].title
+  // document.getElementById('article5title').href = result.articles[4].link
+  // document.getElementById('article5date').innerHTML = result.articles[4].published_date
   }
 })
 })
