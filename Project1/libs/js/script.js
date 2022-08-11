@@ -339,7 +339,7 @@ $.ajax({
   success: function(result){
     console.log(result)
     $.each(result.articles, function(i, item){
-      document.getElementById('foreachedData').innerHTML = 
+      $('#foreachedData').append( 
       `<div class="row gx-5">
     <div class="col-md-6 mb-4">
       <div class="bg-image hover-overlay ripple shadow-2-strong rounded-5" data-mdb-ripple-color="light">
@@ -357,6 +357,7 @@ $.ajax({
     </p>
     <button href="${result.articles[i].link}" type="button" class="btn btn-primary">Read more</button>
   </div>`
+  )
     })
 
   //   document.getElementById('mainNewsImage').src= result.articles[0].media
