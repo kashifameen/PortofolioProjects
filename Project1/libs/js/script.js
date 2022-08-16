@@ -1,3 +1,6 @@
+var countryName;
+var countryName2;
+
 let map = L.map('map').setView([0.0, 0.0], 13);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 maxZoom: 16,
@@ -6,11 +9,10 @@ attribution: '© OpenStreetMap'
 console.log(map.getBounds().getNorth())
 console.log(map.getBounds())
 
-
-L.easyButton( '<span class="star" data-toggle="modal" data-target="#myModal">&starf;</span>', function(){
+L.easyButton( 'fa-solid fa-newspaper', function(){
   $("#myModal").modal("show");
 }).addTo(map);
-L.easyButton( 'fa-cloud-sun-rain fa-lg', function(){
+L.easyButton( 'fa-cloud-sun-rain fa-lg weatherIcon', function(){
   $("#weatherModal").modal("show");
 }).addTo(map);
 // L.easyButton({icon: airportIcon}, function(){
@@ -43,9 +45,11 @@ $(document).ready(function(){
                   // document.getElementById('currentTime').innerHTML="<h5>Current Time: " + new Date().toLocaleString("en-US", {timeZone: result.data.results[0].annotations.timezone.name})
                   var city = result.data.results[0].components.city
                   document.getElementById('wrapper-name').innerHTML = city
+                  
+                  countryName = result.data.results[0].components.country
+                console.log(countryName)
                 }
               })
-              
               $.ajax({
                 url:"libs/php/getCurrentWeatherData.php",
                 type:'POST',
@@ -225,21 +229,23 @@ $(document).ready(function(){
                 type:'GET',
                 dataType: 'json',
                success: function(result){
-                 console.log(result.country.name)
+                 countryName2 = result.country.name
                 //  document.getElementById('population').innerHTML="<h5>Population: " + result.city.population + "</h5>"
-
+                
                }
-              })
+              }),
+              console.log(countryName)
+              console.log(countryName2)
               $.ajax({
                 url:"libs/php/getNews.php",
                 type:'GET',
                 dataType: 'json',
                 data: {
-                  country: city
+                  country: countryName,
                 },
                 success: function(result){
                   console.log(result)
-                  document.getElementById('modalTitle').innerText = `News in ${city}`;
+                  document.getElementById('modalTitle').innerText = `News in ${countryName}`;
                   $.each(result.articles, function(i, item){
                     $('#newsData').append( 
                     `<div class="row gx-5">
@@ -372,7 +378,7 @@ $.ajax({
   },
   success: function(result){
     console.log(result)
-    document.getElementById('modalTitle').innerText = `News of ${selectedText}`;
+    document.getElementById('modalTitle').innerText = `News in ${selectedText}`;
     $.each(result.articles, function(i, item){
       $('#newsData').append( 
       `<div class="row gx-5">
