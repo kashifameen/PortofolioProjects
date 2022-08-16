@@ -225,10 +225,43 @@ $(document).ready(function(){
                 type:'GET',
                 dataType: 'json',
                success: function(result){
-                 console.log(result.city.population)
+                 console.log(result.country.name)
                 //  document.getElementById('population').innerHTML="<h5>Population: " + result.city.population + "</h5>"
 
                }
+              })
+              $.ajax({
+                url:"libs/php/getNews.php",
+                type:'GET',
+                dataType: 'json',
+                data: {
+                  country: city
+                },
+                success: function(result){
+                  console.log(result)
+                  document.getElementById('modalTitle').innerText = `News in ${city}`;
+                  $.each(result.articles, function(i, item){
+                    $('#newsData').append( 
+                    `<div class="row gx-5">
+                  <div class="col-md-6 mb-4">
+                    <div class="bg-image hover-overlay ripple shadow-2-strong rounded-5" data-mdb-ripple-color="light">
+                      <img src="${result.articles[i].media}" class="img-fluid" />
+                      <a href="${result.articles[i].link}">
+                        <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
+                      </a>
+                    </div>
+                  </div>
+                  <div class="col-md-6 mb-4">
+                  <span class="badge bg-danger px-2 py-1 shadow-1-strong mb-3">${result.articles[i].author}</span>
+                  <h4><strong>${result.articles[i].title}</strong></h4>
+                  <p class="text-muted">
+                    ${result.articles[i].summary}
+                  </p>
+                  <a href="${result.articles[i].link}" type="button" class="btn btn-primary">Read more</a>
+                </div>`
+                )
+                  })
+                }
               })
 
            });
@@ -335,7 +368,7 @@ $.ajax({
   type:'GET',
   dataType: 'json',
   data: {
-    country: chosenValue
+    country: selectedText
   },
   success: function(result){
     console.log(result)
