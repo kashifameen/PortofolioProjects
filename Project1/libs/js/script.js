@@ -289,22 +289,23 @@ $(document).ready(function(){
                 type: 'GET',
                 dataType: 'json',
                 success: function(result){
-              let currency = result.currencies;
-              console.log(currency)
-
-              currency.sort((a, b) => {
-                if(a.name.toString().toLowerCase() < b.name.toString().toLowerCase()){
-                  return -1;
-                }
-                if(a.name.toString().toLowerCase() > b.name.toString().toLowerCase()){
-                  return 1;
-                }
-                return 0;
-              })
+                  console.log(result.currencies) 
+                  let currencyArray = []
+                     currencyArray.push(Object.values(result.currencies));
+                  let currencyKeys = []
+                  currencyKeys.push(Object.keys(result.currencies))
+                  let currency = result.currencies 
+                  for (const property in currency) {
+                    console.log(`${property}: ${currency[property]}`);
+                  }
+                let joinedArray = currencyKeys.concat(currencyArray)
+              
+                // console.log(joinedArray)
+            
                   // $.each(currency, function(i, item){     
+                  //   console.log(currency.item])
                   //   // selectField.append($('<option></option>').text(countries[i].name).attr('value', countries[i].iso))
-                  //   console.log(currency[i])
-                  //   $('#currency').append($('<option></option>').text(currency[i]))
+                  //   $('#currency').append($('<option></option>').text(currency.item))
                   //   // console.log(result.currencies.item)
 
                   // })
