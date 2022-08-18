@@ -10,11 +10,15 @@ console.log(map.getBounds().getNorth())
 console.log(map.getBounds())
 
 L.easyButton( 'fa-solid fa-newspaper', function(){
-  $("#myModal").modal("show");
+  $("#newsModal").modal("show");
 }).addTo(map);
 L.easyButton( 'fa-cloud-sun-rain fa-lg weatherIcon', function(){
   $("#weatherModal").modal("show");
 }).addTo(map);
+L.easyButton( 'fa-coins', function(){
+  $("#currencyModal").modal("show");
+}).addTo(map);
+
 // L.easyButton({icon: airportIcon}, function(){
 //   $("newsModal").modal("show");
 // }).addTo(map)
@@ -46,10 +50,44 @@ $(document).ready(function(){
                   var city = result.data.results[0].components.city
                   document.getElementById('wrapper-name').innerHTML = city
                   
-                  countryName = result.data.results[0].components.country
-                console.log(countryName)
+            
+                 countryName =result.data.results[0].components.country
+                 console.log(countryName)
+                 $.ajax({
+                url:"libs/php/getNews.php",
+                type:'GET',
+                dataType: 'json',
+                data: {
+                  country: countryName,
+                },
+                success: function(result){
+                  console.log(result)
+                  document.getElementById('modalTitle').innerText = `News in ${countryName}`;
+                  $.each(result.articles, function(i, item){
+                    $('#newsData').append( 
+                    `<div class="row gx-5">
+                  <div class="col-md-6 mb-4">
+                    <div class="bg-image hover-overlay ripple shadow-2-strong rounded-5" data-mdb-ripple-color="light">
+                      <img src="${result.articles[i].media}" class="img-fluid" />
+                      <a href="${result.articles[i].link}">
+                        <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
+                      </a>
+                    </div>
+                  </div>
+                  <div class="col-md-6 mb-4">
+                  <span class="badge bg-danger px-2 py-1 shadow-1-strong mb-3">${result.articles[i].author}</span>
+                  <h4><strong>${result.articles[i].title}</strong></h4>
+                  <p class="text-muted">
+                    ${result.articles[i].summary}
+                  </p>
+                  <a href="${result.articles[i].link}" type="button" class="btn btn-primary">Read more</a>
+                </div>`
+                )
+                  })
                 }
               })
+                }
+              }).then()
               $.ajax({
                 url:"libs/php/getCurrentWeatherData.php",
                 type:'POST',
@@ -233,53 +271,51 @@ $(document).ready(function(){
                 //  document.getElementById('population').innerHTML="<h5>Population: " + result.city.population + "</h5>"
                 
                }
-              }),
-              console.log(countryName)
-              console.log(countryName2)
+              })
               $.ajax({
-                url:"libs/php/getNews.php",
+                url:"libs/php/getNearbyPlaces.php",
                 type:'GET',
                 dataType: 'json',
                 data: {
-                  country: countryName,
+                  lat: position.coords.latitude,
+                  lng: position.coords.longitude,
                 },
                 success: function(result){
                   console.log(result)
-                  document.getElementById('modalTitle').innerText = `News in ${countryName}`;
-                  $.each(result.articles, function(i, item){
-                    $('#newsData').append( 
-                    `<div class="row gx-5">
-                  <div class="col-md-6 mb-4">
-                    <div class="bg-image hover-overlay ripple shadow-2-strong rounded-5" data-mdb-ripple-color="light">
-                      <img src="${result.articles[i].media}" class="img-fluid" />
-                      <a href="${result.articles[i].link}">
-                        <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
-                      </a>
-                    </div>
-                  </div>
-                  <div class="col-md-6 mb-4">
-                  <span class="badge bg-danger px-2 py-1 shadow-1-strong mb-3">${result.articles[i].author}</span>
-                  <h4><strong>${result.articles[i].title}</strong></h4>
-                  <p class="text-muted">
-                    ${result.articles[i].summary}
-                  </p>
-                  <a href="${result.articles[i].link}" type="button" class="btn btn-primary">Read more</a>
-                </div>`
-                )
-                  })
                 }
+              }),
+              $.ajax({
+                url:"libs/php/populateCurrencyConverter.php",
+                type: 'GET',
+                dataType: 'json',
+                success: function(result){
+              let currency = result.currencies;
+              console.log(currency)
+
+              currency.sort((a, b) => {
+                if(a.name.toString().toLowerCase() < b.name.toString().toLowerCase()){
+                  return -1;
+                }
+                if(a.name.toString().toLowerCase() > b.name.toString().toLowerCase()){
+                  return 1;
+                }
+                return 0;
               })
+                  // $.each(currency, function(i, item){     
+                  //   // selectField.append($('<option></option>').text(countries[i].name).attr('value', countries[i].iso))
+                  //   console.log(currency[i])
+                  //   $('#currency').append($('<option></option>').text(currency[i]))
+                  //   // console.log(result.currencies.item)
 
-           });
+                  // })
+                }
+              });
+              
+              
+              
+
            
-
-
-
-   }else{
-
-       console.log("Browser doesn't support geolocation!");
-
-   }
+          
 let selectField = $('#select');
 selectField.empty();
 selectField.append('<option selected="true" disabled>Choose Country</option>')
@@ -378,7 +414,8 @@ $.ajax({
   },
   success: function(result){
     console.log(result)
-    document.getElementById('modalTitle').innerText = `News in ${selectedText}`;
+    document.getElementById('newsData').innerHTML = "";
+    document.getElementById('modalTitle').innerHTML = `News in ${selectedText}`;
     $.each(result.articles, function(i, item){
       $('#newsData').append( 
       `<div class="row gx-5">
@@ -402,4 +439,158 @@ $.ajax({
     })
   }
 })
+$.ajax({
+  url:"libs/php/convertCountryToLatLng.php",
+  type:"GET",
+  dataType: 'json',
+  data:{
+    country: selectedText
+  },
+  success: function(result){
+    console.log(result.data.results[0].geometry)
+    $.ajax({
+      url:"libs/php/getCurrentWeatherData.php",
+      type:'POST',
+      dataType:'json',
+      data: {
+        lat: result.data.results[0].geometry.lat,
+        lon: result.data.results[0].geometry.lng,
+      },
+      success: function(result){
+        // Weather main data
+        document.getElementById('wrapper-name').innerHTML = selectedText
+
+        console.log(result)
+        let main = result.data.current.weather[0].main;
+        let description = result.data.current.weather[0].description;
+        let temp = Math.round(result.data.current.temp);
+        let pressure = result.data.current.pressure;
+        let humidity = result.data.current.humidity;
+        if(result.data.current.weather[0].id = 800){
+          document.getElementById('wrapper-bg').style.backgroundImage="url('images/clear.gif')"
+        } else if (result.data.current.weather[0].id >= 200 && result.data.current.weather[0].id <= 232){
+          document.getElementById('wrapper-bg').style.backgroundImage="url('images/thunderstorm.gif')"
+        } else if (result.data.current.weather[0].id >= 300 && result.data.urrent.weather[0].id <= 531){
+          document.getElementById('wrapper-bg').style.backgroundImage="url('images/rain.gif')"
+
+        } else if(result.data.current.weather[0].id >= 600 && result.data.current.weather[0].id <= 622){
+          document.getElementById('wrapper-bg').style.backgroundImage="url('images/snow.gif')"
+
+        } else if(result.data.current.weather[0].id == 701 && result.data.current.weather[0].id == 711 && result.data.current.weather[0].id == 741){
+          document.getElementById('wrapper-bg').style.backgroundImage="url('images/fog.gif')"
+
+        } else if(result.data.current.weather[0].id >=801 && result.data.current.weather[0].id <= 804){
+          document.getElementById('wrapper-bg').style.backgroundImage="url('images/cloudy.gif')"
+
+        }
+                          
+
+        document.getElementById("wrapper-description").innerHTML = description;
+        document.getElementById("wrapper-temp").innerHTML = temp + "°C";
+        document.getElementById("wrapper-pressure").innerHTML = pressure;
+        document.getElementById("wrapper-humidity").innerHTML = humidity + "°C";
+
+        // Weather hourly data
+        let hourNow = Math.round(result.data.hourly[0].temp);
+        let hour1 = Math.round(result.data.hourly[1].temp);
+        let hour2 = Math.round(result.data.hourly[2].temp);
+        let hour3 = Math.round(result.data.hourly[3].temp);
+        let hour4 = Math.round(result.data.hourly[4].temp);
+        let hour5 = Math.round(result.data.hourly[5].temp);
+
+        document.getElementById("wrapper-hour-now").innerHTML = hourNow + "°C";
+        document.getElementById("wrapper-hour1").innerHTML = hour1 + "°C";
+        document.getElementById("wrapper-hour2").innerHTML = hour2 + "°C";
+        document.getElementById("wrapper-hour3").innerHTML = hour3 + "°C";
+        document.getElementById("wrapper-hour4").innerHTML = hour4 + "°C";
+        document.getElementById("wrapper-hour5").innerHTML = hour5 + "°C";
+
+        // Time
+        let timeNow = new Date().getHours();
+        let time1 = timeNow + 1;
+        let time2 = time1 + 1;
+        let time3 = time2 + 1;
+        let time4 = time3 + 1;
+        let time5 = time4 + 1;
+
+        document.getElementById("wrapper-time1").innerHTML = time1;
+        document.getElementById("wrapper-time2").innerHTML = time2;
+        document.getElementById("wrapper-time3").innerHTML = time3;
+        document.getElementById("wrapper-time4").innerHTML = time4;
+        document.getElementById("wrapper-time5").innerHTML = time5;
+
+        // Weather daily data
+        let tomorrowTemp = Math.round(result.data.daily[0].temp.day);
+        let dATTemp = Math.round(result.data.daily[1].temp.day);
+       
+
+        document.getElementById("wrapper-forecast-temp-today").innerHTML =
+        temp + "°C";
+        document.getElementById("wrapper-forecast-temp-tomorrow").innerHTML =
+        tomorrowTemp + "°C";
+        document.getElementById("wrapper-forecast-temp-dAT").innerHTML =
+        dATTemp + "°C";
+
+        // Icons
+        let iconBaseUrl = "http://openweathermap.org/img/wn/";
+        let iconFormat = ".png";
+
+        // Today
+        let iconCodeToday = result.data.current.weather[0].icon;
+        let iconFullyUrlToday = iconBaseUrl + iconCodeToday + iconFormat;
+        document.getElementById("wrapper-icon-today").src = iconFullyUrlToday;
+
+        // Tomorrow
+        let iconCodeTomorrow = result.data.daily[0].weather[0].icon;
+        let iconFullyUrlTomorrow = iconBaseUrl + iconCodeTomorrow + iconFormat;
+        document.getElementById(
+        "wrapper-icon-tomorrow"
+        ).src = iconFullyUrlTomorrow;
+
+        // Day after tomorrow
+        let iconCodeDAT = result.data.daily[1].weather[0].icon;
+        let iconFullyUrlDAT = iconBaseUrl + iconCodeDAT + iconFormat;
+        document.getElementById("wrapper-icon-dAT").src = iconFullyUrlDAT;
+
+        // Icons hourly
+
+        // Hour now
+        let iconHourNow = result.data.hourly[0].weather[0].icon;
+        let iconFullyUrlHourNow = iconBaseUrl + iconHourNow + iconFormat;
+        document.getElementById(
+        "wrapper-icon-hour-now"
+        ).src = iconFullyUrlHourNow;
+
+        // Hour1
+        let iconHour1 = result.data.hourly[1].weather[0].icon;
+        let iconFullyUrlHour1 = iconBaseUrl + iconHour1 + iconFormat;
+        document.getElementById("wrapper-icon-hour1").src = iconFullyUrlHour1;
+
+        // Hour2
+        let iconHour2 = result.data.hourly[2].weather[0].icon;
+        let iconFullyUrlHour2 = iconBaseUrl + iconHour2 + iconFormat;
+        document.getElementById("wrapper-icon-hour2").src = iconFullyUrlHour1;
+
+        // Hour3
+        let iconHour3 = result.data.hourly[3].weather[0].icon;
+        let iconFullyUrlHour3 = iconBaseUrl + iconHour3 + iconFormat;
+        document.getElementById("wrapper-icon-hour3").src = iconFullyUrlHour3;
+
+        // Hour4
+        let iconHour4 = result.data.hourly[4].weather[0].icon;
+        let iconFullyUrlHour4 = iconBaseUrl + iconHour4 + iconFormat;
+        document.getElementById("wrapper-icon-hour4").src = iconFullyUrlHour4;
+
+        // Hour5
+        let iconHour5 = result.data.hourly[5].weather[0].icon;
+        let iconFullyUrlHour5 = iconBaseUrl + iconHour5 + iconFormat;
+        document.getElementById("wrapper-icon-hour5").src = iconFullyUrlHour5;
+
+      }
+
+    })
+  }
 })
+})
+
+}})
