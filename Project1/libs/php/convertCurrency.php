@@ -3,7 +3,7 @@
 $curl = curl_init();
 
 curl_setopt_array($curl, [
-	CURLOPT_URL => "https://fixer-fixer-currency-v1.p.rapidapi.com/symbols",
+	CURLOPT_URL => "https://fixer-fixer-currency-v1.p.rapidapi.com/convert?from=".$_REQUEST['fromCountry']."&to=".$_REQUEST['toCountry']."&amount=".$_REQUEST['amount'],
 	CURLOPT_RETURNTRANSFER => true,
 	CURLOPT_FOLLOWLOCATION => true,
 	CURLOPT_ENCODING => "",

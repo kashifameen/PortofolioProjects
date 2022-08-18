@@ -289,26 +289,15 @@ $(document).ready(function(){
                 type: 'GET',
                 dataType: 'json',
                 success: function(result){
-                  console.log(result.currencies) 
-                  let currencyArray = []
-                     currencyArray.push(Object.values(result.currencies));
-                  let currencyKeys = []
-                  currencyKeys.push(Object.keys(result.currencies))
-                  let currency = result.currencies 
+                  console.log(result.symbols) 
+                  let currency = result.symbols 
                   for (const property in currency) {
-                    console.log(`${property}: ${currency[property]}`);
-                  }
-                let joinedArray = currencyKeys.concat(currencyArray)
-              
-                // console.log(joinedArray)
-            
-                  // $.each(currency, function(i, item){     
-                  //   console.log(currency.item])
-                  //   // selectField.append($('<option></option>').text(countries[i].name).attr('value', countries[i].iso))
-                  //   $('#currency').append($('<option></option>').text(currency.item))
-                  //   // console.log(result.currencies.item)
+                    $('#currencyIn').append($('<option></option>').text(currency[property]).attr('value', property))
+                    $('#currencyOut').append($('<option></option>').text(currency[property]).attr('value', property))
 
-                  // })
+                  }
+              
+              
                 }
               });
               
@@ -317,7 +306,7 @@ $(document).ready(function(){
 
            
           
-let selectField = $('#select');
+let selectField = $('#countrySelect');
 selectField.empty();
 selectField.append('<option selected="true" disabled>Choose Country</option>')
 selectField.prop('selectedIndex', 0);
@@ -362,10 +351,10 @@ function onLocationFound(e) {
 map.on('locationfound', onLocationFound);
 map.locate({setView: true, maxZoom: 20});
 
-$('select').on('change', function() {
+$('#countrySelect').on('change', function() {
   const chosenValue = this.value;
   console.log(chosenValue)
- let selectedText = $('select :selected').text()
+ let selectedText = $('#countrySelect :selected').text()
 $.ajax({
   url:"libs/php/getCountryBorder.php",
   type:'GET',
@@ -591,6 +580,28 @@ $.ajax({
 
     })
   }
+});
+var toCountry = $('#currencyOut :selected').text()
+var fromCountry = $('#currencyIn :selected').val()
+console.log(toCountry)
+alert(fromCountry)
+$('#currencyOut').on('change', function() {
+ let toCountry = $('#currencyOut :selected').value()
+ let fromCountry = $('#currencyIn :selected').value()
+ console.log(toCountry)
+ console.log(fromCountry)
+  $.ajax({
+    url:"libs/php/convertCurrency.php",
+    type:"GET",
+    dataType: 'json',
+    data:{
+      fromCountry: "USA",
+      toCountry: toCountry
+    },
+    success: function(result){
+      console.log(result)
+    }
+  })
 })
 })
 

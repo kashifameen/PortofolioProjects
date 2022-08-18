@@ -23,8 +23,8 @@
         <nav class="navbar navbar-expand bg-light">
             <div class="container-fluid">
               <a class="navbar-brand" href="#">Gazetteer</a>
-                  <select id="select" class="form-select scrollable-menu w-auto">
-                    <option value="test">test</option>
+                  <select id="countrySelect" class="form-select scrollable-menu w-auto">
+                    <option>Choose Country</option>
 
                   </select>
                 
@@ -209,22 +209,27 @@
                 
                       <div class="field grid-50-50">
                         <div class="colmun col-left">
-                          <input type="number" class="form-input" id="number" placeholder="00000">
+                          <input type="number" class="form-input" id="number" placeholder="Amount To Change">
                         </div>
                         <div class="colmun col-right">
                           <div class="select">
-                            <select id="currency" class="currency"></select>
+                            <select id="currencyIn" class="currency" > 
+                                 <option value="" disabled selected>Choose Country</option>
+                            </select>
                           </div>
                         </div>
                       </div>
                 
                       <div class="field grid-50-50">
                         <div class="colmun col-left">
-                          <input type="text" class="form-input" id="output" placeholder="00000" disabled>
+                          <input type="text" class="form-input" id="output" placeholder="Amount You Receive" disabled>
                         </div>
                         <div class="colmun col-right">
                           <div class="select">
-                            <select id="currency" class="currency"></select>
+                            <select id="currencyOut" class="currency" placeholder="Choose Country">
+                              <option value="" disabled selected>Choose Country</option>
+
+                            </select>
                           </div>
                         </div>
                       </div>
