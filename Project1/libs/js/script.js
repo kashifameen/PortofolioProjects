@@ -43,10 +43,6 @@ $(document).ready(function(){
                 },
                 success: function(result){
                   console.log(result.data)
-                  // document.getElementById('country').innerHTML = "<h5>Location: " + result.data.results[0].components.city +", " +result.data.results[0].components.country + " " +result.data.results[0].annotations.flag + "</h5>";
-                  // document.getElementById('currency').innerHTML="<h5>Currency: "  + result.data.results[0].annotations.currency.name + "<br>" + "Symbol: " 
-                  // + result.data.results[0].annotations.currency.html_entity+"</h5>"
-                  // document.getElementById('currentTime').innerHTML="<h5>Current Time: " + new Date().toLocaleString("en-US", {timeZone: result.data.results[0].annotations.timezone.name})
                   var city = result.data.results[0].components.city
                   document.getElementById('wrapper-name').innerHTML = city
                   document.getElementById('currentCountryCurrency').innerHTML = "<h4> Current Country Currency: " + result.data.results[0].annotations.currency.name + "</h4>"
@@ -246,6 +242,27 @@ $(document).ready(function(){
 
                   }
               })
+              var restaurantMarker = L.ExtraMarkers.icon({
+                icon: 'fa-utensils',
+                prefix: 'fa'
+              })
+              $.ajax({
+                url:"libs/php/getLocalRestaurants.php",
+                type: 'GET',
+                dataType: 'json',
+                data:{
+                  lat: position.coords.latitude,
+                  lng: position.coords.longitude,
+                },
+                success: function(result){
+                  console.log(result)
+                  $.each(result.data[0].pois, function(i, item){
+              
+                    L.marker([item.coordinates.latitude, item.coordinates.longitude], {icon: restaurantMarker}).addTo(map).bindPopup(item.name +"<br>" + item.snippet);
+            
+                  })
+                }
+              })
               $.ajax({
                 url:"libs/php/getLocalHighlights.php",
                 type: 'GET',
@@ -255,7 +272,7 @@ $(document).ready(function(){
                   lng: position.coords.longitude,
                 },
                 success: function(result){
-                  console.log(result.data)
+                  console.log(result)
                   $.each(result.data[0].pois, function(i, item){
               
                     L.marker([item.coordinates.latitude, item.coordinates.longitude]).addTo(map).bindPopup(item.name +"<br>" + item.snippet);
@@ -321,7 +338,6 @@ selectField.prop('selectedIndex', 0);
      type:'GET',
      dataType: 'json',
      success: function(result) {
-      // console.log(result.data)
       let countries = result.data;
       console.log(countries)
       typeof countries;
@@ -342,34 +358,51 @@ selectField.prop('selectedIndex', 0);
         
      } 
    })
-   $.ajax({
-     url:"libs/php/getLocalRestaurants.php",
-     type:'GET',
-     dataType: 'json',
-    success: function(result){
-      console.log(result)
-    }
-   
-    })
+ 
+  
 })
 $('#countrySelect').on('change', function() {
   const chosenValue = this.value;
+  let lowerCaseValue = chosenValue.toLowerCase();
+  console.log(lowerCaseValue)
   console.log(chosenValue)
  let selectedText = $('#countrySelect :selected').text()
-$.ajax({
-  url:"libs/php/getCountryBorder.php",
-  type:'GET',
-  dataType: 'json',
-  success: function(result) {
-    $.each(result.data, function(i, item){
-        if(item.features.properties.iso_a2 == chosenValue){
-          let border = L.geoJSON(item.features.geometry).addTo(map)
-          map.fitBounds(border.getBounds());
-        }
+    $.ajax({
+      url:"libs/php/getCountryBorder.php",
+      type:'GET',
+      dataType: 'json',
+      success: function(result) {
+        $.each(result.data, function(i, item){
+            if(item.features.properties.iso_a2 == chosenValue){
+              let border = L.geoJSON(item.features.geometry).addTo(map)
+              map.fitBounds(border.getBounds());
+            }
 
     })      
   }
+  
 })
+var poiIcon = L.ExtraMarkers.icon({
+  extraClasses: 'fa-duotone',
+  icon: 'fa-duotone fa-book-atlas',
+  iconColor: 'yellow',
+  
+  });
+  $.ajax({
+    url:"libs/php/getCountryAttractions.php",
+    type:'GET',
+    dataType: 'json',
+    data: {
+      countryCode: lowerCaseValue
+    },
+    success: function(result){
+      console.log(result)
+      $.each(result.data, function(i, item){
+        L.marker([result.data[i].coordinates.latitude, result.data[i].coordinates.longitude],{icon: poiIcon}).addTo(map).bindPopup(result.data[i].name +"<br> <a href=" + result.data[i].attribution[1].url + ">More Info</a>");
+      })
+    }
+  })
+
 var airportIcon = L.ExtraMarkers.icon({
     extraClasses: 'fa-regular',
     icon: 'fa-plane-departure',
@@ -441,6 +474,7 @@ $.ajax({
     console.log(result.data.results[0].geometry)
     document.getElementById('currentCountryCurrency').innerHTML = "<h4> Current Country Currency: " + result.data.results[0].annotations.currency.name + "</h4>"
 
+   
     $.ajax({
       url:"libs/php/getCurrentWeatherData.php",
       type:'POST',
@@ -583,6 +617,7 @@ $.ajax({
 
     })
   }
+  
 });
 
 
