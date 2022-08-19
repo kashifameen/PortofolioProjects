@@ -199,17 +199,18 @@
             <div class="modal-dialog">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title" id="currencyModalLabel">Modal title</h5>
+                  <h2 class="modal-title align-center§§" id="currencyModalLabel">Currency Converter</h2>
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
+                  <div id="currentCountryCurrency"></div>
                   <div class="currency-row-outer">
                     <div class="currency-converter">
-                      <h2>Currency Converter</h2>
+                      
                 
                       <div class="field grid-50-50">
                         <div class="colmun col-left">
-                          <input type="number" class="form-input" id="number" placeholder="Amount To Change">
+                          <input type="number" class="form-input" id="numberToConvert" placeholder="Amount To Change">
                         </div>
                         <div class="colmun col-right">
                           <div class="select">
@@ -221,8 +222,8 @@
                       </div>
                 
                       <div class="field grid-50-50">
-                        <div class="colmun col-left">
-                          <input type="text" class="form-input" id="output" placeholder="Amount You Receive" disabled>
+                        <div class="colmun col-left" id="currencyOutput">
+                          <input type="number" class="form-input" id="convertedAmount" placeholder="Amount You Receive">
                         </div>
                         <div class="colmun col-right">
                           <div class="select">
@@ -238,8 +239,6 @@
                   </div>
                 </div>
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                  <button type="button" class="btn btn-primary">Save changes</button>
                 </div>
               </div>
             </div>

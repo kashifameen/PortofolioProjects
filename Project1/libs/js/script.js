@@ -49,6 +49,7 @@ $(document).ready(function(){
                   // document.getElementById('currentTime').innerHTML="<h5>Current Time: " + new Date().toLocaleString("en-US", {timeZone: result.data.results[0].annotations.timezone.name})
                   var city = result.data.results[0].components.city
                   document.getElementById('wrapper-name').innerHTML = city
+                  document.getElementById('currentCountryCurrency').innerHTML = "<h4> Current Country Currency: " + result.data.results[0].annotations.currency.name + "</h4>"
                   
             
                  countryName =result.data.results[0].components.country
@@ -295,18 +296,23 @@ $(document).ready(function(){
                     $('#currencyIn').append($('<option></option>').text(currency[property]).attr('value', property))
                     $('#currencyOut').append($('<option></option>').text(currency[property]).attr('value', property))
 
-                  }
-              
-              
-                }
-              });
-              
-              
+                  }}
+              })
+            })}
               
 
-           
-          
-let selectField = $('#countrySelect');
+
+function onLocationFound(e) {
+
+   var radius = e.accuracy;
+   L.marker(e.latlng).addTo(map)
+    .bindPopup("You are within " + radius + " meters from this point").openPopup();
+   L.circle(e.latlng, radius).addTo(map);
+
+}
+map.on('locationfound', onLocationFound);
+map.locate({setView: true, maxZoom: 20});
+ let selectField = $('#countrySelect');
 selectField.empty();
 selectField.append('<option selected="true" disabled>Choose Country</option>')
 selectField.prop('selectedIndex', 0);
@@ -336,21 +342,16 @@ selectField.prop('selectedIndex', 0);
         
      } 
    })
+   $.ajax({
+     url:"libs/php/getLocalRestaurants.php",
+     type:'GET',
+     dataType: 'json',
+    success: function(result){
+      console.log(result)
+    }
+   
+    })
 })
-
-
-
-function onLocationFound(e) {
-
-   var radius = e.accuracy;
-   L.marker(e.latlng).addTo(map)
-    .bindPopup("You are within " + radius + " meters from this point").openPopup();
-   L.circle(e.latlng, radius).addTo(map);
-
-}
-map.on('locationfound', onLocationFound);
-map.locate({setView: true, maxZoom: 20});
-
 $('#countrySelect').on('change', function() {
   const chosenValue = this.value;
   console.log(chosenValue)
@@ -438,6 +439,8 @@ $.ajax({
   },
   success: function(result){
     console.log(result.data.results[0].geometry)
+    document.getElementById('currentCountryCurrency').innerHTML = "<h4> Current Country Currency: " + result.data.results[0].annotations.currency.name + "</h4>"
+
     $.ajax({
       url:"libs/php/getCurrentWeatherData.php",
       type:'POST',
@@ -581,13 +584,18 @@ $.ajax({
     })
   }
 });
-var toCountry = $('#currencyOut :selected').text()
-var fromCountry = $('#currencyIn :selected').val()
-console.log(toCountry)
-alert(fromCountry)
+
+
+
+
+})
+
 $('#currencyOut').on('change', function() {
- let toCountry = $('#currencyOut :selected').value()
- let fromCountry = $('#currencyIn :selected').value()
+
+ let toCountry = $('#currencyOut :selected').val()
+ let fromCountry = $('#currencyIn :selected').val()
+ let amount = $('#numberToConvert').val()
+ console.log(amount)
  console.log(toCountry)
  console.log(fromCountry)
   $.ajax({
@@ -595,14 +603,15 @@ $('#currencyOut').on('change', function() {
     type:"GET",
     dataType: 'json',
     data:{
-      fromCountry: "USA",
-      toCountry: toCountry
+      fromCountry: fromCountry,
+      toCountry: toCountry,
+      amount: amount
     },
     success: function(result){
-      console.log(result)
+     document.getElementById('currencyOutput').innerHTML = `<input type="number" class="form-input" id="convertedAmount" placeholder="${result.result}" disabled>`
+
+     
     }
   })
 })
-})
 
-}})
