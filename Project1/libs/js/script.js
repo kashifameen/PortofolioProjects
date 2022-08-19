@@ -18,6 +18,9 @@ L.easyButton( 'fa-cloud-sun-rain fa-lg weatherIcon', function(){
 L.easyButton( 'fa-coins', function(){
   $("#currencyModal").modal("show");
 }).addTo(map);
+L.easyButton('fa-flag', function(){
+  $("#countryModal").modal("show");
+}).addTo(map)
 
 // L.easyButton({icon: airportIcon}, function(){
 //   $("newsModal").modal("show");
@@ -383,10 +386,12 @@ $('#countrySelect').on('change', function() {
   
 })
 var poiIcon = L.ExtraMarkers.icon({
-  extraClasses: 'fa-duotone',
-  icon: 'fa-duotone fa-book-atlas',
-  iconColor: 'yellow',
-  
+  extraClasses: 'fa-regular',
+  icon: 'fa-map',
+  iconColor: 'black',
+   shape: 'circle',
+   prefix: 'fa',
+   markerColor: 'white'
   });
   $.ajax({
     url:"libs/php/getCountryAttractions.php",
@@ -616,7 +621,30 @@ $.ajax({
       }
 
     })
-  }
+  $.ajax({
+    url: "libs/php/getCountryData.php",
+    type: 'GET',
+    dataType: 'json',
+    data :{
+      country: chosenValue
+    },
+    success: function(result){
+      console.log(result)
+      console.log(result.languages)
+      document.getElementById('countryName').innerHTML = result.name +""+ result.flag.emoji
+      document.getElementById('capitalCity').innerHTML = "Capital City: " + result.capital.name
+      let objects = Object.values(result.languages)
+      $.each(objects, function(i, item){
+        document.getElementById('countryLanguages').append(objects[i] +", ")
+      })
+      document.getElementById('countryPopulation').innerHTML = "Country Population: " + result.population
+      document.getElementById('countryTimezone').innerHTML = "Timezone: " + result.timezone.timezone + " Code: " + result.timezone.code
+      document.getElementById('countryWiki').innerHTML = `<a href=${result.wiki_url}> More Info </a>`
+    }
+
+  })
+  
+}
   
 });
 
