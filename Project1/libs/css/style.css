@@ -212,3 +212,11 @@ h2 {
 .select:hover::after {
     border-color: #363636;
 }
+
+.currencyIcon {
+    color: gold;
+}
+
+.flagIcon {
+    color: red;
+}

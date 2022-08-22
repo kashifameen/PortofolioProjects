@@ -8,23 +8,27 @@ attribution: '© OpenStreetMap'
 }).addTo(map);
 console.log(map.getBounds().getNorth())
 console.log(map.getBounds())
-
+var airportIcon = L.ExtraMarkers.icon({
+    extraClasses: 'fa-regular',
+    icon: 'fa-plane-departure',
+    iconColor: 'black',
+     shape: 'penta',
+     prefix: 'fa'
+    });
 L.easyButton( 'fa-solid fa-newspaper', function(){
   $("#newsModal").modal("show");
 }).addTo(map);
 L.easyButton( 'fa-cloud-sun-rain fa-lg weatherIcon', function(){
   $("#weatherModal").modal("show");
 }).addTo(map);
-L.easyButton( 'fa-coins', function(){
+L.easyButton( 'fa-coins currencyIcon', function(){
   $("#currencyModal").modal("show");
 }).addTo(map);
-L.easyButton('fa-regular fa-flag', function(){
+L.easyButton('fa-regular fa-flag flagIcon', function(){
   $("#countryModal").modal("show");
 }).addTo(map)
 
-// L.easyButton({icon: airportIcon}, function(){
-//   $("newsModal").modal("show");
-// }).addTo(map)
+
 $(document).ready(function(){
   console.log("ready")
 
@@ -52,14 +56,32 @@ $(document).ready(function(){
                   
             
                  var countryName =result.data.results[0].components.country;
-                 var countryCode = result.data.results[0].components.country_code;
+                 var localCountryCode = result.data.results[0].components.country_code;
+                 var upperCaseCountryCode = localCountryCode.toUpperCase();
+                 $.ajax({
+                  url:"libs/php/getAirports.php",
+                  type:'GET',
+                  dataType: 'json',
+                  data: {
+                    countryCode: upperCaseCountryCode,
+                  },
+                  success: function(result){
+                    console.log(result)
+                    
+                    $.each(result.data, function(i, item){
+                      L.marker([result.data[i].latitude, result.data[i].longitude],{icon: airportIcon}).addTo(map).bindPopup(result.data[i].name +"<br> <a href=https://" + result.data[i].wikipedia_page + ">Wikipedia Link</a>");
+                
+                    })
+                  }
+                 
+                })
                  console.log(countryName)
                  $.ajax({
                   url: "libs/php/getCountryData.php",
                   type: 'GET',
                   dataType: 'json',
                   data :{
-                    country: countryCode
+                    country: localCountryCode
                   },
                   success: function(result){
                     console.log(result)
@@ -432,13 +454,7 @@ var poiIcon = L.ExtraMarkers.icon({
     }
   })
 
-var airportIcon = L.ExtraMarkers.icon({
-    extraClasses: 'fa-regular',
-    icon: 'fa-plane-departure',
-    iconColor: 'black',
-     shape: 'penta',
-     prefix: 'fa'
-    });
+
    
 $.ajax({
   url:"libs/php/getAirports.php",
