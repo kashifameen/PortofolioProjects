@@ -18,7 +18,7 @@ L.easyButton( 'fa-cloud-sun-rain fa-lg weatherIcon', function(){
 L.easyButton( 'fa-coins', function(){
   $("#currencyModal").modal("show");
 }).addTo(map);
-L.easyButton('fa-flag', function(){
+L.easyButton('fa-regular fa-flag', function(){
   $("#countryModal").modal("show");
 }).addTo(map)
 
@@ -51,8 +51,31 @@ $(document).ready(function(){
                   document.getElementById('currentCountryCurrency').innerHTML = "<h4> Current Country Currency: " + result.data.results[0].annotations.currency.name + "</h4>"
                   
             
-                 countryName =result.data.results[0].components.country
+                 var countryName =result.data.results[0].components.country;
+                 var countryCode = result.data.results[0].components.country_code;
                  console.log(countryName)
+                 $.ajax({
+                  url: "libs/php/getCountryData.php",
+                  type: 'GET',
+                  dataType: 'json',
+                  data :{
+                    country: countryCode
+                  },
+                  success: function(result){
+                    console.log(result)
+                    console.log(result.languages)
+                    document.getElementById('countryName').innerHTML = result.name +""+ result.flag.emoji
+                    document.getElementById('capitalCity').innerHTML = "Capital City: " + result.capital.name
+                    let objects = Object.values(result.languages)
+                    $.each(objects, function(i, item){
+                      document.getElementById('countryLanguages').append(objects[i] +", ")
+                    })
+                    document.getElementById('countryPopulation').innerHTML = "Country Population: " + result.population
+                    document.getElementById('countryTimezone').innerHTML = "Timezone: " + result.timezone.timezone + " Code: " + result.timezone.code
+                    document.getElementById('countryWiki').innerHTML = `<a href=${result.wiki_url}> More Info </a>`
+                  }
+              
+                })
                  $.ajax({
                 url:"libs/php/getNews.php",
                 type:'GET',
@@ -225,6 +248,7 @@ $(document).ready(function(){
                   document.getElementById("wrapper-icon-hour5").src = iconFullyUrlHour5;
 
                 }
+                
 
               })
               $.ajax({
