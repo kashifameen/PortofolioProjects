@@ -1,8 +1,6 @@
 var countryName;
 var countryName2;
-var markers = L.markerClusterGroup();
-markers.addLayer(L.marker(getRandomLatLng(map)));
-map.addLayer(markers);
+
 let map = L.map('map').setView([0.0, 0.0], 13);
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 maxZoom: 16,
@@ -10,6 +8,12 @@ attribution: '© OpenStreetMap'
 }).addTo(map);
 console.log(map.getBounds().getNorth())
 console.log(map.getBounds())
+
+var markers = L.markerClusterGroup();
+map.addLayer(markers);
+
+
+
 var airportIcon = L.ExtraMarkers.icon({
     extraClasses: 'fa-regular',
     icon: 'fa-plane-departure',
@@ -32,7 +36,6 @@ var airportIcon = L.ExtraMarkers.icon({
       iconColor: 'orange',
       markerColar: 'orange'
     })
-var markerClusterArray = []
 L.easyButton( 'fa-solid fa-newspaper', function(){
   $("#newsModal").modal("show");
 }).addTo(map);
@@ -87,7 +90,7 @@ $(document).ready(function(){
                     console.log(result)
                     
                     $.each(result.data, function(i, item){
-                      L.marker([result.data[i].latitude, result.data[i].longitude],{icon: airportIcon}).addTo(map).bindPopup(result.data[i].name +"<br> <a href=https://" + result.data[i].wikipedia_page + ">Wikipedia Link</a>");
+                     markers.addLayer(L.marker([result.data[i].latitude, result.data[i].longitude],{icon: airportIcon}).addTo(map).bindPopup(result.data[i].name +"<br> <a href=https://" + result.data[i].wikipedia_page + ">Wikipedia Link</a>"));
                 
                     })
                   }
@@ -756,11 +759,9 @@ $('#countrySelect').on('change', function() {
       },
       success: function(result) {
         console.log(result)
-        // $.each(result.data, function(i, item){
-        //     if(item.features.properties.iso_a2 == chosenValue){
-        //       let border = L.geoJSON(item.features.geometry).addTo(map)
-        //       map.fitBounds(border.getBounds());
-        //     }
+        let border = L.geoJSON(result.data.geometry).addTo(map)
+        map.fitBounds(border.getBounds());
+
 
          
   }
@@ -851,6 +852,7 @@ $.ajax({
     country: selectedText
   },
   success: function(result){
+    console.log(result)
     console.log(result.data.results[0].geometry)
     document.getElementById('currentCountryCurrency').innerHTML = "<h4> Current Country Currency: " + result.data.results[0].annotations.currency.name + "</h4>"
 
