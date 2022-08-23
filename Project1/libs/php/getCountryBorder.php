@@ -10,9 +10,9 @@
 
 $geometry;
 foreach($countryBorders->features as $country) {
-   if($country->properties->iso_a2 == $_REQUEST['countryCode']);
-  $geometry = $country;
-
+   if($country->properties->iso_a2 == $_REQUEST['countryCode']){
+       $geometry = $country;
+   };
 }
 
 

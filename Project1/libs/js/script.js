@@ -341,11 +341,14 @@ $(document).ready(function(){
                 },
                 success: function(result){
                   console.log(result)
+                  var markers = L.markerClusterGroup();
                   $.each(result.data[0].pois, function(i, item){
                     
                     markers.addLayer(L.marker([item.coordinates.latitude, item.coordinates.longitude], {icon: locationPinIcon}).addTo(map).bindPopup(item.name +"<br>" + item.snippet));
           
-                  })
+                  })                  
+                  map.addLayer(markers);
+
                 }
               })
               
@@ -665,7 +668,7 @@ $(document).ready(function(){
                     console.log(result)
                     $.each(result.data[0].pois, function(i, item){
                       
-                      marker.addLayer(L.marker([item.coordinates.latitude, item.coordinates.longitude], {icon: locationPinIcon}).addTo(map).bindPopup(item.name +"<br>" + item.snippet));
+                      markers.addLayer(L.marker([item.coordinates.latitude, item.coordinates.longitude], {icon: locationPinIcon}).addTo(map).bindPopup(item.name +"<br>" + item.snippet));
             
                     })
                   }
@@ -785,7 +788,7 @@ var poiIcon = L.ExtraMarkers.icon({
     success: function(result){
       console.log(result)
       $.each(result.data, function(i, item){
-        marker.addLayer(L.marker([result.data[i].coordinates.latitude, result.data[i].coordinates.longitude],{icon: poiIcon}).addTo(map).bindPopup(result.data[i].name +"<br> <a href=" + result.data[i].attribution[1].url + ">More Info</a>"));
+        markers.addLayer(L.marker([result.data[i].coordinates.latitude, result.data[i].coordinates.longitude],{icon: poiIcon}).addTo(map).bindPopup(result.data[i].name +"<br> <a href=" + result.data[i].attribution[1].url + ">More Info</a>"));
       })
     }
   })
@@ -803,7 +806,7 @@ $.ajax({
     console.log(result)
     
     $.each(result.data, function(i, item){
-      marker.addLayer(L.marker([result.data[i].latitude, result.data[i].longitude],{icon: airportIcon}).addTo(map).bindPopup(result.data[i].name +"<br> <a href=https://" + result.data[i].pop_page + ">Wikipedia Link</a>"));
+      markers.addLayer(L.marker([result.data[i].latitude, result.data[i].longitude],{icon: airportIcon}).addTo(map).bindPopup(result.data[i].name +"<br> <a href=https://" + result.data[i].pop_page + ">Wikipedia Link</a>"));
 
     })
   }
