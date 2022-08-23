@@ -7,13 +7,13 @@
 	// print_r($countryBorders);
 	
 
-$geometry= null;
+
+$geometry;
 foreach($countryBorders->features as $country) {
-   if($country->iso_a2 == $_REQUEST['countryCode']);
+   if($country->properties->iso_a2 == $_REQUEST['countryCode']);
   $geometry = $country;
 
 }
-
 
 
 $output['status']['code'] = "200";
