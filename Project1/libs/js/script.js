@@ -15,6 +15,22 @@ var airportIcon = L.ExtraMarkers.icon({
      shape: 'penta',
      prefix: 'fa'
     });
+    var restaurantMarker = L.ExtraMarkers.icon({
+                icon: 'fa-utensils',
+                prefix: 'fa'
+    })
+    var wikipediaIcon = L.ExtraMarkers.icon({
+      icon: 'fa-brands fa-wikipedia-w',
+      iconColor: 'black',
+      markerColor: 'white'
+
+    })
+    var locationPinIcon = L.ExtraMarkers.icon({
+      icon: 'fa-solid fa-location-pin',
+      iconColor: 'orange',
+      markerColar: 'orange'
+    })
+var markerClusterArray = []
 L.easyButton( 'fa-solid fa-newspaper', function(){
   $("#newsModal").modal("show");
 }).addTo(map);
@@ -86,15 +102,17 @@ $(document).ready(function(){
                   success: function(result){
                     console.log(result)
                     console.log(result.languages)
-                    document.getElementById('countryName').innerHTML = result.name +""+ result.flag.emoji
-                    document.getElementById('capitalCity').innerHTML = "Capital City: " + result.capital.name
+                    document.getElementById('countryFlag').innerHTML = result.flag.emoji
+                    document.getElementById('countryName').innerHTML = result.name 
+                    document.getElementById('capitalCity').innerHTML = result.capital.name
                     let objects = Object.values(result.languages)
                     $.each(objects, function(i, item){
                       document.getElementById('countryLanguages').append(objects[i] +", ")
                     })
-                    document.getElementById('countryPopulation').innerHTML = "Country Population: " + result.population
-                    document.getElementById('countryTimezone').innerHTML = "Timezone: " + result.timezone.timezone + " Code: " + result.timezone.code
+                    document.getElementById('countryPopulation').innerHTML = result.population.toLocaleString('en-US');
+                    document.getElementById('countryTimezone').innerHTML = result.timezone.timezone + " Code: " + result.timezone.code
                     document.getElementById('countryWiki').innerHTML = `<a href=${result.wiki_url}> More Info </a>`
+                    document.getElementById('countryCurrency').innerHTML = result.currency.code
                   }
               
                 })
@@ -283,18 +301,14 @@ $(document).ready(function(){
                 },
                   success: function(result){
                     console.log(result)
-                    L.marker([result.data[0].lat, result.data[0].lng]).addTo(map).bindPopup(result.data[0].title +"<br> <a href=https://" + result.data[0].wikipediaUrl + ">Wikipedia Link</a>");
-                    L.marker([result.data[1].lat, result.data[1].lng]).addTo(map).bindPopup(result.data[1].title +"<br> <a href=https://" + result.data[1].wikipediaUrl + ">Wikipedia Link</a>");
-                    L.marker([result.data[2].lat, result.data[2].lng]).addTo(map).bindPopup(result.data[2].title +"<br> <a href=https://" + result.data[2].wikipediaUrl + ">Wikipedia Link</a>");
-                    L.marker([result.data[3].lat, result.data[3].lng]).addTo(map).bindPopup(result.data[3].title +"<br> <a href=https://" + result.data[3].wikipediaUrl + ">Wikipedia Link</a>");
-                    L.marker([result.data[4].lat, result.data[4].lng]).addTo(map).bindPopup(result.data[4].title +"<br> <a href=https://" + result.data[4].wikipediaUrl + ">Wikipedia Link</a>");
+                    $.each(result.data, function(i, item){
+                      L.marker([result.data[i].lat, result.data[i].lng], {icon: wikipediaIcon}).addTo(map).bindPopup(result.data[i].title +"<br> <a href=https://" + result.data[i].wikipediaUrl + ">Wikipedia Link</a>");
+
+                    })
 
                   }
               })
-              var restaurantMarker = L.ExtraMarkers.icon({
-                icon: 'fa-utensils',
-                prefix: 'fa'
-              })
+              
               $.ajax({
                 url:"libs/php/getLocalRestaurants.php",
                 type: 'GET',
@@ -323,8 +337,8 @@ $(document).ready(function(){
                 success: function(result){
                   console.log(result)
                   $.each(result.data[0].pois, function(i, item){
-              
-                    L.marker([item.coordinates.latitude, item.coordinates.longitude]).addTo(map).bindPopup(item.name +"<br>" + item.snippet);
+                    markerClusterArray.push()
+                    L.marker([item.coordinates.latitude, item.coordinates.longitude], {icon: locationPinIcon}).addTo(map).bindPopup(item.name +"<br>" + item.snippet);
           
                   })
                 }
@@ -364,7 +378,9 @@ $(document).ready(function(){
 
                   }}
               })
-            })}
+            })} else {
+
+            }
               
 
 
@@ -419,15 +435,19 @@ $('#countrySelect').on('change', function() {
     $.ajax({
       url:"libs/php/getCountryBorder.php",
       type:'GET',
-      dataType: 'json',
+      dataType: 'json', 
+      data: {
+        countryCode: chosenValue
+      },
       success: function(result) {
-        $.each(result.data, function(i, item){
-            if(item.features.properties.iso_a2 == chosenValue){
-              let border = L.geoJSON(item.features.geometry).addTo(map)
-              map.fitBounds(border.getBounds());
-            }
+        console.log(result)
+        // $.each(result.data, function(i, item){
+        //     if(item.features.properties.iso_a2 == chosenValue){
+        //       let border = L.geoJSON(item.features.geometry).addTo(map)
+        //       map.fitBounds(border.getBounds());
+        //     }
 
-    })      
+         
   }
   
 })
@@ -467,7 +487,7 @@ $.ajax({
     console.log(result)
     
     $.each(result.data, function(i, item){
-      L.marker([result.data[i].latitude, result.data[i].longitude],{icon: airportIcon}).addTo(map).bindPopup(result.data[i].name +"<br> <a href=https://" + result.data[i].wikipedia_page + ">Wikipedia Link</a>");
+      L.marker([result.data[i].latitude, result.data[i].longitude],{icon: airportIcon}).addTo(map).bindPopup(result.data[i].name +"<br> <a href=https://" + result.data[i].pop_page + ">Wikipedia Link</a>");
 
     })
   }
@@ -671,15 +691,17 @@ $.ajax({
     success: function(result){
       console.log(result)
       console.log(result.languages)
-      document.getElementById('countryName').innerHTML = result.name +""+ result.flag.emoji
-      document.getElementById('capitalCity').innerHTML = "Capital City: " + result.capital.name
+      document.getElementById('countryFlag').innerHTML = result.flag.emoji
+      document.getElementById('countryName').innerHTML = result.name 
+      document.getElementById('capitalCity').innerHTML = result.capital.name
       let objects = Object.values(result.languages)
       $.each(objects, function(i, item){
         document.getElementById('countryLanguages').append(objects[i] +", ")
       })
-      document.getElementById('countryPopulation').innerHTML = "Country Population: " + result.population
-      document.getElementById('countryTimezone').innerHTML = "Timezone: " + result.timezone.timezone + " Code: " + result.timezone.code
+      document.getElementById('countryPopulation').innerHTML = result.population.toLocaleString('en-US');
+      document.getElementById('countryTimezone').innerHTML = result.timezone.timezone + " Code: " + result.timezone.code
       document.getElementById('countryWiki').innerHTML = `<a href=${result.wiki_url}> More Info </a>`
+      document.getElementById('countryCurrency').innerHTML = result.currency.code
     }
 
   })

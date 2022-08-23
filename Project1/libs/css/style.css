@@ -1,13 +1,9 @@
 
-
-body {
-    padding: 0;
-    margin: 0;
-}
 html, body, #map {
-    height: 90vh;
-    width: 100vw;
+    width: 100%;
+    height: 97.5%;
 }
+
 
 .star {
     font-size: 1.5em;
@@ -116,17 +112,7 @@ html, body, #map {
         border-radius: 50% !important;
     }
     /*Start Currency Converter*/
-* {
-    padding: 0;
-    margin: 0;
-    font-family: 'IBM Plex Sans', sans-serif;
-}
 
-body {
-    height: 100vh;
-    width: 100vw;
-    overflow-x: hidden;
-}
 
 .currency-row-outer {
     display: flex;
@@ -220,5 +206,14 @@ h2 {
 .flagIcon {
     color: red;
 }
+#tableBody {
+    padding: 0;
+}
+.table {
+    margin-bottom: 0;
+}
 
-.newsTitle
+
+#removeBorder {
+    border-style: none;
+}

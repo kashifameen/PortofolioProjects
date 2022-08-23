@@ -12,8 +12,9 @@
         <link rel="stylesheet" href="libs/css/leaflet.css">
         <link rel="stylesheet" href="libs/css/easy-button.css">
         <link rel="stylesheet" href="libs/css/leaflet.extra-markers.min.css">
+        <link rel="stylesheet" href="libs/css/MarkerCluster.css">
         <link rel="stylesheet" href="libs/css/style.css">
-        <script src="https://kit.fontawesome.com/734a4f38c0.js" crossorigin="anonymous"></script>
+        <script src="libs/js/all.js" crossorigin="anonymous"></script>
 
         <title>Gazetteer</title>
         <link rel="icon" type="image/x-icon" href="images/favicon.ico">
@@ -39,10 +40,12 @@
           <!-- Modal HTML -->
           <div class="modal fade" id="newsModal" tabindex="-1" role="dialog" aria-labelledby="myModal" aria-hidden="true">
             <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document">
-              
+
               <div class="modal-content" id="modal-content">
                 <div class="modal-header">
                   <h3 class="modal-title newsTitle" id="modalTitle"></h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
 
                   
                 </div>
@@ -247,17 +250,63 @@
             <div class="modal-dialog" role="document">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h4 class="modal-title" id="countryName"></h4>
+                  <h4 class="modal-title">General Information</h4>
                   <button type="button" class="btn-close btn-close-black" data-bs-dismiss="modal"></button>
                   </button>
                 </div>
-                <div class="modal-body">
-                  <h6 id="capitalCity"></h6>
-                  <h6 id="countryLanguages">Languages Spoken: </h6>
-                  <h6 id="countryPopulation"> </h6>
-                  <h6 id="countryTimezone"> </h6>
-                  <h6 id="countryWiki">More information: </h6>
-                  
+                <div class="modal-body" id="tableBody">
+                  <table class="table table-striped">
+                    <tbody>
+                      <tr class="table-info">
+                        <th scope="row"><i class="fa-solid fa-earth-africa"></i></th>
+                        <td>Country Name</td>
+                        <td id="countryName"></td>
+                        
+                      </tr>
+                      <tr>
+                        <th scope="row"><i class="fa-solid fa-city"></i></th>
+                        <td>Capital City</td>
+                        <td id="capitalCity"></td>
+                        
+                      </tr>
+                      <tr class="table-info">
+                        <th scope="row"><i class="fa-solid fa-font-awesome"></i></th>
+                        <td>Flag</td>
+                        <td id="countryFlag"></td>
+                        
+                      </tr>
+                      <tr>
+                        <th scope="row"><i class="fa-solid fa-clock"></i></th>
+                        <td>Timezone</td>
+                        <td id="countryTimezone"></td>
+                        
+                      </tr>
+                      <tr class="table-info">
+                        <th scope="row"><i class="fa-solid fa-people-group"></i></th>
+                        <td>Population</td>
+                        <td id="countryPopulation"></td>
+                        
+                      </tr>
+                      <tr>
+                        <th scope="row"><i class="fa-solid fa-wallet"></i></th>
+                        <td>Currency</td>
+                        <td id="countryCurrency"></td>
+                      </tr>
+                      <tr class="table-info">
+                        <th scope="row"><i class="fa-solid fa-language"></i></th>
+                        <td>Languages Spoken</td>
+                        <td id="countryLanguages"></td>
+                        
+                      </tr>
+                      <tr id="removeBorder">
+                        <th scope="row" ><i class="fa-brands fa-wikipedia-w"></i></th>
+                        <td>Wikipedia</td>
+                        <td id="countryWiki"></td>
+                        
+                      </tr>
+                    </tbody>
+                  </table>
+                 
                 </div>
                
               </div>
@@ -270,6 +319,7 @@
         <script type="application/javascript" src="libs/js/leaflet.js"></script>
         <script type="application/javascript" src="libs/js/easy-button.js"></script>
         <script type="application/javascript" src="libs/js/leaflet.extra-markers.min.js"></script>
+        <script type="application/javascript" src="libs/js/MarkerCluster.js"></script>
         <script type="application/javascript" src="libs/js/script.js" ></script>
         
     </body>

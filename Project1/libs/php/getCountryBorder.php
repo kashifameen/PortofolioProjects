@@ -7,10 +7,10 @@
 	// print_r($countryBorders);
 	
 
-$geometry= array();
+$geometry= null;
 foreach($countryBorders->features as $country) {
-   $country = (object)['features'=> $country];
-  array_push($geometry, $country);
+   if($country->iso_a2 == $_REQUEST['countryCode']);
+  $geometry = $country;
 
 }
 
