@@ -216,4 +216,8 @@ h2 {
 
 #removeBorder {
     border-style: none;
+    border-bottom-width: 0;
+}
+.table>:not(caption)>*>* {
+    border-bottom-width: 0;
 }

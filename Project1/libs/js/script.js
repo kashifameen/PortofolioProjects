@@ -63,9 +63,6 @@ $(document).ready(function(){
        //try to get user current location using getCurrentPosition() method
 
        navigator.geolocation.getCurrentPosition(function(position){
-        console.log(navigator.geolocation)
-               console.log("Found your location <br />Lat : "+position.coords.latitude+" </br>Lang :"+ position.coords.longitude);
-                console.log(position)
               map.setView([position.coords.latitude, position.coords.longitude], 13);
               $.ajax({
                 url:"libs/php/getOpencageApi.php",
@@ -76,7 +73,6 @@ $(document).ready(function(){
                   lng: position.coords.longitude
                 },
                 success: function(result){
-                  console.log(result.data)
                   var city = result.data.results[0].components.city
                   document.getElementById('wrapper-name').innerHTML = city
                   document.getElementById('currentCountryCurrency').innerHTML = "<h4> Current Country Currency: " + result.data.results[0].annotations.currency.name + "</h4>"
@@ -93,7 +89,6 @@ $(document).ready(function(){
                     countryCode: upperCaseCountryCode,
                   },
                   success: function(result){
-                    console.log(result)
                     var markers = L.markerClusterGroup();
                     let airports = result.data
                     airports.forEach(function (element, i){
