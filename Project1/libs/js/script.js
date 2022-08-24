@@ -9,8 +9,7 @@ attribution: '© OpenStreetMap'
 console.log(map.getBounds().getNorth())
 console.log(map.getBounds())
 
-var markers = L.markerClusterGroup();
-map.addLayer(markers);
+
 
 
 
@@ -35,6 +34,11 @@ var airportIcon = L.ExtraMarkers.icon({
       icon: 'fa-solid fa-location-pin',
       iconColor: 'orange',
       markerColar: 'orange'
+    })
+    var userLocationPin = L.ExtraMarkers.icon({
+      icon: 'fa-solid fa-map-pin',
+      iconColor: 'purple',
+     
     })
 L.easyButton( 'fa-solid fa-newspaper', function(){
   $("#newsModal").modal("show");
@@ -88,11 +92,14 @@ $(document).ready(function(){
                   },
                   success: function(result){
                     console.log(result)
-                    
-                    $.each(result.data, function(i, item){
-                     markers.addLayer(L.marker([result.data[i].latitude, result.data[i].longitude],{icon: airportIcon}).addTo(map).bindPopup(result.data[i].name +"<br> <a href=https://" + result.data[i].wikipedia_page + ">Wikipedia Link</a>"));
-                
+                    var markers = L.markerClusterGroup();
+                    let airports = result.data
+                    airports.forEach(function (element, i){
+                      markers.addLayer(L.marker([result.data[i].latitude, result.data[i].longitude],{icon: airportIcon}).bindPopup(result.data[i].name +"<br> <a href=https://" + result.data[i].wikipedia_page + ">Wikipedia Link</a>"));
+
                     })
+                    
+                    map.addLayer(markers);
                   }
                  
                 })
@@ -306,10 +313,15 @@ $(document).ready(function(){
                 },
                   success: function(result){
                     console.log(result)
+                    var markers = L.markerClusterGroup();
+
+
                     $.each(result.data, function(i, item){
-                      markers.addLayer(L.marker([result.data[i].lat, result.data[i].lng], {icon: wikipediaIcon}).addTo(map).bindPopup(result.data[i].title +"<br> <a href=https://" + result.data[i].wikipediaUrl + ">Wikipedia Link</a>"));
+                      markers.addLayer(L.marker([result.data[i].lat, result.data[i].lng], {icon: wikipediaIcon}).bindPopup(result.data[i].title +"<br> <a href=https://" + result.data[i].wikipediaUrl + ">Wikipedia Link</a>"));
 
                     })
+                    map.addLayer(markers);
+
 
                   }
               })
@@ -324,11 +336,14 @@ $(document).ready(function(){
                 },
                 success: function(result){
                   console.log(result)
+                  var markers = L.markerClusterGroup();
                   $.each(result.data[0].pois, function(i, item){
-              
-                    markers.addLayer(L.marker([item.coordinates.latitude, item.coordinates.longitude], {icon: restaurantMarker}).addTo(map).bindPopup(item.name +"<br>" + item.snippet));
+                   markers.addLayer(L.marker([item.coordinates.latitude, item.coordinates.longitude], {icon: restaurantMarker}).bindPopup(item.name +"<br>" + item.snippet));
             
                   })
+                  map.addLayer(markers);
+
+
                 }
               })
               $.ajax({
@@ -344,7 +359,7 @@ $(document).ready(function(){
                   var markers = L.markerClusterGroup();
                   $.each(result.data[0].pois, function(i, item){
                     
-                    markers.addLayer(L.marker([item.coordinates.latitude, item.coordinates.longitude], {icon: locationPinIcon}).addTo(map).bindPopup(item.name +"<br>" + item.snippet));
+                    markers.addLayer(L.marker([item.coordinates.latitude, item.coordinates.longitude], {icon: locationPinIcon}).bindPopup(item.name +"<br>" + item.snippet));
           
                   })                  
                   map.addLayer(markers);
@@ -413,11 +428,13 @@ $(document).ready(function(){
                     },
                     success: function(result){
                       console.log(result)
-                      
+                      var markers = L.markerClusterGroup();
                       $.each(result.data, function(i, item){
-                        markers.addLayer(L.marker([result.data[i].latitude, result.data[i].longitude],{icon: airportIcon}).addTo(map).bindPopup(result.data[i].name +"<br> <a href=https://" + result.data[i].wikipedia_page + ">Wikipedia Link</a>"));
-                  
-                      })
+                        markers.addLayer(L.marker([result.data[i].latitude, result.data[i].longitude],{icon: airportIcon}).bindPopup(result.data[i].name +"<br> <a href=https://" + result.data[i].wikipedia_page + ">Wikipedia Link</a>"));
+                       })
+                       map.addLayer(markers);
+
+
                     }
                    
                   })
@@ -631,11 +648,14 @@ $(document).ready(function(){
                   },
                     success: function(result){
                       console.log(result)
+                      var markers = L.markerClusterGroup();
                       $.each(result.data, function(i, item){
-                        markers.addLayer(L.marker([result.data[i].lat, result.data[i].lng], {icon: wikipediaIcon}).addTo(map).bindPopup(result.data[i].title +"<br> <a href=https://" + result.data[i].wikipediaUrl + ">Wikipedia Link</a>"));
+                        markers.addLayer(L.marker([result.data[i].lat, result.data[i].lng], {icon: wikipediaIcon}).bindPopup(result.data[i].title +"<br> <a href=https://" + result.data[i].wikipediaUrl + ">Wikipedia Link</a>"));
   
                       })
-  
+                      map.addLayer(markers);
+
+
                     }
                 })
                 
@@ -649,11 +669,14 @@ $(document).ready(function(){
                   },
                   success: function(result){
                     console.log(result)
+                    var markers = L.markerClusterGroup();
+
                     $.each(result.data[0].pois, function(i, item){
-                
-                      marker.addLayer(L.marker([item.coordinates.latitude, item.coordinates.longitude], {icon: restaurantMarker}).addTo(map).bindPopup(item.name +"<br>" + item.snippet));
-              
+                      marker.addLayer(L.marker([item.coordinates.latitude, item.coordinates.longitude], {icon: restaurantMarker}).bindPopup(item.name +"<br>" + item.snippet));
                     })
+                    map.addLayer(markers);
+
+
                   }
                 })
                 $.ajax({
@@ -666,11 +689,12 @@ $(document).ready(function(){
                   },
                   success: function(result){
                     console.log(result)
+                    var markers = L.markerClusterGroup();
                     $.each(result.data[0].pois, function(i, item){
                       
-                      markers.addLayer(L.marker([item.coordinates.latitude, item.coordinates.longitude], {icon: locationPinIcon}).addTo(map).bindPopup(item.name +"<br>" + item.snippet));
-            
+                      markers.addLayer(L.marker([item.coordinates.latitude, item.coordinates.longitude], {icon: locationPinIcon}).bindPopup(item.name +"<br>" + item.snippet));            
                     })
+                    map.addLayer(markers);
                   }
                 })
                 $.ajax({
@@ -708,6 +732,8 @@ $(document).ready(function(){
 function onLocationFound(e) {
 
    var radius = e.accuracy;
+   console.log(e.lat)
+   console.log(e.lng)
    L.marker(e.latlng).addTo(map)
     .bindPopup("You are within " + radius + " meters from this point").openPopup();
    L.circle(e.latlng, radius).addTo(map);
@@ -787,9 +813,11 @@ var poiIcon = L.ExtraMarkers.icon({
     },
     success: function(result){
       console.log(result)
+      var markers = L.markerClusterGroup();
       $.each(result.data, function(i, item){
-        markers.addLayer(L.marker([result.data[i].coordinates.latitude, result.data[i].coordinates.longitude],{icon: poiIcon}).addTo(map).bindPopup(result.data[i].name +"<br> <a href=" + result.data[i].attribution[1].url + ">More Info</a>"));
+        markers.addLayer(L.marker([result.data[i].coordinates.latitude, result.data[i].coordinates.longitude],{icon: poiIcon}).bindPopup(result.data[i].name +"<br> <a href=" + result.data[i].attribution[1].url + ">More Info</a>"));
       })
+      map.addLayer(markers);
     }
   })
 
@@ -804,11 +832,12 @@ $.ajax({
   },
   success: function(result){
     console.log(result)
-    
+    var markers = L.markerClusterGroup();
     $.each(result.data, function(i, item){
-      markers.addLayer(L.marker([result.data[i].latitude, result.data[i].longitude],{icon: airportIcon}).addTo(map).bindPopup(result.data[i].name +"<br> <a href=https://" + result.data[i].pop_page + ">Wikipedia Link</a>"));
+      markers.addLayer(L.marker([result.data[i].latitude, result.data[i].longitude],{icon: airportIcon}).bindPopup(result.data[i].name +"<br> <a href=https://" + result.data[i].pop_page + ">Wikipedia Link</a>"));
 
     })
+    map.addLayer(markers);
   }
  
 })
