@@ -73,6 +73,7 @@ $(document).ready(function(){
                   lng: position.coords.longitude
                 },
                 success: function(result){
+                  console.log(result)                  
                   var city = result.data.results[0].components.city
                   document.getElementById('wrapper-name').innerHTML = city
                   document.getElementById('currentCountryCurrency').innerHTML = "<h4> Current Country Currency: " + result.data.results[0].annotations.currency.name + "</h4>"
@@ -81,6 +82,48 @@ $(document).ready(function(){
                  var countryName =result.data.results[0].components.country;
                  var localCountryCode = result.data.results[0].components.country_code;
                  var upperCaseCountryCode = localCountryCode.toUpperCase();
+                 $.ajax({
+     url:"libs/php/populateSelectFields.php",
+     type:'GET',
+     dataType: 'json',
+     success: function(result) {
+      let countries = result.data;
+      console.log(countries)
+      typeof countries;
+
+      countries.sort((a, b) => {
+        if(a.name.toString().toLowerCase() < b.name.toString().toLowerCase()){
+          return -1;
+        }
+        if(a.name.toString().toLowerCase() > b.name.toString().toLowerCase()){
+          return 1;
+        }
+        return 0;
+
+      });
+      $.each(countries, function(i, item){     
+        selectField.append($('<option></option>').text(countries[i].name).attr('value', countries[i].iso))
+      })
+        
+     } 
+   })
+                 $.ajax({
+                  url:"libs/php/getCountryBorder.php",
+                  type:'GET',
+                  dataType: 'json', 
+                  data: {
+                    countryCode: upperCaseCountryCode
+                  },
+                  success: function(result) {
+                    console.log(result)
+                    let border = L.geoJSON(result.data.geometry).addTo(map)
+                    map.fitBounds(border.getBounds());
+            
+            
+                     
+              }
+              
+            })
                  $.ajax({
                   url:"libs/php/getAirports.php",
                   type:'GET',
@@ -409,13 +452,16 @@ $(document).ready(function(){
                   success: function(result){
                     console.log(result.data)
                     var city = result.data.results[0].components.city
-                    document.getElementById('wrapper-name').innerHTML = city
-                    document.getElementById('currentCountryCurrency').innerHTML = "<h4> Current Country Currency: " + result.data.results[0].annotations.currency.name + "</h4>"
-                    
-              
-                   var countryName =result.data.results[0].components.country;
+                     var countryName =result.data.results[0].components.country;
                    var localCountryCode = result.data.results[0].components.country_code;
                    var upperCaseCountryCode = localCountryCode.toUpperCase();
+                    $('#countrySelect').val(upperCaseCountryCode).change()
+                   
+                    document.getElementById('wrapper-name').innerHTML = city
+                    document.getElementById('currentCountryCurrency').innerHTML = "<h4> Current Country Currency: " + result.data.results[0].annotations.currency.name + "</h4>"
+                    document.getElementById('countrySelect').innerHTML = countryName
+              
+                   
                    $.ajax({
                     url:"libs/php/getAirports.php",
                     type:'GET',
@@ -775,6 +821,7 @@ $('#countrySelect').on('change', function() {
   console.log(lowerCaseValue)
   console.log(chosenValue)
  let selectedText = $('#countrySelect :selected').text()
+ markers.clearLayers();
     $.ajax({
       url:"libs/php/getCountryBorder.php",
       type:'GET',
