@@ -169,9 +169,7 @@ select.currency {
     height: 100%;
 }
 
-h2 {
-    padding-bottom: 30px;
-}
+
 
 .currency-converter .select:after {
     transform: rotate(-45deg);
