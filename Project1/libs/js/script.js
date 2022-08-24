@@ -37,7 +37,9 @@ var airportIcon = L.ExtraMarkers.icon({
     })
     var userLocationPin = L.ExtraMarkers.icon({
       icon: 'fa-solid fa-map-pin',
-      iconColor: 'purple',
+      iconColor: 'white',
+      markerColor: 'black',
+      shape: 'star'
      
     })
 L.easyButton( 'fa-solid fa-newspaper', function(){
@@ -732,9 +734,8 @@ $(document).ready(function(){
 function onLocationFound(e) {
 
    var radius = e.accuracy;
-   console.log(e.lat)
-   console.log(e.lng)
-   L.marker(e.latlng).addTo(map)
+  
+   L.marker((e.latlng), {icon: userLocationPin}).addTo(map)
     .bindPopup("You are within " + radius + " meters from this point").openPopup();
    L.circle(e.latlng, radius).addTo(map);
 
