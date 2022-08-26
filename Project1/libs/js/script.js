@@ -107,7 +107,7 @@ $.ajax({
                         var localCountryCode = result.data.results[0].components.country_code;
                         var upperCaseCountryCode = localCountryCode.toUpperCase();
                         var upperCaseCountryCode = localCountryCode.toUpperCase();
-                        $("#countrySelect").val(upperCaseCountryCode).change();
+                        // $("#countrySelect").val(upperCaseCountryCode).change();
                         document.getElementById("countrySelect").value = upperCaseCountryCode;
                         console.log(upperCaseCountryCode);
 
@@ -784,16 +784,13 @@ $("#countrySelect").on("change", function () {
     console.log(lowerCaseValue);
 
     // console.log(borders.getLayers().length);
-    console.log(borders)
     if (markers) {
         markers.clearLayers()
-        $(".leaflet-interactive").remove()
-        $(".leaflet-marker-shadow").remove()
+        $('.leaflet-interactive').remove()
+        $('.leaflet-popup').remove()
+        $('.leaflet-marker-shadow').remove()
+      }
 
-    }
-    if (borders) {
-        console.log(borders)
-    }
     let selectedText = $("#countrySelect :selected").text();
 
     $.ajax({
