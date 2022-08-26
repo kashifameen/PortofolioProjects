@@ -352,7 +352,6 @@ $.ajax({
                 success: function (result) {
                     console.log(result);
 
-                    var markers = L.markerClusterGroup();
 
                     $.each(result.data, function (i, item) {
                         markers.addLayer(L.marker([
@@ -376,7 +375,6 @@ $.ajax({
                 success: function (result) {
                     console.log(result);
 
-                    var markers = L.markerClusterGroup();
                     $.each(result.data[0].pois, function (i, item) {
                         markers.addLayer(L.marker([
                             item.coordinates.latitude, item.coordinates.longitude
@@ -396,7 +394,6 @@ $.ajax({
                 },
                 success: function (result) {
                     console.log(result);
-                    var markers = L.markerClusterGroup();
 
                     $.each(result.data[0].pois, function (i, item) {
                         markers.addLayer(L.marker([
@@ -824,7 +821,6 @@ $("#countrySelect").on("change", function () {
         success: function (result) {
             console.log(result);
 
-            var markers = L.markerClusterGroup();
 
             $.each(result.data, function (i, item) {
                 markers.addLayer(L.marker([
@@ -846,7 +842,6 @@ $("#countrySelect").on("change", function () {
         },
         success: function (result) {
             console.log(result);
-            var markers = L.markerClusterGroup();
 
             $.each(result.data, function (i, item) {
                 markers.addLayer(L.marker([
