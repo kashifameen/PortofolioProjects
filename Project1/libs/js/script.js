@@ -4,31 +4,7 @@ let selectField = $("#countrySelect");
 var markers = L.markerClusterGroup();
 console.log(markers.getLayers)
 selectField.prop("selectedIndex", 0);
-$.ajax({
-    url: "libs/php/populateSelectFields.php",
-    type: "GET",
-    dataType: "json",
-    success: function (result) {
-        var countries = result.data;
-        console.log(countries);
-        typeof countries;
-        countries.sort((a, b) => {
-                      if (a.name.toString().toLowerCase() < b.name.toString().toLowerCase()) {
-                          return -1;
-                      }
-                      if (a.name.toString().toLowerCase() > b.name.toString().toLowerCase()) {
-                          return 1;
-                      }
-                      return 0;
-                  }),
-                  $.each(countries, function (i, item) {
-                      selectField.append($("<option></option>").text(countries[i].name).attr("value", countries[i].iso));
-                  })
 
-
-       
-    }
-})
  
 
 let map = L.map("map").setView([
@@ -70,7 +46,32 @@ L.easyButton("fa-regular fa-flag flagIcon", function () {
     $("#countryModal").modal("show");
 }).addTo(map);
 
-$(document).ready(function () {
+$.ajax({
+    url: "libs/php/populateSelectFields.php",
+    type: "GET",
+    dataType: "json",
+    success: function (result) {
+        var countries = result.data;
+        console.log(countries);
+        typeof countries;
+        countries.sort((a, b) => {
+                      if (a.name.toString().toLowerCase() < b.name.toString().toLowerCase()) {
+                          return -1;
+                      }
+                      if (a.name.toString().toLowerCase() > b.name.toString().toLowerCase()) {
+                          return 1;
+                      }
+                      return 0;
+                  }),
+                  $.each(countries, function (i, item) {
+                      selectField.append($("<option></option>").text(countries[i].name).attr("value", countries[i].iso));
+                  })
+
+
+       
+    }
+}).then(() => {
+  $(document).ready(function () {
     console.log("ready");
     function onLocationFound(e) {
         var radius = e.accuracy;
@@ -779,6 +780,8 @@ $(document).ready(function () {
 
 
 });
+})
+
 $("#countrySelect").on("change", function () {
     const chosenValue = this.value;
     let lowerCaseValue = chosenValue.toLowerCase();
@@ -787,6 +790,7 @@ $("#countrySelect").on("change", function () {
 
     if(markers.getLayers().length !== 0){
       markers.clearLayers()
+      
     }
     let selectedText = $("#countrySelect :selected").text();
     $.ajax({
