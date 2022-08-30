@@ -1,3 +1,4 @@
+
 let selectField = $("#countrySelect");
 var marker;
 var markers = L.markerClusterGroup();
@@ -26,6 +27,15 @@ var airportIcon = L.ExtraMarkers.icon({
     iconColor: "black",
     shape: "penta",
     prefix: "fa"
+});
+
+var poiIcon = L.ExtraMarkers.icon({
+    extraClasses: "fa-regular",
+    icon: "fa-map",
+    iconColor: "black",
+    shape: "circle",
+    prefix: "fa",
+    markerColor: "white"
 });
 var restaurantMarker = L.ExtraMarkers.icon({icon: "fa-utensils", prefix: "fa"});
 var wikipediaIcon = L.ExtraMarkers.icon({icon: "fa-brands fa-wikipedia-w", iconColor: "black", markerColor: "white"});
@@ -356,14 +366,6 @@ $("#countrySelect").on("change", function () {
         map.fitBounds(border.getBounds());
     })
 
-    var poiIcon = L.ExtraMarkers.icon({
-        extraClasses: "fa-regular",
-        icon: "fa-map",
-        iconColor: "black",
-        shape: "circle",
-        prefix: "fa",
-        markerColor: "white"
-    });
     $.ajax({
         url: "libs/php/getCountryAttractions.php",
         type: "GET",
@@ -450,7 +452,7 @@ $("#countrySelect").on("change", function () {
     });
 });
 
-$("#currencyOut").on("change", function () {
+$("#submitBtn").on("click", function () {
     let toCountry = $("#currencyOut :selected").val();
     let fromCountry = $("#currencyIn :selected").val();
     let amount = $("#numberToConvert").val();
@@ -530,7 +532,6 @@ const getCurrentWeatherData = (lat, lon, selectedCountry = '') => {
 }
 
 const setCurrentWeatherData = (result) => {
-    let main = result.data.current.weather[0].main;
     let description = result.data.current.weather[0].description;
     let temp = Math.round(result.data.current.temp);
     let pressure = result.data.current.pressure;
