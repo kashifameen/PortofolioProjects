@@ -1,16 +1,10 @@
-var countryName;
-var countryName2;
 let selectField = $("#countrySelect");
 var marker;
 var markers = L.markerClusterGroup();
 selectField.prop("selectedIndex", 0);
 const populateSelectFields = () => {
 
-    return $.ajax({
-        url: "libs/php/populateSelectFields.php",
-        type: "GET",
-        dataType: "json"
-    })
+    return $.ajax({url: "libs/php/populateSelectFields.php", type: "GET", dataType: "json"})
 }
 
 let map = L.map("map").setView([
@@ -33,26 +27,10 @@ var airportIcon = L.ExtraMarkers.icon({
     shape: "penta",
     prefix: "fa"
 });
-var restaurantMarker = L.ExtraMarkers.icon({
-    icon: "fa-utensils",
-    prefix: "fa"
-});
-var wikipediaIcon = L.ExtraMarkers.icon({
-    icon: "fa-brands fa-wikipedia-w",
-    iconColor: "black",
-    markerColor: "white"
-});
-var locationPinIcon = L.ExtraMarkers.icon({
-    icon: "fa-solid fa-location-pin",
-    iconColor: "orange",
-    markerColar: "orange"
-});
-var userLocationPin = L.ExtraMarkers.icon({
-    icon: "fa-solid fa-map-pin",
-    iconColor: "white",
-    markerColor: "black",
-    shape: "star"
-});
+var restaurantMarker = L.ExtraMarkers.icon({icon: "fa-utensils", prefix: "fa"});
+var wikipediaIcon = L.ExtraMarkers.icon({icon: "fa-brands fa-wikipedia-w", iconColor: "black", markerColor: "white"});
+var locationPinIcon = L.ExtraMarkers.icon({icon: "fa-solid fa-location-pin", iconColor: "orange", markerColar: "orange"});
+var userLocationPin = L.ExtraMarkers.icon({icon: "fa-solid fa-map-pin", iconColor: "white", markerColor: "black", shape: "star"});
 L.easyButton("fa-solid fa-newspaper", function () {
     $("#newsModal").modal("show");
 }).addTo(map);
@@ -67,37 +45,31 @@ L.easyButton("fa-regular fa-flag flagIcon", function () {
 }).addTo(map);
 
 
-
 populateSelectFields().done((result) => {
     var countries = result.data;
     typeof countries;
     countries.sort((a, b) => {
-            if (a.name.toString().toLowerCase() < b.name.toString().toLowerCase()) {
-                return -1;
-            }
-            if (a.name.toString().toLowerCase() > b.name.toString().toLowerCase()) {
-                return 1;
-            }
-            return 0;
-        }),
-        $.each(countries, function (i, item) {
-            selectField.append($("<option></option>").text(countries[i].name).attr("value", countries[i].iso));
-        })
+        if (a.name.toString().toLowerCase() < b.name.toString().toLowerCase()) {
+            return -1;
+        }
+        if (a.name.toString().toLowerCase() > b.name.toString().toLowerCase()) {
+            return 1;
+        }
+        return 0;
+    }),
+    $.each(countries, function (i, item) {
+        selectField.append($("<option></option>").text(countries[i].name).attr("value", countries[i].iso));
+    })
 }).then(() => {
     $(document).ready(function () {
         function onLocationFound(e) {
             var radius = e.accuracy;
 
-            marker = L.marker(e.latlng, {
-                icon: userLocationPin
-            }).addTo(map).bindPopup("You are within " + radius + " meters from this point").openPopup();
+            marker = L.marker(e.latlng, {icon: userLocationPin}).addTo(map).bindPopup("You are within " + radius + " meters from this point").openPopup();
             L.circle(e.latlng, radius).addTo(map);
         }
         map.on("locationfound", onLocationFound);
-        map.locate({
-            setView: true,
-            maxZoom: 20
-        });
+        map.locate({setView: true, maxZoom: 20});
 
         if ("geolocation" in navigator) {
             // check geolocation available
@@ -126,7 +98,7 @@ populateSelectFields().done((result) => {
                         document.getElementById("countrySelect").value = upperCaseCountryCode;
 
                         getCountryBorder(upperCaseCountryCode).done((result) => {
-                            
+
                             border = L.geoJSON(result.data.geometry).addTo(map);
                             map.fitBounds(border.getBounds());
                         })
@@ -136,16 +108,13 @@ populateSelectFields().done((result) => {
                             airports.forEach(element => {
 
                                 markers.addLayer(L.marker([
-                                    element.latitude,
-                                    element.longitude
-                                ], {
-                                    icon: airportIcon
-                                }).bindPopup(element.name + "<br> <a href=https://" + element.wikipedia_page + ">Wikipedia Link</a>"));
+                                    element.latitude, element.longitude
+                                ], {icon: airportIcon}).bindPopup(element.name + "<br> <a href=https://" + element.wikipedia_page + ">Wikipedia Link</a>"));
                             });
 
                             map.addLayer(markers);
                         })
-                     
+
                         getCountryData(localCountryCode);
 
 
@@ -157,58 +126,53 @@ populateSelectFields().done((result) => {
                       <div class="col-md-6 mb-4">
                         <div class="bg-image hover-overlay ripple shadow-2-strong rounded-5" data-mdb-ripple-color="light">
                           <img src="${
-                                            result.articles[i].media
-                                        }" class="img-fluid" />
+                                    result.articles[i].media
+                                }" class="img-fluid" />
                           <a href="${
-                                            result.articles[i].link
-                                        }">
+                                    result.articles[i].link
+                                }">
                             <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
                           </a>
                         </div>
                       </div>
                       <div class="col-md-6 mb-4">
                       <span class="badge bg-danger px-2 py-1 shadow-1-strong mb-3">${
-                                            result.articles[i].author
-                                        }</span>
+                                    result.articles[i].author
+                                }</span>
                       <h4><strong>${
-                                            result.articles[i].title
-                                        }</strong></h4>
+                                    result.articles[i].title
+                                }</strong></h4>
                       <p class="text-muted">
                         ${
-                                            result.articles[i].summary
-                                        }
+                                    result.articles[i].summary
+                                }
                       </p>
                       <a href="${
-                                            result.articles[i].link
-                                        }" type="button" class="btn btn-primary">Read more</a>
+                                    result.articles[i].link
+                                }" type="button" class="btn btn-primary">Read more</a>
                     </div>`);
                             });
                         })
 
-                        getCurrentWeatherData(position.coords.latitude,position.coords.longitude,city);
+                        getCurrentWeatherData(position.coords.latitude, position.coords.longitude, city);
                     }
                 }).then();
                 getWikipediaSearch(position.coords.latitude, position.coords.longitude).done((result) => {
-                  
+
                     $.each(result.data, function (i, item) {
                         markers.addLayer(L.marker([
-                            item.lat,
-                            item.lng
-                        ], {
-                            icon: wikipediaIcon
-                        }).bindPopup(item.title + "<br> <a href=https://" + item.wikipediaUrl + ">Wikipedia Link</a>"));
+                            item.lat, item.lng
+                        ], {icon: wikipediaIcon}).bindPopup(item.title + "<br> <a href=https://" + item.wikipediaUrl + ">Wikipedia Link</a>"));
                     });
                     map.addLayer(markers);
                 });
                 getLocalRestaurants(position.coords.latitude, position.coords.longitude).done((result) => {
 
-               
+
                     $.each(result.data[0].pois, function (i, item) {
                         markers.addLayer(L.marker([
                             item.coordinates.latitude, item.coordinates.longitude
-                        ], {
-                            icon: restaurantMarker
-                        }).bindPopup(item.name + "<br>" + item.snippet));
+                        ], {icon: restaurantMarker}).bindPopup(item.name + "<br>" + item.snippet));
                     });
                     map.addLayer(markers);
                 })
@@ -219,39 +183,35 @@ populateSelectFields().done((result) => {
                     $.each(result.data[0].pois, function (i, item) {
                         markers.addLayer(L.marker([
                             item.coordinates.latitude, item.coordinates.longitude
-                        ], {
-                            icon: locationPinIcon
-                        }).bindPopup(item.name + "<br>" + item.snippet));
+                        ], {icon: locationPinIcon}).bindPopup(item.name + "<br>" + item.snippet));
                     });
                     map.addLayer(markers);
                 })
-                    $.ajax({
-                        url: "libs/php/populateCurrencyConverter.php",
-                        type: "GET",
-                        dataType: "json",
-                        success: function (result) {
-                       
-                            let currency = result.symbols;
-                            for (const property in currency) {
-                                $("#currencyIn").append($("<option></option>").text(currency[property]).attr("value", property));
-                                $("#currencyOut").append($("<option></option>").text(currency[property]).attr("value", property));
-                            }
+                $.ajax({
+                    url: "libs/php/populateCurrencyConverter.php",
+                    type: "GET",
+                    dataType: "json",
+                    success: function (result) {
+
+                        let currency = result.symbols;
+                        for (const property in currency) {
+                            $("#currencyIn").append($("<option></option>").text(currency[property]).attr("value", property));
+                            $("#currencyOut").append($("<option></option>").text(currency[property]).attr("value", property));
                         }
-                    });
+                    }
+                });
             }, function () {
                 $.ajax({
                     url: "libs/php/getIpGeoLocation.php",
                     type: "GET",
                     dataType: "json",
                     success: function (result) {
-                   
+
                         var ipLocationLat = result.location.latitude;
                         var ipLocationLng = result.location.longitude;
                         L.marker([
                             result.location.latitude, result.location.longitude
-                        ], {
-                            icon: userLocationPin
-                        }).addTo(map).bindPopup("You are here").openPopup();
+                        ], {icon: userLocationPin}).addTo(map).bindPopup("You are here").openPopup();
 
                         $.ajax({
                             url: "libs/php/getOpencageApi.php",
@@ -262,7 +222,7 @@ populateSelectFields().done((result) => {
                                 lng: ipLocationLng
                             },
                             success: function (result) {
-                        
+
                                 var city = result.data.results[0].components.city;
                                 var countryName = result.data.results[0].components.country;
                                 var localCountryCode = result.data.results[0].components.country_code;
@@ -277,105 +237,95 @@ populateSelectFields().done((result) => {
                                     airports.forEach(element => {
 
                                         markers.addLayer(L.marker([
-                                            element.latitude,
-                                            element.longitude
-                                        ], {
-                                            icon: airportIcon
-                                        }).bindPopup(element.name + "<br> <a href=https://" + element.wikipedia_page + ">Wikipedia Link</a>"));
+                                            element.latitude, element.longitude
+                                        ], {icon: airportIcon}).bindPopup(element.name + "<br> <a href=https://" + element.wikipedia_page + ">Wikipedia Link</a>"));
 
                                         map.addLayer(markers);
                                     });
                                 })
-                              
+
                                 getCountryData(localCountryCode);
                                 getNews(countryName).done((result) => {
-                                   console.log(result)
+                                    console.log(result)
                                     document.getElementById("modalTitle").innerText = `News in ${countryName}`;
                                     $.each(result.articles, function (i, item) {
                                         $("#newsData").append(`<div class="row gx-5">
                     <div class="col-md-6 mb-4">
                       <div class="bg-image hover-overlay ripple shadow-2-strong rounded-5" data-mdb-ripple-color="light">
                         <img src="${
-                                                result.articles[i].media
-                                            }" class="img-fluid" />
+                                            result.articles[i].media
+                                        }" class="img-fluid" />
                         <a href="${
-                                                result.articles[i].link
-                                            }">
+                                            result.articles[i].link
+                                        }">
                           <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
                         </a>
                       </div>
                     </div>
                     <div class="col-md-6 mb-4">
                     <span class="badge bg-danger px-2 py-1 shadow-1-strong mb-3">${
-                                                result.articles[i].author
-                                            }</span>
+                                            result.articles[i].author
+                                        }</span>
                     <h4><strong>${
-                                                result.articles[i].title
-                                            }</strong></h4>
+                                            result.articles[i].title
+                                        }</strong></h4>
                     <p class="text-muted">
                       ${
-                                                result.articles[i].summary
-                                            }
+                                            result.articles[i].summary
+                                        }
                     </p>
                     <a href="${
-                                                result.articles[i].link
-                                            }" type="button" class="btn btn-primary">Read more</a>
+                                            result.articles[i].link
+                                        }" type="button" class="btn btn-primary">Read more</a>
                   </div>`);
                                     });
                                 });
 
 
-                                getCurrentWeatherData(ipLocationLat,ipLocationLng,city);
+                                getCurrentWeatherData(ipLocationLat, ipLocationLng, city);
                             }
                         }).then();
-                         getWikipediaSearch(ipLocationLat,ipLocationLng).done((result)=>{
-                                $.each(result.data, function (i, item) {
-                                    markers.addLayer(L.marker([
-                                        item.lat,
-                                        item.lng
-                                    ], {
-                                        icon: wikipediaIcon
-                                    }).bindPopup(item.title + "<br> <a href=https://" + item.wikipediaUrl + ">Wikipedia Link</a>"));
-                                });
-                                map.addLayer(markers);
-                         })
+                        getWikipediaSearch(ipLocationLat, ipLocationLng).done((result) => {
+                            $.each(result.data, function (i, item) {
+                                markers.addLayer(L.marker([
+                                    item.lat, item.lng
+                                ], {icon: wikipediaIcon}).bindPopup(item.title + "<br> <a href=https://" + item.wikipediaUrl + ">Wikipedia Link</a>"));
+                            });
+                            map.addLayer(markers);
+                        })
                         getLocalRestaurants(ipLocationLat, ipLocationLng).done((result) => {
-                         
+
                             $.each(result.data[0].pois, function (i, item) {
                                 markers.addLayer(L.marker([
                                     item.coordinates.latitude, item.coordinates.longitude
-                                ], {
-                                    icon: restaurantMarker
-                                }).bindPopup(item.name + "<br>" + item.snippet));
+                                ], {icon: restaurantMarker}).bindPopup(item.name + "<br>" + item.snippet));
                             });
                             map.addLayer(markers);
                         });
 
                         getLocalHighlights(ipLocationLat, ipLocationLng).done((result) => {
-                          
+
                             $.each(result.data[0].pois, function (i, item) {
                                 markers.addLayer(L.marker([
                                     item.coordinates.latitude, item.coordinates.longitude
-                                ], {
-                                    icon: locationPinIcon
-                                }).bindPopup(item.name + "<br>" + item.snippet));
+                                ], {icon: locationPinIcon}).bindPopup(item.name + "<br>" + item.snippet));
                             });
                             map.addLayer(markers);
                         })
 
-                            $.ajax({
-                                url: "libs/php/populateCurrencyConverter.php",
-                                type: "GET",
-                                dataType: "json",
-                                success: function (result) {
-                                 
-                                    let currency = result.symbols;
-                                    for (const property in currency) {
-                                        $("#currencyIn").append($("<option></option>").text(currency[property]).attr("value", property));
-                                        $("#currencyOut").append($("<option></option>").text(currency[property]).attr("value", property));
-                                    }
+                        $.ajax({
+                            url: "libs/php/populateCurrencyConverter.php",
+                            type: "GET",
+                            dataType: "json",
+                            success: function (result) {
+
+                                let currency = result.symbols;
+                                for (const property in currency) {
+                                    $("#currencyIn").append($("<option></option>").text(currency[property]).attr("value", property));
+                                    $("#currencyOut").append($("<option></option>").text(currency[property]).attr("value", property));
                                 }
-                            });
+                            }
+                        });
 
                     }
                 });
@@ -388,11 +338,10 @@ populateSelectFields().done((result) => {
 
     });
 })
-let borders;
 $("#countrySelect").on("change", function () {
     const chosenValue = this.value;
     let lowerCaseValue = chosenValue.toLowerCase();
-  
+
 
     if (markers) {
         markers.clearLayers()
@@ -427,9 +376,7 @@ $("#countrySelect").on("change", function () {
                 markers.addLayer(L.marker([
                     result.data[i].coordinates.latitude,
                     result.data[i].coordinates.longitude,
-                ], {
-                    icon: poiIcon
-                }).bindPopup(result.data[i].name + "<br> <a href=" + result.data[i].attribution[1].url + ">More Info</a>"));
+                ], {icon: poiIcon}).bindPopup(result.data[i].name + "<br> <a href=" + result.data[i].attribution[1].url + ">More Info</a>"));
             });
             map.addLayer(markers);
 
@@ -441,9 +388,7 @@ $("#countrySelect").on("change", function () {
             markers.addLayer(L.marker([
                 result.data[i].latitude,
                 result.data[i].longitude
-            ], {
-                icon: airportIcon
-            }).bindPopup(result.data[i].name + "<br> <a href=https://" + result.data[i].pop_page + ">Wikipedia Link</a>"));
+            ], {icon: airportIcon}).bindPopup(result.data[i].name + "<br> <a href=https://" + result.data[i].pop_page + ">Wikipedia Link</a>"));
         });
         map.addLayer(markers);
     })
@@ -457,30 +402,30 @@ $("#countrySelect").on("change", function () {
     <div class="col-md-6 mb-4">
       <div class="bg-image hover-overlay ripple shadow-2-strong rounded-5" data-mdb-ripple-color="light">
         <img src="${
-                    result.articles[i].media
-                }" class="img-fluid" />
+                result.articles[i].media
+            }" class="img-fluid" />
         <a href="${
-                    result.articles[i].link
-                }">
+                result.articles[i].link
+            }">
           <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
         </a>
       </div>
     </div>
     <div class="col-md-6 mb-4">
     <span class="badge bg-danger px-2 py-1 shadow-1-strong mb-3">${
-                    result.articles[i].author
-                }</span>
+                result.articles[i].author
+            }</span>
     <h4><strong>${
-                    result.articles[i].title
-                }</strong></h4>
+                result.articles[i].title
+            }</strong></h4>
     <p class="text-muted">
       ${
-                    result.articles[i].summary
-                }
+                result.articles[i].summary
+            }
     </p>
     <a href="${
-                    result.articles[i].link
-                }" type="button" class="btn btn-primary">Read more</a>
+                result.articles[i].link
+            }" type="button" class="btn btn-primary">Read more</a>
   </div>`);
         });
 
@@ -495,7 +440,9 @@ $("#countrySelect").on("change", function () {
         },
         success: function (result) {
             console.log(result)
-            $("#currentCountryCurrency").html(`<h4> Current Country Currency: ${result.data.results[0].annotations.currency.name}</h4>`);
+            $("#currentCountryCurrency").html(`<h4> Current Country Currency: ${
+                result.data.results[0].annotations.currency.name
+            }</h4>`);
             getCurrentWeatherData(result.data.results[0].geometry.lat, result.data.results[0].geometry.lng, selectedText);
             getCountryData(chosenValue)
 
@@ -510,7 +457,7 @@ $("#currencyOut").on("change", function () {
     convertCurrency(toCountry, fromCountry, amount);
 });
 
-//Convert Currency Function 
+// Convert Currency Function
 const convertCurrency = (toCountry, fromCountry, amount) => {
     $.ajax({
         url: "libs/php/convertCurrency.php",
@@ -529,18 +476,13 @@ const convertCurrency = (toCountry, fromCountry, amount) => {
     });
 }
 
-//Get News Function to populate news modal
+// Get News Function to populate news modal
 const getNews = (country) => {
-    return $.ajax({
-        url: "libs/php/getNews.php",
-        type: "GET",
-        dataType: "json",
-        data: {
+    return $.ajax({url: "libs/php/getNews.php", type: "GET", dataType: "json", data: {
             country
-        }
-    })
+        }})
 }
-//getCountryData Function 
+// getCountryData Function
 const getCountryData = (chosenValue) => {
     $.ajax({
         url: "libs/php/getCountryData.php",
@@ -561,14 +503,13 @@ const getCountryData = (chosenValue) => {
             $("#countryPopulation").html(result.population.toLocaleString("en-US"));
             $("#countryTimezone").html(result.timezone.timezone + " Code: " + result.timezone.code);
             $("#countryWiki").html(`<a href=${
-                        result.wiki_url
-                    }> More Info </a>`);
+                result.wiki_url
+            }> More Info </a>`);
             $("#countryCurrency").html(result.currency.code);
         }
     });
 
 }
-
 
 
 const getCurrentWeatherData = (lat, lon, selectedCountry = '') => {
@@ -613,7 +554,7 @@ const setCurrentWeatherData = (result) => {
     $("#wrapper-pressure").html(pressure);
     $("#wrapper-humidity").html(humidity + "°C");
 
-    //hourly temp
+    // hourly temp
     for (let index = 0; index < 6; index++) {
         const hour = Math.round(result.data.hourly[index].temp);
         if (index == 0) {
@@ -690,29 +631,19 @@ const getLocalRestaurants = (lat, lng) => {
         data: {
             lat,
             lng
-        },
+        }
     });
 }
 const getCountryBorder = (countryCode) => {
-    return $.ajax({
-        url: "libs/php/getCountryBorder.php",
-        type: "GET",
-        dataType: "json",
-        data: {
+    return $.ajax({url: "libs/php/getCountryBorder.php", type: "GET", dataType: "json", data: {
             countryCode
-        }
-    });
+        }});
 
 }
 const getAirports = (countryCode) => {
-    return $.ajax({
-        url: "libs/php/getAirports.php",
-        type: "GET",
-        dataType: "json",
-        data: {
+    return $.ajax({url: "libs/php/getAirports.php", type: "GET", dataType: "json", data: {
             countryCode
-        }
-    });
+        }});
 
 }
 const getLocalHighlights = (lat, lng) => {
