@@ -123,7 +123,6 @@ populateSelectFields().done((result) => {
                         var countryName = result.data.results[0].components.country;
                         var localCountryCode = result.data.results[0].components.country_code;
                         var upperCaseCountryCode = localCountryCode.toUpperCase();
-                        // $("#countrySelect").val(upperCaseCountryCode).change();
                         document.getElementById("countrySelect").value = upperCaseCountryCode;
 
                         getCountryBorder(upperCaseCountryCode).done((result) => {
@@ -395,11 +394,11 @@ $("#countrySelect").on("change", function () {
     let lowerCaseValue = chosenValue.toLowerCase();
   
 
-    // console.log(borders.getLayers().length);
     if (markers) {
         markers.clearLayers()
-        $('.leaflet-interactive').remove()
+        $('path.leaflet-interactive').remove()
         $('.leaflet-popup').remove()
+        $('.leaflet-marker-icon').remove()
         $('.leaflet-marker-shadow').remove()
     }
     let selectedText = $("#countrySelect :selected").text();
