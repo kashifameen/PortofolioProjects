@@ -491,9 +491,10 @@ $("#countrySelect").on("change", function () {
         type: "GET",
         dataType: "json",
         data: {
-            country: selectedText
+            country: chosenValue
         },
         success: function (result) {
+            console.log(result)
             $("#currentCountryCurrency").html(`<h4> Current Country Currency: ${result.data.results[0].annotations.currency.name}</h4>`);
             getCurrentWeatherData(result.data.results[0].geometry.lat, result.data.results[0].geometry.lng, selectedText);
             getCountryData(chosenValue)
@@ -549,6 +550,7 @@ const getCountryData = (chosenValue) => {
             country: chosenValue
         },
         success: function (result) {
+            console.log(result)
             $("#countryFlag").html(result.flag.emoji);
             $("#countryName").html(result.name);
             $("#capitalCity").html(result.capital.name);
