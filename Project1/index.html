@@ -5,18 +5,14 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1.0, user-scalable=no">
-        
+        <meta name="viewport" content="width=device-width, initial-scale=1 maximum-scale=1.0, user-scalable=no">       
         <link rel="stylesheet" href="libs/css/bootstrap.min.css">
         <link rel="stylesheet" href="libs/css/leaflet.css">
         <link rel="stylesheet" href="libs/css/easy-button.css">
         <link rel="stylesheet" href="libs/css/leaflet.extra-markers.min.css">
-
-
         <link rel="stylesheet" href="libs/css/MarkerCluster.css">
         <link rel="stylesheet" href="libs/css/MarkerCluster.Default.css">
         <link rel="stylesheet" href="libs/css/style.css">
-
         <title>Gazetteer</title>
         <link rel="icon" type="image/x-icon" href="images/favicon.ico">
 
@@ -27,53 +23,34 @@
               <a class="navbar-brand" href="#">Gazetteer</a>
                   <select id="countrySelect" class="form-select scrollable-menu w-auto justify-content-end">
                     <option>Choose Country</option>
-
-                  </select>
-                
-                
+                  </select>                              
               </div>
             </div>
           </nav>
-        <div id="map"></div><!-- Button trigger modal -->
-          
-          
-          <!-- Modal -->
-          <!-- Modal HTML -->
+        <div id="map"></div>
           <div class="modal fade" id="newsModal" tabindex="-1" role="dialog" aria-labelledby="myModal" aria-hidden="true">
             <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document">
-
               <div class="modal-content" id="modal-content">
                 <div class="modal-header">
                   <h3 class="modal-title newsTitle" id="modalTitle"></h5>
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-
-
-                  
                 </div>
                 <div class="modal-body">
                   <div id="newsData"></div>
                 </div>
-                
-
-                </div>
-                
-              
+                </div>            
               </div>
             </div>
           </div>
 <div id="weatherModal" class="modal fade" tabindex="-1">
   <div class="modal-dialog">
-      <div class>
-        
+      <div class>  
             <div class="row d-flex justify-content-center align-items-center h-100">
               <div class="col-md-9 col-lg-7 col-xl-5 w-100">
-        
-                <div id="wrapper-bg" class="card text-white bg-image shadow-4-strong"
-                  >
+                <div id="wrapper-bg" class="card text-white bg-image shadow-4-strong">
                   <!-- Main current data -->
                   <div class="card-header p-4 border-0">
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-
                     <div class="text-center mb-3">
                       <p class="h2 mb-1" id="wrapper-name"></p>
                       <p class="mb-1" id="wrapper-description"></p>
