@@ -1,4 +1,4 @@
-html, body, #container /*, and all other map parent selectors*/ {
+html, body {
     height: 100%;
     width: 100%;
   }
@@ -10,9 +10,6 @@ html, body, #container /*, and all other map parent selectors*/ {
     height: calc(100vh - 50px);
   }
 
-.star {
-    font-size: 1.5em;
-}
 .scrollable-menu {
     height: auto;
     max-height: 200px;
@@ -101,8 +98,8 @@ html, body, #container /*, and all other map parent selectors*/ {
   }
 
   .starBtn {
-      border-radius: 16px !important;
-  }
+     border-radius: 16px !important;
+  } 
   .weatherIcon {
       color: lightblue;
   }
