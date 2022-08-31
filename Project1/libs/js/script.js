@@ -3,11 +3,6 @@ let selectField = $("#countrySelect");
 var marker;
 var markers = L.markerClusterGroup();
 selectField.prop("selectedIndex", 0);
-const populateSelectFields = () => {
-
-    return $.ajax({url: "libs/php/populateSelectFields.php", type: "GET", dataType: "json"})
-}
-
 let map = L.map("map").setView([
     0.0, 0.0
 ], 13);
