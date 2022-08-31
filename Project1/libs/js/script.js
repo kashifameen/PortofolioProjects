@@ -3,6 +3,11 @@ let selectField = $("#countrySelect");
 var marker;
 var markers = L.markerClusterGroup();
 selectField.prop("selectedIndex", 0);
+const populateSelectFields = () => {
+
+    return $.ajax({url: "libs/php/populateSelectFields.php", type: "GET", dataType: "json"})
+}
+
 let map = L.map("map").setView([
     0.0, 0.0
 ], 13);
@@ -548,7 +553,7 @@ const setCurrentWeatherData = (result) => {
     $("#wrapper-description").html(description);
     $("#wrapper-temp").html(temp + "°C");
     $("#wrapper-pressure").html(pressure);
-    $("#wrapper-humidity").html(humidity + "°C");
+    $("#wrapper-humidity").html(humidity + "%");
 
     // hourly temp
     for (let index = 0; index < 6; index++) {
