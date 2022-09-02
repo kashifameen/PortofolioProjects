@@ -104,8 +104,7 @@ populateSelectFields().done((result) => {
                     },
                     success: function (result) {
                         console.log(result)
-                        document.getElementById("currencyIn").value = result.data.results[0].annotations.currency.iso_code;
-                        document.getElementById("currencyOut").value = "USD";
+                       
                         var city = result.data.results[0].components.city;
                         document.getElementById("wrapper-name").innerHTML = city;
 
@@ -121,8 +120,9 @@ populateSelectFields().done((result) => {
                         })
 
                         getAirports(upperCaseCountryCode).done((result) => {
+                            console.log(result)
                             let airports = result.data;
-                            airports.forEach(element => {
+                             airports.forEach(element => {
 
                                 markers.addLayer(L.marker([
                                     element.latitude, element.longitude
@@ -215,7 +215,6 @@ populateSelectFields().done((result) => {
                             $("#currencyIn").append($("<option></option>").text(currency[property]).attr("value", property));
                             $("#currencyOut").append($("<option></option>").text(currency[property]).attr("value", property));
                         }
-                        // document.getElementById("currencyIn").value = 'HELLO';
 
                     }
                 });
@@ -309,14 +308,31 @@ populateSelectFields().done((result) => {
                 
                     });
                 
-            
+                    $.ajax({
+                        url: "libs/php/convertCountryToLatLng.php",
+                        type: "GET",
+                        dataType: "json",
+                        data: {
+                            country: chosenValue
+                        },
+                        success: function (result) {
+                            console.log(result)
+                            document.getElementById("currencyIn").value = result.data.results[0].annotations.currency.iso_code;
+                            document.getElementById("currencyOut").value = "USD";
+                            
+                            getCurrentWeatherData(result.data.results[0].geometry.lat, result.data.results[0].geometry.lng, selectedText);
+                            getCountryData(chosenValue)
+                            
+                
+                        }
                     });
                     $.ajax({
                         url: "libs/php/populateCurrencyConverter.php",
                         type: "GET",
                         dataType: "json",
                         success: function (result) {
-                            
+                             document.getElementById("currencyIn").value = result.data.results[0].annotations.currency.iso_code;
+                        document.getElementById("currencyOut").value = "USD";
                             let currency = result.symbols;
                             for (const property in currency) {
                                 $("#currencyIn").append($("<option></option>").text(currency[property]).attr("value", property));
@@ -327,7 +343,7 @@ populateSelectFields().done((result) => {
                     })
                 
 
-            
+            })
 
 
         }
@@ -338,8 +354,8 @@ populateSelectFields().done((result) => {
 $("#countrySelect").on("change", function () {
     const chosenValue = this.value;
     let lowerCaseValue = chosenValue.toLowerCase();
-
-
+    let cityName;
+    console.log(cityName)
     if (markers) {
         markers.clearLayers()
         $('path.leaflet-interactive').remove()
@@ -419,17 +435,7 @@ $("#countrySelect").on("change", function () {
         });
 
     });
-    $.ajax({
-        url:"libs/php/countryInfo.php",
-        type:"GET",
-        dataType: "json",
-        data: {
-            country: chosenValue
-        },
-        success: function(result){
-            console.log(result)
-        }
-    })
+
     $.ajax({
         url: "libs/php/convertCountryToLatLng.php",
         type: "GET",
@@ -441,12 +447,15 @@ $("#countrySelect").on("change", function () {
             console.log(result)
             document.getElementById("currencyIn").value = result.data.results[0].annotations.currency.iso_code;
             document.getElementById("currencyOut").value = "USD";
-        getCurrentWeatherData(result.data.results[0].geometry.lat, result.data.results[0].geometry.lng, selectedText);
+
+            console.log(result.data)
+           
+            getCurrentWeatherData(result.data.results[0].geometry.lat, result.data.results[0].geometry.lng, selectedText);
+            getCountryData(chosenValue)
+
 
         }
     });
-    //Update weather modal based on capital city of country.
-   
 });
 
 $("#submitBtn").on("click", function () {
@@ -505,15 +514,29 @@ const getCountryData = (chosenValue) => {
                 result.wiki_url
             }> More Info </a>`);
             $("#countryCurrency").html(result.currency.code);
+            $.ajax({
+                url: "libs/php/convertCountryToLatLng.php",
+                type: "GET",
+                dataType: "json",
+                data: {
+                    country: result.capital.name
+                },
+                success: function (result) {
+                    console.log(result)
+                   console.log('HELLO')
+                    getCurrentWeatherData(result.data.results[0].geometry.lat, result.data.results[0].geometry.lng);
+                    $("#wrapper-name").html(result.data.results[0].components.city);
 
-            
+        
+                }
+            })
         }
     });
 
 }
 
 
-const getCurrentWeatherData = (lat, lon, selectedCountry = '') => {
+const getCurrentWeatherData = (lat, lon) => {
     $.ajax({
         url: "libs/php/getCurrentWeatherData.php",
         type: "POST",
@@ -522,8 +545,8 @@ const getCurrentWeatherData = (lat, lon, selectedCountry = '') => {
             lat,
             lon
         },
-        success: function (result) { // Weather main data
-            $("#wrapper-name").html(selectedCountry);
+        success: function (result) {
+            console.log(result) // Weather main data
             setCurrentWeatherData(result)
         }
     });

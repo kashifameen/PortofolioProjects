@@ -3,7 +3,7 @@
 $curl = curl_init();
 
 curl_setopt_array($curl, [
-	CURLOPT_URL => "https://geo-services-by-mvpc-com.p.rapidapi.com/airports?". 'language=en'.'&countrycode=' . $_REQUEST['countryCode'],
+	CURLOPT_URL => "https://geo-services-by-mvpc-com.p.rapidapi.com/airports?". 'language=en'.'&countrycode=' . $_REQUEST['countryCode'].'&top_airports=true',
 	CURLOPT_RETURNTRANSFER => true,
 	CURLOPT_FOLLOWLOCATION => true,
 	CURLOPT_ENCODING => "",
