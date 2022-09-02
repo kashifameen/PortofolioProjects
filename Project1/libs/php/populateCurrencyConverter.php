@@ -18,12 +18,26 @@ curl_setopt_array($curl, [
 ]);
 
 $response = curl_exec($curl);
+$statusCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+
 $err = curl_error($curl);
 
 curl_close($curl);
 
-if ($err) {
-	echo "cURL Error #:" . $err;
+if ($statusCode != 200){
+$output['status']['code'] = "200";
+$output['status']['name'] = "ok";
+$output['status']['description'] = "success";
+$output['status']['returnedIn'] = intval((microtime(true) - $executionStartTime) * 1000) . " ms";
+$output['data'] = null;
 } else {
-	echo $response;
+	$decode = json_decode($response, true);
+	$output['status']['code'] = "200";
+	$output['status']['name'] = "ok";
+	$output['status']['description'] = "success";
+	$output['status']['returnedIn'] = intval((microtime(true) - $executionStartTime) * 1000) . " ms";
+	$output['data'] = $decode;
 }
+
+header('Content-Type: application/json; charset=UTF-8');
+echo json_encode($output);

@@ -477,6 +477,7 @@ const convertCurrency = (toCountry, fromCountry, amount) => {
             amount
         },
         success: function (result) {
+            console.log(result)
             $("#currencyOutput").html(`<input type="number" class="form-input" id="convertedAmount" placeholder="${
                 result.result
             }" disabled>`);

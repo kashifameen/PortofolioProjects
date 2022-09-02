@@ -1,28 +1,43 @@
 <?php
 
-ini_set('display_errors' , 'On');
-error_reporting(E_ALL);
+$curl = curl_init();
 
-$executionStartTime = microtime(true);
+curl_setopt_array($curl, [
+	CURLOPT_URL => "https://fixer-fixer-currency-v1.p.rapidapi.com/convert?from=".$_REQUEST['fromCountry']."&to=".$_REQUEST['toCountry']."&amount=".$_REQUEST['amount'],
+	CURLOPT_RETURNTRANSFER => true,
+	CURLOPT_FOLLOWLOCATION => true,
+	CURLOPT_ENCODING => "",
+	CURLOPT_MAXREDIRS => 10,
+	CURLOPT_TIMEOUT => 30,
+	CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+	CURLOPT_CUSTOMREQUEST => "GET",
+	CURLOPT_HTTPHEADER => [
+		"X-RapidAPI-Host: fixer-fixer-currency-v1.p.rapidapi.com",
+		"X-RapidAPI-Key: 7a75433a41msh42e7810b3e4150dp1de573jsn8cb6c6adcc65"
+	],
+]);
 
-$url='http://api.geonames.org/countryInfo?' . 'country=' . $_REQUEST['country'] . '&username=kashifameen'; 
+$response = curl_exec($curl);
+$statusCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 
-$ch = curl_init();
-curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($ch, CURLOPT_URL,$url);
+$err = curl_error($curl);
 
-$result=curl_exec($ch);
+curl_close($curl);
 
-curl_close($ch);
-
-$decode = json_decode($result,true);	 
+if ($statusCode != 200){
 $output['status']['code'] = "200";
 $output['status']['name'] = "ok";
 $output['status']['description'] = "success";
 $output['status']['returnedIn'] = intval((microtime(true) - $executionStartTime) * 1000) . " ms";
-$output['data'] = $decode;
+$output['data'] = null;
+} else {
+	$decode = json_decode($response, true);
+	$output['status']['code'] = "200";
+	$output['status']['name'] = "ok";
+	$output['status']['description'] = "success";
+	$output['status']['returnedIn'] = intval((microtime(true) - $executionStartTime) * 1000) . " ms";
+	$output['data'] = $decode;
+}
 
 header('Content-Type: application/json; charset=UTF-8');
-
-echo json_encode($output); 
+echo json_encode($output);
