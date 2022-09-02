@@ -76,19 +76,8 @@ populateSelectFields().done((result) => {
     })
 }).then(() => {
     $(document).ready(function () {
-              
-        //   function onLocationFound(e) {
-        //     var radius = e.accuracy;
-
-        //     marker = L.marker(e.latlng, {icon: userLocationPin}).addTo(map).bindPopup("You are within " + radius + " meters from this point").openPopup();
-        //     L.circle(e.latlng, radius).addTo(map);
-        // }
-        // map.on("locationfound", onLocationFound);
         map.locate({setView: true, maxZoom: 20});
-
         if ("geolocation" in navigator) {
-            // check geolocation available
-            // try to get user current location using getCurrentPosition() method
 
             navigator.geolocation.getCurrentPosition(function (position) {
                 map.setView([
@@ -104,7 +93,6 @@ populateSelectFields().done((result) => {
                     },
                     success: function (result) {
                         console.log(result)
-                       
                         var city = result.data.results[0].components.city;
                         document.getElementById("wrapper-name").innerHTML = city;
 
@@ -112,7 +100,8 @@ populateSelectFields().done((result) => {
                         var localCountryCode = result.data.results[0].components.country_code;
                         var upperCaseCountryCode = localCountryCode.toUpperCase();
                         document.getElementById("countrySelect").value = upperCaseCountryCode;
-
+                        document.getElementById("currencyIn").value = result.data.results[0].annotations.currency.iso_code;
+                        document.getElementById("currencyOut").value = "USD";
                         getCountryBorder(upperCaseCountryCode).done((result) => {
 
                             border = L.geoJSON(result.data.geometry,{color: 'purple'}).addTo(map);
@@ -138,15 +127,15 @@ populateSelectFields().done((result) => {
                         getNews(countryName).done((result) => {
                             console.log(result)
                             document.getElementById("modalTitle").innerText = `News in ${countryName}`;
-                            $.each(result.articles, function (i, item) {
+                            $.each(result.data.articles, function (i, item) {
                                 $("#newsData").append(`<div class="row gx-5">
                       <div class="col-md-6 mb-4">
                         <div class="bg-image hover-overlay ripple shadow-2-strong rounded-5" data-mdb-ripple-color="light">
                           <img src="${
-                                    result.articles[i].media
+                                    result.data.articles[i].media
                                 }" class="img-fluid" />
                           <a href="${
-                                    result.articles[i].link
+                                    result.data.articles[i].link
                                 }" target="_blank">
                             <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
                           </a>
@@ -154,18 +143,18 @@ populateSelectFields().done((result) => {
                       </div>
                       <div class="col-md-6 mb-4">
                       <span class="badge bg-danger px-2 py-1 shadow-1-strong mb-3">${
-                                    result.articles[i].author
+                                    result.data.articles[i].author
                                 }</span>
                       <h4><strong>${
-                                    result.articles[i].title
+                                    result.data.articles[i].title
                                 }</strong></h4>
                       <p class="text-muted">
                         ${
-                                    result.articles[i].summary
+                                    result.data.articles[i].summary
                                 }
                       </p>
                       <a href="${
-                                    result.articles[i].link
+                                    result.data.articles[i].link
                                 }" target="_blank" type="button" class="btn btn-primary">Read more</a>
                     </div>`);
                             });
@@ -210,7 +199,7 @@ populateSelectFields().done((result) => {
                     dataType: "json",
                     success: function (result) {
                         console.log(result)
-                        let currency = result.symbols;
+                        let currency = result.data.symbols;
                         for (const property in currency) {
                             $("#currencyIn").append($("<option></option>").text(currency[property]).attr("value", property));
                             $("#currencyOut").append($("<option></option>").text(currency[property]).attr("value", property));
@@ -218,6 +207,7 @@ populateSelectFields().done((result) => {
 
                     }
                 });
+               
             }, function () {
                 
                     var select = document.getElementById('countrySelect');
@@ -274,15 +264,15 @@ populateSelectFields().done((result) => {
                         console.log(result)
                         document.getElementById("newsData").innerHTML = "";
                         document.getElementById("modalTitle").innerHTML = `News in ${selectedText}`;
-                        $.each(result.articles, function (i, item) {
+                        $.each(result.data.articles, function (i, item) {
                             $("#newsData").append(`<div class="row gx-5">
                     <div class="col-md-6 mb-4">
                       <div class="bg-image hover-overlay ripple shadow-2-strong rounded-5" data-mdb-ripple-color="light">
                         <img src="${
-                                result.articles[i].media
+                                result.data.articles[i].media
                             }" class="img-fluid" />
                         <a href="${
-                                result.articles[i].link
+                                result.data.articles[i].link
                             }">
                           <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
                         </a>
@@ -290,18 +280,18 @@ populateSelectFields().done((result) => {
                     </div>
                     <div class="col-md-6 mb-4">
                     <span class="badge bg-danger px-2 py-1 shadow-1-strong mb-3">${
-                                result.articles[i].author
+                                result.data.articles[i].author
                             }</span>
                     <h4><strong>${
-                                result.articles[i].title
+                                result.data.articles[i].title
                             }</strong></h4>
                     <p class="text-muted">
                       ${
-                                result.articles[i].summary
+                                result.data.articles[i].summary
                             }
                     </p>
                     <a href="${
-                                result.articles[i].link
+                                result.data.articles[i].link
                             }" type="button" class="btn btn-primary">Read more</a>
                   </div>`);
                         });
@@ -331,9 +321,8 @@ populateSelectFields().done((result) => {
                         type: "GET",
                         dataType: "json",
                         success: function (result) {
-                             document.getElementById("currencyIn").value = result.data.results[0].annotations.currency.iso_code;
-                        document.getElementById("currencyOut").value = "USD";
-                            let currency = result.symbols;
+            
+                            let currency = result.data.symbols;
                             for (const property in currency) {
                                 $("#currencyIn").append($("<option></option>").text(currency[property]).attr("value", property));
                                 $("#currencyOut").append($("<option></option>").text(currency[property]).attr("value", property));
@@ -354,8 +343,6 @@ populateSelectFields().done((result) => {
 $("#countrySelect").on("change", function () {
     const chosenValue = this.value;
     let lowerCaseValue = chosenValue.toLowerCase();
-    let cityName;
-    console.log(cityName)
     if (markers) {
         markers.clearLayers()
         $('path.leaflet-interactive').remove()
@@ -402,15 +389,15 @@ $("#countrySelect").on("change", function () {
         console.log(result)
         document.getElementById("newsData").innerHTML = "";
         document.getElementById("modalTitle").innerHTML = `News in ${selectedText}`;
-        $.each(result.articles, function (i, item) {
+        $.each(result.data.articles, function (i, item) {
             $("#newsData").append(`<div class="row gx-5">
     <div class="col-md-6 mb-4">
       <div class="bg-image hover-overlay ripple shadow-2-strong rounded-5" data-mdb-ripple-color="light">
         <img src="${
-                result.articles[i].media
+                result.data.articles[i].media
             }" class="img-fluid" />
         <a href="${
-                result.articles[i].link
+                result.data.articles[i].link
             }">
           <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
         </a>
@@ -418,18 +405,18 @@ $("#countrySelect").on("change", function () {
     </div>
     <div class="col-md-6 mb-4">
     <span class="badge bg-danger px-2 py-1 shadow-1-strong mb-3">${
-                result.articles[i].author
+                result.data.articles[i].author
             }</span>
     <h4><strong>${
-                result.articles[i].title
+                result.data.articles[i].title
             }</strong></h4>
     <p class="text-muted">
       ${
-                result.articles[i].summary
+                result.data.articles[i].summary
             }
     </p>
     <a href="${
-                result.articles[i].link
+                result.data.articles[i].link
             }" type="button" class="btn btn-primary">Read more</a>
   </div>`);
         });
@@ -479,7 +466,7 @@ const convertCurrency = (toCountry, fromCountry, amount) => {
         success: function (result) {
             console.log(result)
             $("#currencyOutput").html(`<input type="number" class="form-input" id="convertedAmount" placeholder="${
-                result.result
+                result.data.result
             }" disabled>`);
         }
     });
@@ -502,29 +489,28 @@ const getCountryData = (chosenValue) => {
         },
         success: function (result) {
             console.log(result)
-            $("#countryFlag").html(result.flag.emoji);
-            $("#countryName").html(result.name);
-            $("#capitalCity").html(result.capital.name);
-            let objects = Object.values(result.languages);
+            $("#countryFlag").html(result.data.flag.emoji);
+            $("#countryName").html(result.data.name);
+            $("#capitalCity").html(result.data.capital.name);
+            let objects = Object.values(result.data.languages);
             $.each(objects, function (i, language) {
                 $("#countryLanguages").append(language + ", ");
             });
-            $("#countryPopulation").html(result.population.toLocaleString("en-US"));
-            $("#countryTimezone").html(result.timezone.timezone + " Code: " + result.timezone.code);
+            $("#countryPopulation").html(result.data.population.toLocaleString("en-US"));
+            $("#countryTimezone").html(result.data.timezone.timezone + " Code: " + result.data.timezone.code);
             $("#countryWiki").html(`<a href=${
                 result.wiki_url
             }> More Info </a>`);
-            $("#countryCurrency").html(result.currency.code);
+            $("#countryCurrency").html(result.data.currency.code);
             $.ajax({
                 url: "libs/php/convertCountryToLatLng.php",
                 type: "GET",
                 dataType: "json",
                 data: {
-                    country: result.capital.name
+                    country: result.data.capital.name
                 },
                 success: function (result) {
                     console.log(result)
-                   console.log('HELLO')
                     getCurrentWeatherData(result.data.results[0].geometry.lat, result.data.results[0].geometry.lng);
                     $("#wrapper-name").html(result.data.results[0].components.city);
 
