@@ -1,7 +1,9 @@
 
 let selectField = $("#countrySelect");
 var marker;
-var markers = L.markerClusterGroup();
+var markers = L.markerClusterGroup(
+    {polygonOptions: {weight: 1.5, color: '#fff', opacity: 1}}
+);
 selectField.prop("selectedIndex", 0);
 const populateSelectFields = () => {
 
@@ -54,7 +56,9 @@ L.easyButton("fa-regular fa-flag flagIcon", function () {
     $("#countryModal").modal("show");
 }).addTo(map);
 
-
+window.addEventListener('load',function(){
+    document.querySelector('body').classList.add("loaded")  
+  });  
 populateSelectFields().done((result) => {
     var countries = result.data;
     typeof countries;
@@ -72,13 +76,14 @@ populateSelectFields().done((result) => {
     })
 }).then(() => {
     $(document).ready(function () {
-        function onLocationFound(e) {
-            var radius = e.accuracy;
+              
+        //   function onLocationFound(e) {
+        //     var radius = e.accuracy;
 
-            marker = L.marker(e.latlng, {icon: userLocationPin}).addTo(map).bindPopup("You are within " + radius + " meters from this point").openPopup();
-            L.circle(e.latlng, radius).addTo(map);
-        }
-        map.on("locationfound", onLocationFound);
+        //     marker = L.marker(e.latlng, {icon: userLocationPin}).addTo(map).bindPopup("You are within " + radius + " meters from this point").openPopup();
+        //     L.circle(e.latlng, radius).addTo(map);
+        // }
+        // map.on("locationfound", onLocationFound);
         map.locate({setView: true, maxZoom: 20});
 
         if ("geolocation" in navigator) {
@@ -98,9 +103,11 @@ populateSelectFields().done((result) => {
                         lng: position.coords.longitude
                     },
                     success: function (result) {
+                        console.log(result)
+                        document.getElementById("currencyIn").value = result.data.results[0].annotations.currency.iso_code;
+                        document.getElementById("currencyOut").value = "USD";
                         var city = result.data.results[0].components.city;
                         document.getElementById("wrapper-name").innerHTML = city;
-                        document.getElementById("currentCountryCurrency").innerHTML = "<h4> Current Country Currency: " + result.data.results[0].annotations.currency.name + "</h4>";
 
                         var countryName = result.data.results[0].components.country;
                         var localCountryCode = result.data.results[0].components.country_code;
@@ -109,7 +116,7 @@ populateSelectFields().done((result) => {
 
                         getCountryBorder(upperCaseCountryCode).done((result) => {
 
-                            border = L.geoJSON(result.data.geometry).addTo(map);
+                            border = L.geoJSON(result.data.geometry,{color: 'purple'}).addTo(map);
                             map.fitBounds(border.getBounds());
                         })
 
@@ -119,7 +126,7 @@ populateSelectFields().done((result) => {
 
                                 markers.addLayer(L.marker([
                                     element.latitude, element.longitude
-                                ], {icon: airportIcon}).bindPopup(element.name + "<br> <a href=https://" + element.wikipedia_page + ">Wikipedia Link</a>"));
+                                ], {icon: airportIcon},).bindPopup(element.name + "<br> <a href=https://" + element.wikipedia_page + ">Wikipedia Link</a>"));
                             });
 
                             map.addLayer(markers);
@@ -140,7 +147,7 @@ populateSelectFields().done((result) => {
                                 }" class="img-fluid" />
                           <a href="${
                                     result.articles[i].link
-                                }">
+                                }" target="_blank">
                             <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
                           </a>
                         </div>
@@ -159,7 +166,7 @@ populateSelectFields().done((result) => {
                       </p>
                       <a href="${
                                     result.articles[i].link
-                                }" type="button" class="btn btn-primary">Read more</a>
+                                }" target="_blank" type="button" class="btn btn-primary">Read more</a>
                     </div>`);
                             });
                         })
@@ -202,145 +209,125 @@ populateSelectFields().done((result) => {
                     type: "GET",
                     dataType: "json",
                     success: function (result) {
-
+                        console.log(result)
                         let currency = result.symbols;
                         for (const property in currency) {
                             $("#currencyIn").append($("<option></option>").text(currency[property]).attr("value", property));
                             $("#currencyOut").append($("<option></option>").text(currency[property]).attr("value", property));
                         }
+                        // document.getElementById("currencyIn").value = 'HELLO';
+
                     }
                 });
             }, function () {
-                $.ajax({
-                    url: "libs/php/getIpGeoLocation.php",
-                    type: "GET",
-                    dataType: "json",
-                    success: function (result) {
+                
+                    var select = document.getElementById('countrySelect');
+                    var chosenValue = select.options[select.selectedIndex].value;
+                    
+                    let lowerCaseValue = chosenValue.toLowerCase();
 
-                        var ipLocationLat = result.location.latitude;
-                        var ipLocationLng = result.location.longitude;
-                        L.marker([
-                            result.location.latitude, result.location.longitude
-                        ], {icon: userLocationPin}).addTo(map).bindPopup("You are here").openPopup();
-
-                        $.ajax({
-                            url: "libs/php/getOpencageApi.php",
-                            type: "POST",
-                            dataType: "json",
-                            data: {
-                                lat: ipLocationLat,
-                                lng: ipLocationLng
-                            },
-                            success: function (result) {
-
-                                var city = result.data.results[0].components.city;
-                                var countryName = result.data.results[0].components.country;
-                                var localCountryCode = result.data.results[0].components.country_code;
-                                var upperCaseCountryCode = localCountryCode.toUpperCase();
-                                $("#countrySelect").val(upperCaseCountryCode).change();
-
-                                document.getElementById("wrapper-name").innerHTML = city;
-                                document.getElementById("currentCountryCurrency").innerHTML = "<h4> Current Country Currency: " + result.data.results[0].annotations.currency.name + "</h4>";
-                                document.getElementById("countrySelect").value = upperCaseCountryCode;
-                                getAirports(upperCaseCountryCode).done((result) => {
-                                    let airports = result.data;
-                                    airports.forEach(element => {
-
-                                        markers.addLayer(L.marker([
-                                            element.latitude, element.longitude
-                                        ], {icon: airportIcon}).bindPopup(element.name + "<br> <a href=https://" + element.wikipedia_page + ">Wikipedia Link</a>"));
-
-                                        map.addLayer(markers);
-                                    });
-                                })
-
-                                getCountryData(localCountryCode);
-                                getNews(countryName).done((result) => {
-                                    console.log(result)
-                                    document.getElementById("modalTitle").innerText = `News in ${countryName}`;
-                                    $.each(result.articles, function (i, item) {
-                                        $("#newsData").append(`<div class="row gx-5">
+                    console.log(chosenValue)
+                    console.log(lowerCaseValue)
+                
+                    if (markers) {
+                        markers.clearLayers()
+                        $('path.leaflet-interactive').remove()
+                        $('.leaflet-popup').remove()
+                        $('.leaflet-marker-icon').remove()
+                        $('.leaflet-marker-shadow').remove()
+                    }
+                    let selectedText = $("#countrySelect :selected").text();
+                    getCountryBorder(chosenValue).done((result) => {
+                        border = L.geoJSON(result.data.geometry).addTo(map);
+                        map.fitBounds(border.getBounds());
+                    })
+                
+                    $.ajax({
+                        url: "libs/php/getCountryAttractions.php",
+                        type: "GET",
+                        dataType: "json",
+                        data: {
+                            countryCode: lowerCaseValue
+                        },
+                        success: function (result) {
+                            $.each(result.data, function (i, item) {
+                                markers.addLayer(L.marker([
+                                    result.data[i].coordinates.latitude,
+                                    result.data[i].coordinates.longitude,
+                                ], {icon: poiIcon}).bindPopup(result.data[i].name + "<br> <a href=" + result.data[i].attribution[1].url + ">More Info</a>"));
+                            });
+                            map.addLayer(markers);
+                
+                        }
+                    });
+                
+                    getAirports(chosenValue).done((result) => {
+                        $.each(result.data, function (i, item) {
+                            markers.addLayer(L.marker([
+                                result.data[i].latitude,
+                                result.data[i].longitude
+                            ], {icon: airportIcon}).bindPopup(result.data[i].name + "<br> <a href=https://" + result.data[i].pop_page + ">Wikipedia Link</a>"));
+                        });
+                        map.addLayer(markers);
+                    })
+                
+                    getNews(selectedText).done((result) => {
+                        console.log(result)
+                        document.getElementById("newsData").innerHTML = "";
+                        document.getElementById("modalTitle").innerHTML = `News in ${selectedText}`;
+                        $.each(result.articles, function (i, item) {
+                            $("#newsData").append(`<div class="row gx-5">
                     <div class="col-md-6 mb-4">
                       <div class="bg-image hover-overlay ripple shadow-2-strong rounded-5" data-mdb-ripple-color="light">
                         <img src="${
-                                            result.articles[i].media
-                                        }" class="img-fluid" />
+                                result.articles[i].media
+                            }" class="img-fluid" />
                         <a href="${
-                                            result.articles[i].link
-                                        }">
+                                result.articles[i].link
+                            }">
                           <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
                         </a>
                       </div>
                     </div>
                     <div class="col-md-6 mb-4">
                     <span class="badge bg-danger px-2 py-1 shadow-1-strong mb-3">${
-                                            result.articles[i].author
-                                        }</span>
+                                result.articles[i].author
+                            }</span>
                     <h4><strong>${
-                                            result.articles[i].title
-                                        }</strong></h4>
+                                result.articles[i].title
+                            }</strong></h4>
                     <p class="text-muted">
                       ${
-                                            result.articles[i].summary
-                                        }
+                                result.articles[i].summary
+                            }
                     </p>
                     <a href="${
-                                            result.articles[i].link
-                                        }" type="button" class="btn btn-primary">Read more</a>
+                                result.articles[i].link
+                            }" type="button" class="btn btn-primary">Read more</a>
                   </div>`);
-                                    });
-                                });
-
-
-                                getCurrentWeatherData(ipLocationLat, ipLocationLng, city);
-                            }
-                        }).then();
-                        getWikipediaSearch(ipLocationLat, ipLocationLng).done((result) => {
-                            $.each(result.data, function (i, item) {
-                                markers.addLayer(L.marker([
-                                    item.lat, item.lng
-                                ], {icon: wikipediaIcon}).bindPopup(item.title + "<br> <a href=https://" + item.wikipediaUrl + ">Wikipedia Link</a>"));
-                            });
-                            map.addLayer(markers);
-                        })
-                        getLocalRestaurants(ipLocationLat, ipLocationLng).done((result) => {
-
-                            $.each(result.data[0].pois, function (i, item) {
-                                markers.addLayer(L.marker([
-                                    item.coordinates.latitude, item.coordinates.longitude
-                                ], {icon: restaurantMarker}).bindPopup(item.name + "<br>" + item.snippet));
-                            });
-                            map.addLayer(markers);
                         });
-
-                        getLocalHighlights(ipLocationLat, ipLocationLng).done((result) => {
-
-                            $.each(result.data[0].pois, function (i, item) {
-                                markers.addLayer(L.marker([
-                                    item.coordinates.latitude, item.coordinates.longitude
-                                ], {icon: locationPinIcon}).bindPopup(item.name + "<br>" + item.snippet));
-                            });
-                            map.addLayer(markers);
-                        })
-
-                        $.ajax({
-                            url: "libs/php/populateCurrencyConverter.php",
-                            type: "GET",
-                            dataType: "json",
-                            success: function (result) {
-
-                                let currency = result.symbols;
-                                for (const property in currency) {
-                                    $("#currencyIn").append($("<option></option>").text(currency[property]).attr("value", property));
-                                    $("#currencyOut").append($("<option></option>").text(currency[property]).attr("value", property));
-                                }
+                
+                    });
+                
+            
+                    });
+                    $.ajax({
+                        url: "libs/php/populateCurrencyConverter.php",
+                        type: "GET",
+                        dataType: "json",
+                        success: function (result) {
+                            
+                            let currency = result.symbols;
+                            for (const property in currency) {
+                                $("#currencyIn").append($("<option></option>").text(currency[property]).attr("value", property));
+                                $("#currencyOut").append($("<option></option>").text(currency[property]).attr("value", property));
                             }
-                        });
+                            
+                        }
+                    })
+                
 
-                    }
-                });
-
-            })
+            
 
 
         }
@@ -432,7 +419,17 @@ $("#countrySelect").on("change", function () {
         });
 
     });
-
+    $.ajax({
+        url:"libs/php/countryInfo.php",
+        type:"GET",
+        dataType: "json",
+        data: {
+            country: chosenValue
+        },
+        success: function(result){
+            console.log(result)
+        }
+    })
     $.ajax({
         url: "libs/php/convertCountryToLatLng.php",
         type: "GET",
@@ -442,14 +439,14 @@ $("#countrySelect").on("change", function () {
         },
         success: function (result) {
             console.log(result)
-            $("#currentCountryCurrency").html(`<h4> Current Country Currency: ${
-                result.data.results[0].annotations.currency.name
-            }</h4>`);
-            getCurrentWeatherData(result.data.results[0].geometry.lat, result.data.results[0].geometry.lng, selectedText);
-            getCountryData(chosenValue)
+            document.getElementById("currencyIn").value = result.data.results[0].annotations.currency.iso_code;
+            document.getElementById("currencyOut").value = "USD";
+        getCurrentWeatherData(result.data.results[0].geometry.lat, result.data.results[0].geometry.lng, selectedText);
 
         }
     });
+    //Update weather modal based on capital city of country.
+   
 });
 
 $("#submitBtn").on("click", function () {
@@ -508,6 +505,8 @@ const getCountryData = (chosenValue) => {
                 result.wiki_url
             }> More Info </a>`);
             $("#countryCurrency").html(result.currency.code);
+
+            
         }
     });
 
@@ -556,23 +555,7 @@ const setCurrentWeatherData = (result) => {
     $("#wrapper-humidity").html(humidity + "%");
 
     // hourly temp
-    for (let index = 0; index < 6; index++) {
-        const hour = Math.round(result.data.hourly[index].temp);
-        if (index == 0) {
-            $("#wrapper-hour-now").html(hour + "°C");
-        } else {
-            $(`#wrapper-hour${index}`).html(hour + "°C");
-        }
-    }
-
-    // Time
-    let timeNow = new Date().getHours();
-
-    for (let index = 1; index <= 5; index++) {
-        const time = timeNow + index;
-        $(`#wrapper-time${index}`).html(time);
-    }
-
+   
     // Weather daily data
     let tomorrowTemp = Math.round(result.data.daily[0].temp.day);
     let dATTemp = Math.round(result.data.daily[1].temp.day);
@@ -600,16 +583,7 @@ const setCurrentWeatherData = (result) => {
     let iconFullyUrlDAT = iconBaseUrl + iconCodeDAT + iconFormat;
     $("#wrapper-icon-dAT").attr("src", iconFullyUrlDAT);
 
-    // Icons hourly
-    for (let index = 0; index < 6; index++) {
-        const iconhour = result.data.hourly[index].weather[0].icon;
-        const iconURl = iconBaseUrl + iconhour + iconFormat;
-        if (index == 0) {
-            $("#wrapper-icon-hour-now").attr("src", iconURl);
-        } else {
-            $(`#wrapper-icon-hour${index}`).attr("src", iconURl);
-        }
-    }
+   
 
 }
 
@@ -657,4 +631,5 @@ const getLocalHighlights = (lat, lng) => {
             lng
         }
     });
+    
 }

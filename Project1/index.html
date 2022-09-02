@@ -18,24 +18,30 @@
 
     </head>
     <body>
+      <div class="loader-wrapper">
+        <div class="loader">
+        </div>
+        <div class="loader-section section-left"></div>
+        <div class="loader-section section-right"></div>
+      </div>
         <nav class="navbar navbar-expand bg-light">
             <div class="container-fluid">
               <a class="navbar-brand" href="#">Gazetteer</a>
                   <select id="countrySelect" class="form-select scrollable-menu w-auto justify-content-end">
-                    <option>Choose Country</option>
+                    
                   </select>                              
               </div>
             </div>
           </nav>
         <div id="map"></div>
           <div class="modal fade" id="newsModal" tabindex="-1" role="dialog" aria-labelledby="myModal" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document">
+            <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-xl" role="document">
               <div class="modal-content" id="modal-content">
                 <div class="modal-header">
                   <h3 class="modal-title newsTitle" id="modalTitle"></h5>
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body disableHorizontalScroll">
                   <div id="newsData"></div>
                 </div>
                 </div>            
@@ -60,48 +66,7 @@
                       <span class="">Humidity: <span id="wrapper-humidity"></span></span>
                     </div>
                   </div>
-        
-                  <!-- Hourly forecast -->
-                  <div class="card-body p-4 border-top border-bottom mb-2">
-                    <div class="row text-center">
-                      <div class="col-2">
-                        <strong class="d-block mb-2">Now</strong>
-                        <img id="wrapper-icon-hour-now" src="" class="" alt="" />
-                        <strong class="d-block" id="wrapper-hour-now"></strong>
-                      </div>
-        
-                      <div class="col-2">
-                        <strong class="d-block mb-2" id="wrapper-time1"></strong>
-                        <img id="wrapper-icon-hour1" src="" class="" alt="" />
-                        <strong class="d-block" id="wrapper-hour1"></strong>
-                      </div>
-        
-                      <div class="col-2">
-                        <strong class="d-block mb-2" id="wrapper-time2"></strong>
-                        <img id="wrapper-icon-hour2" src="" class="" alt="" />
-                        <strong class="d-block" id="wrapper-hour2"></strong>
-                      </div>
-        
-                      <div class="col-2">
-                        <strong class="d-block mb-2" id="wrapper-time3"></strong>
-                        <img id="wrapper-icon-hour3" src="" class="" alt="" />
-                        <strong class="d-block" id="wrapper-hour3"></strong>
-                      </div>
-        
-                      <div class="col-2">
-                        <strong class="d-block mb-2" id="wrapper-time4"></strong>
-                        <img id="wrapper-icon-hour4" src="" class="" alt="" />
-                        <strong class="d-block" id="wrapper-hour4"></strong>
-                      </div>
-        
-                      <div class="col-2">
-                        <strong class="d-block mb-2" id="wrapper-time5"></strong>
-                        <img id="wrapper-icon-hour5" src="" class="" alt="" />
-                        <strong class="d-block" id="wrapper-hour5"></strong>
-                      </div>
-                    </div>
-                  </div>
-        
+                
                   <!-- Daily forecast -->
                   <div class="card-body px-5">
                     <div class="row align-items-center">
@@ -212,50 +177,50 @@
                   <table class="table table-striped">
                     <tbody>
                       <tr class="table-info">
-                        <th scope="row"><i class="fa-solid fa-earth-africa"></i></th>
-                        <td>Country Name</td>
-                        <td id="countryName"></td>
+                        <th scope="row" class="text-start"><i class="fa-solid fa-earth-africa"></i></th>
+                        <td class=" text-center">Country Name</td>
+                        <td id="countryName" class="text-end"></td>
                         
                       </tr>
                       <tr>
-                        <th scope="row"><i class="fa-solid fa-city"></i></th>
-                        <td>Capital City</td>
-                        <td id="capitalCity"></td>
+                        <th scope="row" class=" text-start"><i class="fa-solid fa-city"></i></th>
+                        <td class= "text-center">Capital City</td>
+                        <td id="capitalCity" class="text-end"></td>
                         
                       </tr>
                       <tr class="table-info">
-                        <th scope="row"><i class="fa-solid fa-font-awesome"></i></th>
-                        <td>Flag</td>
-                        <td id="countryFlag"></td>
+                        <th scope="row" class="text-start"><i class="fa-solid fa-font-awesome"></i></th>
+                        <td class= "text-center">Flag</td>
+                        <td id="countryFlag" class="text-end"></td>
                         
                       </tr>
                       <tr>
-                        <th scope="row"><i class="fa-solid fa-clock"></i></th>
-                        <td>Timezone</td>
-                        <td id="countryTimezone"></td>
+                        <th scope="row" class="text-start"><i class="fa-solid fa-clock"></i></th>
+                        <td class= " text-center">Timezone</td>
+                        <td id="countryTimezone" class="text-end"></td>
                         
                       </tr>
                       <tr class="table-info">
-                        <th scope="row"><i class="fa-solid fa-people-group"></i></th>
-                        <td>Population</td>
-                        <td id="countryPopulation"></td>
+                        <th scope="row" class=" text-start"><i class="fa-solid fa-people-group"></i></th>
+                        <td class= "text-center">Population</td>
+                        <td id="countryPopulation" class="text-end"></td>
                         
                       </tr>
                       <tr>
-                        <th scope="row"><i class="fa-solid fa-wallet"></i></th>
-                        <td>Currency</td>
-                        <td id="countryCurrency"></td>
+                        <th scope="row" class="text-start"><i class="fa-solid fa-wallet"></i></th>
+                        <td class="text-center">Currency</td>
+                        <td id="countryCurrency" class="text-end"></td>
                       </tr>
                       <tr class="table-info">
-                        <th scope="row"><i class="fa-solid fa-language"></i></th>
-                        <td>Languages Spoken</td>
-                        <td id="countryLanguages"></td>
+                        <th scope="row" class="text-start"><i class="fa-solid fa-language"></i></th>
+                        <td class= "text-center">Languages Spoken</td>
+                        <td id="countryLanguages" class="text-end"></td>
                         
                       </tr>
                       <tr id="removeBorder">
-                        <th scope="row" ><i class="fa-brands fa-wikipedia-w"></i></th>
-                        <td>Wikipedia</td>
-                        <td id="countryWiki"></td>
+                        <th scope="row" class="text-start" ><i class="fa-brands fa-wikipedia-w"></i></th>
+                        <td class= "text-center">Wikipedia</td>
+                        <td id="countryWiki" class="text-end"></td>
                         
                       </tr>
                     </tbody>
