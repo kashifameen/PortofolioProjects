@@ -95,13 +95,15 @@ populateSelectFields().done((result) => {
                         console.log(result)
                         var city = result.data.results[0].components.city;
                         document.getElementById("wrapper-name").innerHTML = city;
+                        document.getElementById("currencyIn").value = result.data.results[0].annotations.currency.iso_code;
+                        document.getElementById("currencyOut").value = "USD";
 
                         var countryName = result.data.results[0].components.country;
                         var localCountryCode = result.data.results[0].components.country_code;
                         var upperCaseCountryCode = localCountryCode.toUpperCase();
                         document.getElementById("countrySelect").value = upperCaseCountryCode;
-                        document.getElementById("currencyIn").value = result.data.results[0].annotations.currency.iso_code;
-                        document.getElementById("currencyOut").value = "USD";
+                       
+                        console.log(result.data.results[0].annotations.currency.iso_code)
                         getCountryBorder(upperCaseCountryCode).done((result) => {
 
                             border = L.geoJSON(result.data.geometry,{color: 'purple'}).addTo(map);
@@ -110,7 +112,8 @@ populateSelectFields().done((result) => {
 
                         getAirports(upperCaseCountryCode).done((result) => {
                             console.log(result)
-                            let airports = result.data;
+                            let airports = result.data.data;
+                            console.log(airports)
                              airports.forEach(element => {
 
                                 markers.addLayer(L.marker([
@@ -251,11 +254,11 @@ populateSelectFields().done((result) => {
                     });
                 
                     getAirports(chosenValue).done((result) => {
-                        $.each(result.data, function (i, item) {
+                        $.each(result.data.data, function (i, item) {
                             markers.addLayer(L.marker([
-                                result.data[i].latitude,
-                                result.data[i].longitude
-                            ], {icon: airportIcon}).bindPopup(result.data[i].name + "<br> <a href=https://" + result.data[i].pop_page + ">Wikipedia Link</a>"));
+                                result.data.data[i].latitude,
+                                result.data.data[i].longitude
+                            ], {icon: airportIcon}).bindPopup(result.data.data[i].name + "<br> <a href=https://" + result.data.data[i].pop_page + ">Wikipedia Link</a>"));
                         });
                         map.addLayer(markers);
                     })
@@ -307,8 +310,8 @@ populateSelectFields().done((result) => {
                         },
                         success: function (result) {
                             console.log(result)
-                            document.getElementById("currencyIn").value = result.data.results[0].annotations.currency.iso_code;
-                            document.getElementById("currencyOut").value = "USD";
+                            // document.getElementById("currencyIn").value = result.data.results[0].annotations.currency.iso_code;
+                            // document.getElementById("currencyOut").value = "USD";
                             
                             getCurrentWeatherData(result.data.results[0].geometry.lat, result.data.results[0].geometry.lng, selectedText);
                             getCountryData(chosenValue)
@@ -321,13 +324,15 @@ populateSelectFields().done((result) => {
                         type: "GET",
                         dataType: "json",
                         success: function (result) {
-            
+                            console.log(result)
+                            
                             let currency = result.data.symbols;
                             for (const property in currency) {
                                 $("#currencyIn").append($("<option></option>").text(currency[property]).attr("value", property));
                                 $("#currencyOut").append($("<option></option>").text(currency[property]).attr("value", property));
                             }
-                            
+                            document.getElementById("currencyIn").value = result.data.results[0].annotations.currency.iso_code;
+                            document.getElementById("currencyOut").value = "USD";
                         }
                     })
                 
@@ -376,11 +381,11 @@ $("#countrySelect").on("change", function () {
     });
 
     getAirports(chosenValue).done((result) => {
-        $.each(result.data, function (i, item) {
+        $.each(result.data.data, function (i, item) {
             markers.addLayer(L.marker([
-                result.data[i].latitude,
-                result.data[i].longitude
-            ], {icon: airportIcon}).bindPopup(result.data[i].name + "<br> <a href=https://" + result.data[i].pop_page + ">Wikipedia Link</a>"));
+                result.data.data[i].latitude,
+                result.data.data[i].longitude
+            ], {icon: airportIcon}).bindPopup(result.data.data[i].name + "<br> <a href=https://" + result.data.data[i].pop_page + ">Wikipedia Link</a>"));
         });
         map.addLayer(markers);
     })
@@ -512,7 +517,7 @@ const getCountryData = (chosenValue) => {
                 success: function (result) {
                     console.log(result)
                     getCurrentWeatherData(result.data.results[0].geometry.lat, result.data.results[0].geometry.lng);
-                    $("#wrapper-name").html(result.data.results[0].components.city);
+                    ;
 
         
                 }
