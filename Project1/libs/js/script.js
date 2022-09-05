@@ -84,6 +84,21 @@ populateSelectFields().done((result) => {
                     position.coords.latitude, position.coords.longitude
                 ], 13);
                 $.ajax({
+                        url: "libs/php/populateCurrencyConverter.php",
+                        type: "GET",
+                        dataType: "json",
+                        success: function (result) {
+                            console.log(result)
+                            
+                            let currency = result.data.symbols;
+                            for (const property in currency) {
+                                $("#currencyIn").append($("<option></option>").text(currency[property]).attr("value", property));
+                                $("#currencyOut").append($("<option></option>").text(currency[property]).attr("value", property));
+                            }
+                            
+                        }
+                    })
+                $.ajax({
                     url: "libs/php/getOpencageApi.php",
                     type: "POST",
                     dataType: "json",
@@ -94,21 +109,15 @@ populateSelectFields().done((result) => {
                     success: function (result) {
                         console.log(result)
                         var city = result.data.results[0].components.city;
-                        document.getElementById("wrapper-name").innerHTML = city;
-                        document.getElementById("currencyIn").value = result.data.results[0].annotations.currency.iso_code;
-                        document.getElementById("currencyOut").value = "USD";
+                       
 
                         var countryName = result.data.results[0].components.country;
                         var localCountryCode = result.data.results[0].components.country_code;
                         var upperCaseCountryCode = localCountryCode.toUpperCase();
                         document.getElementById("countrySelect").value = upperCaseCountryCode;
-                       
+                       $('#countrySelect').val(upperCaseCountryCode).change()
                         console.log(result.data.results[0].annotations.currency.iso_code)
-                        getCountryBorder(upperCaseCountryCode).done((result) => {
-
-                            border = L.geoJSON(result.data.geometry,{color: 'purple'}).addTo(map);
-                            map.fitBounds(border.getBounds());
-                        })
+                       
 
                         getAirports(upperCaseCountryCode).done((result) => {
                             console.log(result)
@@ -118,7 +127,7 @@ populateSelectFields().done((result) => {
 
                                 markers.addLayer(L.marker([
                                     element.latitude, element.longitude
-                                ], {icon: airportIcon},).bindPopup(element.name + "<br> <a href=https://" + element.wikipedia_page + ">Wikipedia Link</a>"));
+                                ], {icon: airportIcon},).bindPopup(element.name + `<br> <a href=${element.airport_website} target=_blank>Wikipedia Link</a>`));
                             });
 
                             map.addLayer(markers);
@@ -139,7 +148,7 @@ populateSelectFields().done((result) => {
                                 }" class="img-fluid" />
                           <a href="${
                                     result.data.articles[i].link
-                                }" target="_blank">
+                                }" target=_blank>
                             <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
                           </a>
                         </div>
@@ -156,9 +165,9 @@ populateSelectFields().done((result) => {
                                     result.data.articles[i].summary
                                 }
                       </p>
-                      <a href="${
+                      <a target="_blank" href=${
                                     result.data.articles[i].link
-                                }" target="_blank" type="button" class="btn btn-primary">Read more</a>
+                                }type="button" class="btn btn-primary" >Read more</a>
                     </div>`);
                             });
                         })
@@ -167,11 +176,11 @@ populateSelectFields().done((result) => {
                     }
                 }).then();
                 getWikipediaSearch(position.coords.latitude, position.coords.longitude).done((result) => {
-
+                    console.log(result)
                     $.each(result.data, function (i, item) {
                         markers.addLayer(L.marker([
                             item.lat, item.lng
-                        ], {icon: wikipediaIcon}).bindPopup(item.title + "<br> <a href=https://" + item.wikipediaUrl + ">Wikipedia Link</a>"));
+                        ], {icon: wikipediaIcon}).bindPopup(item.title + "<br>"+`<a target="_blank" href=${item.wikipediaUrl} >Wikipedia Link</a>`));
                     });
                     map.addLayer(markers);
                 });
@@ -196,20 +205,7 @@ populateSelectFields().done((result) => {
                     });
                     map.addLayer(markers);
                 })
-                $.ajax({
-                    url: "libs/php/populateCurrencyConverter.php",
-                    type: "GET",
-                    dataType: "json",
-                    success: function (result) {
-                        console.log(result)
-                        let currency = result.data.symbols;
-                        for (const property in currency) {
-                            $("#currencyIn").append($("<option></option>").text(currency[property]).attr("value", property));
-                            $("#currencyOut").append($("<option></option>").text(currency[property]).attr("value", property));
-                        }
-
-                    }
-                });
+               
                
             }, function () {
                 
@@ -230,7 +226,7 @@ populateSelectFields().done((result) => {
                     }
                     let selectedText = $("#countrySelect :selected").text();
                     getCountryBorder(chosenValue).done((result) => {
-                        border = L.geoJSON(result.data.geometry).addTo(map);
+                        border = L.geoJSON(result.data.geometry,{color: 'purple'}).addTo(map);
                         map.fitBounds(border.getBounds());
                     })
                 
@@ -246,7 +242,7 @@ populateSelectFields().done((result) => {
                                 markers.addLayer(L.marker([
                                     result.data[i].coordinates.latitude,
                                     result.data[i].coordinates.longitude,
-                                ], {icon: poiIcon}).bindPopup(result.data[i].name + "<br> <a href=" + result.data[i].attribution[1].url + ">More Info</a>"));
+                                ], {icon: poiIcon}).bindPopup(result.data[i].name + `<br> <a href=${result.data[i].attribution[1].url} target=_blank>More Info</a>`));
                             });
                             map.addLayer(markers);
                 
@@ -258,7 +254,7 @@ populateSelectFields().done((result) => {
                             markers.addLayer(L.marker([
                                 result.data.data[i].latitude,
                                 result.data.data[i].longitude
-                            ], {icon: airportIcon}).bindPopup(result.data.data[i].name + "<br> <a href=https://" + result.data.data[i].pop_page + ">Wikipedia Link</a>"));
+                            ], {icon: airportIcon}).bindPopup(result.data.data[i].name + `<br> <a href=${result.data.data[i].pop_page} target=_blank>Wikipedia Link</a>`));
                         });
                         map.addLayer(markers);
                     })
@@ -276,7 +272,7 @@ populateSelectFields().done((result) => {
                             }" class="img-fluid" />
                         <a href="${
                                 result.data.articles[i].link
-                            }">
+                            }target=_blank">
                           <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
                         </a>
                       </div>
@@ -295,7 +291,7 @@ populateSelectFields().done((result) => {
                     </p>
                     <a href="${
                                 result.data.articles[i].link
-                            }" type="button" class="btn btn-primary">Read more</a>
+                            }" type="button" class="btn btn-primary" target=_blank>Read more</a>
                   </div>`);
                         });
                 
@@ -310,8 +306,7 @@ populateSelectFields().done((result) => {
                         },
                         success: function (result) {
                             console.log(result)
-                            // document.getElementById("currencyIn").value = result.data.results[0].annotations.currency.iso_code;
-                            // document.getElementById("currencyOut").value = "USD";
+                            
                             
                             getCurrentWeatherData(result.data.results[0].geometry.lat, result.data.results[0].geometry.lng, selectedText);
                             getCountryData(chosenValue)
@@ -331,8 +326,7 @@ populateSelectFields().done((result) => {
                                 $("#currencyIn").append($("<option></option>").text(currency[property]).attr("value", property));
                                 $("#currencyOut").append($("<option></option>").text(currency[property]).attr("value", property));
                             }
-                            document.getElementById("currencyIn").value = result.data.results[0].annotations.currency.iso_code;
-                            document.getElementById("currencyOut").value = "USD";
+                            
                         }
                     })
                 
@@ -357,7 +351,7 @@ $("#countrySelect").on("change", function () {
     }
     let selectedText = $("#countrySelect :selected").text();
     getCountryBorder(chosenValue).done((result) => {
-        border = L.geoJSON(result.data.geometry).addTo(map);
+        border = L.geoJSON(result.data.geometry,{color: 'purple'}).addTo(map);
         map.fitBounds(border.getBounds());
     })
 
@@ -373,7 +367,7 @@ $("#countrySelect").on("change", function () {
                 markers.addLayer(L.marker([
                     result.data[i].coordinates.latitude,
                     result.data[i].coordinates.longitude,
-                ], {icon: poiIcon}).bindPopup(result.data[i].name + "<br> <a href=" + result.data[i].attribution[1].url + ">More Info</a>"));
+                ], {icon: poiIcon}).bindPopup(result.data[i].name + `<br> <a href=${result.data[i].attribution[1].url} target=_blank>More Info</a>`));
             });
             map.addLayer(markers);
 
@@ -381,11 +375,12 @@ $("#countrySelect").on("change", function () {
     });
 
     getAirports(chosenValue).done((result) => {
+        console.log(result)
         $.each(result.data.data, function (i, item) {
             markers.addLayer(L.marker([
                 result.data.data[i].latitude,
                 result.data.data[i].longitude
-            ], {icon: airportIcon}).bindPopup(result.data.data[i].name + "<br> <a href=https://" + result.data.data[i].pop_page + ">Wikipedia Link</a>"));
+            ], {icon: airportIcon}).bindPopup(result.data.data[i].name + `<br> <a href=${result.data.data[i].pop_page} target=_blank>Wikipedia Link</a>`));
         });
         map.addLayer(markers);
     })
@@ -403,7 +398,7 @@ $("#countrySelect").on("change", function () {
             }" class="img-fluid" />
         <a href="${
                 result.data.articles[i].link
-            }">
+            }target=_blank">
           <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
         </a>
       </div>
@@ -422,7 +417,7 @@ $("#countrySelect").on("change", function () {
     </p>
     <a href="${
                 result.data.articles[i].link
-            }" type="button" class="btn btn-primary">Read more</a>
+            }" type="button" class="btn btn-primary" target=>Read more</a>
   </div>`);
         });
 
@@ -497,6 +492,8 @@ const getCountryData = (chosenValue) => {
             $("#countryFlag").html(result.data.flag.emoji);
             $("#countryName").html(result.data.name);
             $("#capitalCity").html(result.data.capital.name);
+            document.getElementById("wrapper-name").innerHTML = result.data.capital.name;
+
             let objects = Object.values(result.data.languages);
             $.each(objects, function (i, language) {
                 $("#countryLanguages").append(language + ", ");
@@ -504,8 +501,8 @@ const getCountryData = (chosenValue) => {
             $("#countryPopulation").html(result.data.population.toLocaleString("en-US"));
             $("#countryTimezone").html(result.data.timezone.timezone + " Code: " + result.data.timezone.code);
             $("#countryWiki").html(`<a href=${
-                result.wiki_url
-            }> More Info </a>`);
+                result.data.wiki_url
+            } target=_blank> More Info </a>`);
             $("#countryCurrency").html(result.data.currency.code);
             $.ajax({
                 url: "libs/php/convertCountryToLatLng.php",
