@@ -88,7 +88,6 @@ populateSelectFields().done((result) => {
                         type: "GET",
                         dataType: "json",
                         success: function (result) {
-                            console.log(result)
                             
                             let currency = result.data.symbols;
                             for (const property in currency) {
@@ -107,7 +106,6 @@ populateSelectFields().done((result) => {
                         lng: position.coords.longitude
                     },
                     success: function (result) {
-                        console.log(result)
                         var city = result.data.results[0].components.city;
                        
 
@@ -116,13 +114,10 @@ populateSelectFields().done((result) => {
                         var upperCaseCountryCode = localCountryCode.toUpperCase();
                         document.getElementById("countrySelect").value = upperCaseCountryCode;
                        $('#countrySelect').val(upperCaseCountryCode).change()
-                        console.log(result.data.results[0].annotations.currency.iso_code)
                        
 
                         getAirports(upperCaseCountryCode).done((result) => {
-                            console.log(result)
                             let airports = result.data.data;
-                            console.log(airports)
                              airports.forEach(element => {
 
                                 markers.addLayer(L.marker([
@@ -137,7 +132,6 @@ populateSelectFields().done((result) => {
 
 
                         getNews(countryName).done((result) => {
-                            console.log(result)
                             document.getElementById("modalTitle").innerText = `News in ${countryName}`;
                             $.each(result.data.articles, function (i, item) {
                                 $("#newsData").append(`<div class="row gx-5">
@@ -176,7 +170,6 @@ populateSelectFields().done((result) => {
                     }
                 }).then();
                 getWikipediaSearch(position.coords.latitude, position.coords.longitude).done((result) => {
-                    console.log(result)
                     $.each(result.data, function (i, item) {
                         markers.addLayer(L.marker([
                             item.lat, item.lng
@@ -214,9 +207,7 @@ populateSelectFields().done((result) => {
                     
                     let lowerCaseValue = chosenValue.toLowerCase();
 
-                    console.log(chosenValue)
-                    console.log(lowerCaseValue)
-                
+                    
                     if (markers) {
                         markers.clearLayers()
                         $('path.leaflet-interactive').remove()
@@ -260,7 +251,6 @@ populateSelectFields().done((result) => {
                     })
                 
                     getNews(selectedText).done((result) => {
-                        console.log(result)
                         document.getElementById("newsData").innerHTML = "";
                         document.getElementById("modalTitle").innerHTML = `News in ${selectedText}`;
                         $.each(result.data.articles, function (i, item) {
@@ -304,9 +294,7 @@ populateSelectFields().done((result) => {
                         data: {
                             country: chosenValue
                         },
-                        success: function (result) {
-                            console.log(result)
-                            
+                        success: function (result) {                            
                             
                             getCurrentWeatherData(result.data.results[0].geometry.lat, result.data.results[0].geometry.lng, selectedText);
                             getCountryData(chosenValue)
@@ -319,7 +307,6 @@ populateSelectFields().done((result) => {
                         type: "GET",
                         dataType: "json",
                         success: function (result) {
-                            console.log(result)
                             
                             let currency = result.data.symbols;
                             for (const property in currency) {
@@ -375,7 +362,6 @@ $("#countrySelect").on("change", function () {
     });
 
     getAirports(chosenValue).done((result) => {
-        console.log(result)
         $.each(result.data.data, function (i, item) {
             markers.addLayer(L.marker([
                 result.data.data[i].latitude,
@@ -386,7 +372,6 @@ $("#countrySelect").on("change", function () {
     })
 
     getNews(selectedText).done((result) => {
-        console.log(result)
         document.getElementById("newsData").innerHTML = "";
         document.getElementById("modalTitle").innerHTML = `News in ${selectedText}`;
         $.each(result.data.articles, function (i, item) {
@@ -431,11 +416,9 @@ $("#countrySelect").on("change", function () {
             country: chosenValue
         },
         success: function (result) {
-            console.log(result)
             document.getElementById("currencyIn").value = result.data.results[0].annotations.currency.iso_code;
             document.getElementById("currencyOut").value = "USD";
 
-            console.log(result.data)
            
             getCurrentWeatherData(result.data.results[0].geometry.lat, result.data.results[0].geometry.lng, selectedText);
             getCountryData(chosenValue)
@@ -464,7 +447,6 @@ const convertCurrency = (toCountry, fromCountry, amount) => {
             amount
         },
         success: function (result) {
-            console.log(result)
             $("#currencyOutput").html(`<input type="number" class="form-input" id="convertedAmount" placeholder="${
                 result.data.result
             }" disabled>`);
@@ -488,7 +470,6 @@ const getCountryData = (chosenValue) => {
             country: chosenValue
         },
         success: function (result) {
-            console.log(result)
             $("#countryFlag").html(result.data.flag.emoji);
             $("#countryName").html(result.data.name);
             $("#capitalCity").html(result.data.capital.name);
@@ -512,7 +493,6 @@ const getCountryData = (chosenValue) => {
                     country: result.data.capital.name
                 },
                 success: function (result) {
-                    console.log(result)
                     getCurrentWeatherData(result.data.results[0].geometry.lat, result.data.results[0].geometry.lng);
                     ;
 
@@ -535,7 +515,6 @@ const getCurrentWeatherData = (lat, lon) => {
             lon
         },
         success: function (result) {
-            console.log(result) // Weather main data
             setCurrentWeatherData(result)
         }
     });
