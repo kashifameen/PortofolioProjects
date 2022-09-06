@@ -148,7 +148,7 @@ populateSelectFields().done((result) => {
                                 }" class="img-fluid" />
                           <a href="${
                                     result.data.articles[i].link
-                                }" target=_blank>
+                                }" target="_blank">
                             <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
                           </a>
                         </div>
@@ -165,9 +165,9 @@ populateSelectFields().done((result) => {
                                     result.data.articles[i].summary
                                 }
                       </p>
-                      <a target="_blank" href=${
+                      <a target="_blank" href="${
                                     result.data.articles[i].link
-                                }type="button" class="btn btn-primary" >Read more</a>
+                                }" type="button" target="_blank" class="btn btn-primary">Read more</a>
                     </div>`);
                             });
                         })
@@ -272,7 +272,7 @@ populateSelectFields().done((result) => {
                             }" class="img-fluid" />
                         <a href="${
                                 result.data.articles[i].link
-                            }target=_blank">
+                            } target=_blank">
                           <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
                         </a>
                       </div>
@@ -398,7 +398,7 @@ $("#countrySelect").on("change", function () {
             }" class="img-fluid" />
         <a href="${
                 result.data.articles[i].link
-            }target=_blank">
+            } target=_blank">
           <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
         </a>
       </div>
@@ -417,7 +417,7 @@ $("#countrySelect").on("change", function () {
     </p>
     <a href="${
                 result.data.articles[i].link
-            }" type="button" class="btn btn-primary" target=>Read more</a>
+            }" type="button" class="btn btn-primary" target="_blank">Read more</a>
   </div>`);
         });
 
