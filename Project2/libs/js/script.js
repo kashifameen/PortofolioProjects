@@ -14,13 +14,16 @@ $(document).ready(function(){
 				<td>${result.data[i].jobTitle}</td>
 				<td>${result.data[i].email}</td>
 				<td>
-					<a href="#" class="settings" title="Settings"  data-bs-toggle="modal" data-bs-target="#updateUserModal"><i class="material-icons">&#xE8B8;</i></a>
+
+					<a href="#" class="settings" title="Settings" id="settingsBtn" data-bs-toggle="modal" data-bs-target="#updateUserModal"><i class="material-icons">&#xE8B8;</i></a>
 					<a href="#" class="delete" title="Delete" ><i class="material-icons">&#xE5C9;</i></a>
 				</td>
 			</tr>
 				`);
+				$('#settingsBtn').attr("testo", result.data[i].id)
 				
 
+				
 				$('#updatefName').innerHTML= `<input type="text" class="form-control" id="updatefName" placeholder="${result.data[i].firstName}"></input>`;
 				$('#updatelName').innerHTML = result.data[i].lastName;
 				$('#updateLocation').val(result.data[i].location).change();
@@ -32,4 +35,20 @@ $(document).ready(function(){
 		}
 	})
 });
+$('#settingsBtn').on('click', function(){
+	var personnelId = document.getElementById('settingsBtn').getAttribute('testo')
+	alert($("#settingsBtn").attr("testo"))
+	console.log($(this).attr("value"))
+	$.ajax({
+		url:'libs/php/getPersonnelByID.php',
+		type:'GET',
+		dataType: 'json',
+		data: {
+			id: personnelId
+		},
+		success(result){
+			console.log(result)
+		}
+	})
+})
 
