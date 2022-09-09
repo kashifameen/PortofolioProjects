@@ -15,12 +15,12 @@ $(document).ready(function(){
 				<td>${result.data[i].email}</td>
 				<td>
 
-					<a href="#" class="settings" title="Settings" id="settingsBtn" data-bs-toggle="modal" data-bs-target="#updateUserModal"><i class="material-icons">&#xE8B8;</i></a>
+					<a href="#" class="settings" title="Settings" data-bs-toggle="modal" data-bs-target="#updateUserModal"><i class="material-icons">&#xE8B8;</i></a>
 					<a href="#" class="delete" title="Delete" ><i class="material-icons">&#xE5C9;</i></a>
 				</td>
 			</tr>
 				`);
-				$('#settingsBtn').attr("personnelID", result.data[i].id)
+				$('button').attr("personnelid", result.data[i].id)
 				
 
 				
@@ -35,9 +35,11 @@ $(document).ready(function(){
 		}
 	})
 });
-$('#settingsBtn').on('click', function(){
-	var personnelId = document.getElementById('settingsBtn').getAttribute('testo')
-	alert($("#settingsBtn").attr("personnelid"))
+
+$(".settings").on("click", function(){
+	console.log('This Works!')
+	alert($(this).attr("personnelid"))
+	
 	console.log($(this).attr("personnelid"))
 	$.ajax({
 		url:'libs/php/getPersonnelByID.php',
