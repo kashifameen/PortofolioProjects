@@ -20,7 +20,7 @@ $(document).ready(function(){
 				</td>
 			</tr>
 				`);
-				$('#settingsBtn').attr("testo", result.data[i].id)
+				$('#settingsBtn').attr("personnelID", result.data[i].id)
 				
 
 				
@@ -37,8 +37,8 @@ $(document).ready(function(){
 });
 $('#settingsBtn').on('click', function(){
 	var personnelId = document.getElementById('settingsBtn').getAttribute('testo')
-	alert($("#settingsBtn").attr("testo"))
-	console.log($(this).attr("value"))
+	alert($("#settingsBtn").attr("personnelid"))
+	console.log($(this).attr("personnelid"))
 	$.ajax({
 		url:'libs/php/getPersonnelByID.php',
 		type:'GET',
