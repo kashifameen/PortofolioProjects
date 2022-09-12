@@ -15,24 +15,20 @@ $(document).ready(function(){
 				<td>${result.data[i].email}</td>
 				<td>
 
-					<a href="#" class="settings" title="Settings" data-bs-toggle="modal" data-bs-target="#updateUserModal" personnelId=${result.data[i].id} ><i class="material-icons">&#xE8B8;</i></a>
+					<a href="#" class="settings" title="Settings" data-bs-toggle="modal" data-bs-target="#updateUserModal" data-personnelId=${result.data[i].id} ><i class="material-icons">&#xE8B8;</i></a>
 					<a href="#" class="delete" title="Delete" ><i class="material-icons">&#xE5C9;</i></a>
 				</td>
 			</tr>
-				`)
-				
-				
-				
-				
-
-				
-
-				
-				$('#updatefName').innerHTML= `<input type="text" class="form-control" id="updatefName" placeholder="${result.data[i].firstName}"></input>`;
-				$('#updatelName').innerHTML = result.data[i].lastName;
-				$('#updateLocation').val(result.data[i].location).change();
-				$('#updateJob').innerHTML = result.data[i].jobTitle;
-				$('#updateEmail').innerHTML = result.data[i].email;
+				`)	
+				// document.getElementById('updatefName').value= result.data[i].firstName
+				// document.getElementById('updatelName').value = result.data[i].lastName;
+				// document.getElementById('updateLocation').value = result.data[i].location;
+				// document.getElementById('updateJob').value = result.data[i].jobTitle;
+				// document.getElementById('updateEmail').value = result.data[i].email;
+				// $('#updatelName').value = result.data[i].lastName;
+				// $('#updateLocation').val(result.data[i].location);
+				// $('#updateJob').val = result.data[i].jobTitle;
+				// $('#updateEmail').val = result.data[i].email;
 			})
 			
 			
@@ -42,7 +38,7 @@ $(document).ready(function(){
 
 $(".settings").on("click", function(){
 	console.log('This Works!')
-	alert($(this).attr("personnelid"))
+	alert($(this).attr("data-personnelid"))
 	
 	console.log($(this).attr("personnelid"))
 	$.ajax({
