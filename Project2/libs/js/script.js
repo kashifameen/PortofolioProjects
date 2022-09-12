@@ -15,12 +15,16 @@ $(document).ready(function(){
 				<td>${result.data[i].email}</td>
 				<td>
 
-					<a href="#" class="settings" title="Settings" data-bs-toggle="modal" data-bs-target="#updateUserModal"><i class="material-icons">&#xE8B8;</i></a>
+					<a href="#" class="settings" title="Settings" data-bs-toggle="modal" data-bs-target="#updateUserModal" personnelId=${result.data[i].id} ><i class="material-icons">&#xE8B8;</i></a>
 					<a href="#" class="delete" title="Delete" ><i class="material-icons">&#xE5C9;</i></a>
 				</td>
 			</tr>
-				`);
-				$('button').attr("personnelid", result.data[i].id)
+				`)
+				
+				
+				
+				
+
 				
 
 				
