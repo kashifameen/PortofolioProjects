@@ -37,9 +37,9 @@
 	// SQL statement accepts parameters and so is prepared to avoid SQL injection.
 	// $_REQUEST used for development / debugging. Remember to change to $_POST for production
 
-	$query = $conn->prepare('INSERT INTO personnel (firstName, lastName, jobTitle, email, departmentID) VALUES (?,?,?,?,?)');
+	$query = $conn->prepare('UPDATE personnel (firstName, lastName, jobTitle, email, departmentID) VALUES (?,?,?,?,?) WHERE id = ?');
 
-	$query->bind_param("ssssi", $_REQUEST['firstName'], $_REQUEST['lastName'], $_REQUEST['jobTitle'], $_REQUEST['email'], $_REQUEST['departmentID']);
+	$query->bind_param("ssssii", $_REQUEST['firstName'], $_REQUEST['lastName'], $_REQUEST['jobTitle'], $_REQUEST['email'], $_REQUEST['departmentID'], $_REQUEST['id']);
 
 	$query->execute();
 	
@@ -67,5 +67,5 @@
 	mysqli_close($conn);
 
 	echo json_encode($output); 
-
+    echo $mysli->error
 ?>

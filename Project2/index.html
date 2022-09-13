@@ -50,7 +50,7 @@
                               <h5 class="modal-title" id="addUserModalLabel">Add New User</h5>
                               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
-                            <div class="modal-body">
+                            <div class="modal-body" id="addUserModalBody">
                               <form>
                                 <div class="mb-3">
                                   <label for="recipient-name" class="col-form-label">First Name:</label>
@@ -119,23 +119,25 @@
                                     <label for="lName" class="col-form-label">Last Name:</label>
                                     <input type="text" class="form-control" id="updatelName">
                                   </div>
-                                  <div class="mb-3">
-                                    <label for="location" class="col-form-label">Location: </label>
-                                    <select id="updateLocation" class="form-select">
-                                        <option value="London">London</option>
-                                        <option value="New York">New York</option>
-                                        <option value="Paris">Paris</option>
-                                        <option value="Munich">Munich</option>
-                                        <option value="Rome">Rome</option>
-                                    </select>
-                                  </div>
+                                  
                                   <div class="mb-3">
                                     <label for="recipient-name" class="col-form-label">Job Title:</label>
                                     <input type="text" class="form-control" id="updateJob">
                                   </div>
                                   <div class="mb-3">
-                                    <label for="recipient-name" class="col-form-label">Department:</label>
-                                    <input type="text" class="form-control" id="updateDepartment">
+                                    <label for="recipient-name" class="col-form-label">Department: </label>
+                                    <select id="updateDepartment" class="form-select">
+                                        <option value="1">Human Resources</option>
+                                        <option value="2">Sales</option>
+                                        <option value="3">Marketing</option>
+                                        <option value="4">Legal</option>
+                                        <option value="5">Services</option>
+                                        <option value="6">Research and Development</option>
+                                        <option value="7">Product Management</option>
+                                        <option value="8">Training</option>
+                                        <option value="9">Support</option>
+                                        <option value="10">Engineering</option>
+                                    </select>
                                   </div>
                                 <div class="mb-3">
                                   <label for="message-text" class="col-form-label">Email:</label>
@@ -145,7 +147,7 @@
                             </div>
                             <div class="modal-footer">
                               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                              <button type="button" class="btn btn-primary">Update User</button>
+                              <button type="button" class="btn btn-primary" id="updateUserBtn">Update User</button>
                             </div>
                           </div>
                         </div>
