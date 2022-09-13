@@ -72,7 +72,8 @@ $(document).ready(function () {
                             id: personnelId
                         },
                         success: function (result) {
-                            console.log('User Updated')
+                            console.log(updateFirstName)
+                            document.getElementById('updateUserModalBody').innerHTML = `<h5>${updateFirstName}'s profile has been updated. </h5>`
 
                         }
                     })
