@@ -33,16 +33,15 @@
 		exit;
 
 	}	
-
 	// SQL statement accepts parameters and so is prepared to avoid SQL injection.
 	// $_REQUEST used for development / debugging. Remember to change to $_POST for production
-
-	$query = $conn->prepare('UPDATE personnel (firstName, lastName, jobTitle, email, departmentID) VALUES (?,?,?,?,?) WHERE id = ?');
+	$query = $conn->prepare("UPDATE personnel SET firstName ="value1", lastName="value2", jobTitle="value3", email="value4", departmentID="value5" WHERE id = "value6");
 
 	$query->bind_param("ssssii", $_REQUEST['firstName'], $_REQUEST['lastName'], $_REQUEST['jobTitle'], $_REQUEST['email'], $_REQUEST['departmentID'], $_REQUEST['id']);
 
 	$query->execute();
 	
+
 	if (false === $query) {
 
 		$output['status']['code'] = "400";
@@ -67,5 +66,5 @@
 	mysqli_close($conn);
 
 	echo json_encode($output); 
-    echo $mysli->error
+    echo$mysli->error
 ?>
