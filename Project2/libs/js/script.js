@@ -1,55 +1,69 @@
 $(document).ready(function () {
-    getAllPersonnel().done((result) =>{
-        $.each(result.data, function (i, item){
+    getAllPersonnel().done((result) => {
+        $.each(result.data, function (i, item) {
             $('#tableBody').append(`<tr>
 				<td>${
-                    result.data[i].firstName
-                }</td>
+                result.data[i].firstName
+            }</td>
 				<td>${
-                    result.data[i].lastName
-                }</td>                        
+                result.data[i].lastName
+            }</td>                        
 				<td>${
-                    result.data[i].location
-                }</td>
+                result.data[i].location
+            }</td>
 				<td>${
-                    result.data[i].department
-                }</td>
+                result.data[i].department
+            }</td>
 				<td>${
-                    result.data[i].jobTitle
-                }</td>
+                result.data[i].jobTitle
+            }</td>
 				<td>${
-                    result.data[i].email
-                }</td>
+                result.data[i].email
+            }</td>
 				<td>
 
 					<a href="#" class="settings" title="Settings" data-bs-toggle="modal" data-bs-target="#updateUserModal" id="button" data-personnelId=${
-                    result.data[i].id
-                } ><i class="material-icons">&#xE8B8;</i></a>
+                result.data[i].id
+            } ><i class="material-icons">&#xE8B8;</i></a>
 					<a href="#" class="delete" title="Delete" data-personnelId=${
-                    result.data[i].id
-                } ><i class="material-icons">&#xE5C9;</i></a>
+                result.data[i].id
+            } ><i class="material-icons">&#xE5C9;</i></a>
 				</td>
 			</tr>
-				`) 
+				`)
         })
-    $(".settings").on("click", function () {
-        let personnelId = $(this).attr("data-personnelId")
+        $(".delete").on("click", function () {
+            let personnelId = $(this).attr("data-personnelId")
+            console.log(personnelId)
+            $.ajax({
+                url: "libs/php/deletePersonnel.php",
+                type: "POST",
+                dataType: "json",
+                data: {
+                    id: personnelId
+                },
+                success: function (result) {
+                    console.log(result)
+                }
+            })
+        })
+        $(".settings").on("click", function () {
+            let personnelId = $(this).attr("data-personnelId")
             result.data.forEach(element => {
-            if (element.id == personnelId) {
-                console.log(element)
-                document.getElementById('updatefName').value = element.firstName
-                document.getElementById('updatelName').value = element.lastName;
-                                // document.getElementById('updateLocation').value = element.location;
-                document.getElementById('updateJob').value = element.jobTitle;
-                document.getElementById('updateEmail').value = element.email;
-                document.getElementById('updateDepartment').value = element.department
-        
-                            }
-        
-                        })
-                    })
-    
-    }) 
+                if (element.id == personnelId) {
+                    console.log(element)
+                    document.getElementById('updatefName').value = element.firstName
+                    document.getElementById('updatelName').value = element.lastName;
+                    document.getElementById('updateJob').value = element.jobTitle;
+                    document.getElementById('updateEmail').value = element.email;
+                    document.getElementById('updateDepartment').value = element.department
+
+                }
+
+            })
+        })
+
+    })
     $('#updateUserBtn').on("click", function () {
         let updateFirstName = document.getElementById('updatefName').value;
         let updateLastName = document.getElementById('updatelName').value;
@@ -75,22 +89,8 @@ $(document).ready(function () {
             }
         })
     })
-    $(".delete").on("click", function () {
-        let personnelId = $(this).attr("data-personnelId")
-        console.log(personnelId)
-        $.ajax({
-            url: "libs/php/deletePersonnel.php",
-            type: "POST",
-            dataType: "json",
-            data: {
-                id: personnelId
-            },
-            success: function (result) {
-                console.log(result)
-            }
-        })
-    })
-$("#addUserBtn").on("click", function () {
+  
+    $("#addUserBtn").on("click", function () {
         console.log('Testing!')
         let addFirstName = document.getElementById('addFirstName').value;
         let addLastName = document.getElementById('addLastName').value;
@@ -115,13 +115,13 @@ $("#addUserBtn").on("click", function () {
             }
         })
     })
-    $('#locationForm').on("change", function(){
+    $('#locationForm').on("change", function () {
         const chosenValue = this.value;
         console.log(chosenValue)
         $('#tableBody').empty()
-        getAllPersonnel().done((result) =>{
+        getAllPersonnel().done((result) => {
             result.data.forEach(element => {
-                if(element.locationId == chosenValue){
+                if (element.locationId == chosenValue) {
                     $('#tableBody').append(`<tr>
                     <td>${
                         element.firstName
@@ -151,18 +151,18 @@ $("#addUserBtn").on("click", function () {
                     } ><i class="material-icons">&#xE5C9;</i></a>
                     </td>
                 </tr>
-                    `) 
+                    `)
                 }
             })
         })
     })
-    $('#departmentForm').on("change", function(){
+    $('#departmentForm').on("change", function () {
         const chosenValue = this.value;
         console.log(chosenValue)
         $('#tableBody').empty()
-        getAllPersonnel().done((result) =>{
+        getAllPersonnel().done((result) => {
             result.data.forEach(element => {
-                if(element.departmentID == chosenValue){
+                if (element.departmentID == chosenValue) {
                     $('#tableBody').append(`<tr>
                     <td>${
                         element.firstName
@@ -192,31 +192,15 @@ $("#addUserBtn").on("click", function () {
                     } ><i class="material-icons">&#xE5C9;</i></a>
                     </td>
                 </tr>
-                    `) 
+                    `)
                 }
             })
         })
     })
-})   
-    
+})
 
-    
-   
-
-                
-            
-
-           
-      
-    
-    
 
 const getAllPersonnel = () => {
-    return $.ajax({
-        url: "libs/php/getAll.php",
-        type: "GET",
-        dataType: "json",
-        
-    });
-    
+    return $.ajax({url: "libs/php/getAll.php", type: "GET", dataType: "json"});
+
 }
