@@ -1,3 +1,7 @@
+window.addEventListener('load',function(){
+    document.querySelector('body').classList.add("loaded")  
+  });  
+  
 $(document).ready(function () {
     getAllPersonnel().done((result) => {
         $.each(result.data, function (i, item) {
