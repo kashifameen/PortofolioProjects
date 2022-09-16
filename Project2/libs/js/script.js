@@ -32,37 +32,12 @@ $(document).ready(function () {
 			</tr>
 				`)
         })
-        $(".delete").on("click", function () {
-            let personnelId = $(this).attr("data-personnelId")
-            console.log(personnelId)
-            $.ajax({
-                url: "libs/php/deletePersonnel.php",
-                type: "POST",
-                dataType: "json",
-                data: {
-                    id: personnelId
-                },
-                success: function (result) {
-                    console.log(result)
-                }
-            })
-        })
-        $(".settings").on("click", function () {
-            let personnelId = $(this).attr("data-personnelId")
-            result.data.forEach(element => {
-                if (element.id == personnelId) {
-                    console.log(element)
-                    document.getElementById('updatefName').value = element.firstName
-                    document.getElementById('updatelName').value = element.lastName;
-                    document.getElementById('updateJob').value = element.jobTitle;
-                    document.getElementById('updateEmail').value = element.email;
-                    document.getElementById('updateDepartment').value = element.department
-
-                }
-
-            })
-        })
-
+        $(".delete").on("click", deleteButton) 
+        $(".settings").on("click", settingsButton(result)) 
+        var myfunc = function(){
+            alert(this.name)
+        }
+        myfunc.call(deleteButton)
     })
     $('#updateUserBtn').on("click", function () {
         let updateFirstName = document.getElementById('updatefName').value;
@@ -154,7 +129,40 @@ $(document).ready(function () {
                     `)
                 }
             })
+            $(".settings").on("click", function () {
+                let personnelId = $(this).attr("data-personnelId")
+                console.log('settings button clicked')
+                
+                result.data.forEach(element => {
+                    if (element.id == personnelId) {
+                        document.getElementById('updatefName').value = element.firstName
+                        document.getElementById('updatelName').value = element.lastName;
+                        document.getElementById('updateJob').value = element.jobTitle;
+                        document.getElementById('updateEmail').value = element.email;
+                        document.getElementById('updateDepartment').value = element.departmentID
+    
+                    }
+    
+                })
+            })
         })
+        $(".delete").on("click", function () {
+            let personnelId = $(this).attr("data-personnelId")
+            console.log(personnelId);
+            console.log('working')
+            $.ajax({
+                url: "libs/php/deletePersonnel.php",
+                type: "POST",
+                dataType: "json",
+                data: {
+                    id: personnelId
+                },
+                success: function (result) {
+                    console.log(result)
+                }
+            })
+        })
+
     })
     $('#departmentForm').on("change", function () {
         const chosenValue = this.value;
@@ -203,4 +211,37 @@ $(document).ready(function () {
 const getAllPersonnel = () => {
     return $.ajax({url: "libs/php/getAll.php", type: "GET", dataType: "json"});
 
+}
+
+const deleteButton = () => {
+    let personnelId = $(this).attr("data-personnelId")
+    console.log(personnelId);
+    console.log('working')
+    $.ajax({
+        url: "libs/php/deletePersonnel.php",
+        type: "POST",
+        dataType: "json",
+        data: {
+            id: personnelId
+        },
+        success: function (result) {
+            console.log(result)
+        }
+    })
+}
+
+const settingsButton = (result) => {
+    let personnelId = $(this).attr("data-personnelId")
+                console.log('settings button clicked')
+                result.data.forEach(element => {
+                    if (element.id == personnelId) {
+                        document.getElementById('updatefName').value = element.firstName
+                        document.getElementById('updatelName').value = element.lastName;
+                        document.getElementById('updateJob').value = element.jobTitle;
+                        document.getElementById('updateEmail').value = element.email;
+                        document.getElementById('updateDepartment').value = element.departmentID
+    
+                    }
+    
+                })
 }

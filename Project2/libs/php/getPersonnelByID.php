@@ -101,7 +101,7 @@
 	$output['data']['personnel'] = $personnel;
 	$output['data']['department'] = $department;
 	
-	mysqli_close($conn);
+	// mysqli_close($conn);
 
 	echo json_encode($output); 
 
