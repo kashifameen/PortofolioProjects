@@ -14,13 +14,13 @@ $(document).ready(function () {
 				<td>${
                 result.data[i].department
             }</td>
-				<td class= "d-none d-sm-none d-md-none">${
+				<td >${
                 result.data[i].jobTitle
             }</td>
-				<td class="d-none d-sm-none d-md-none">${
+				<td>${
                 result.data[i].email
             }</td>
-				<td class=".d-none .d-sm-block">
+				<td>
 
 					<a href="#" class="settings" title="Settings" data-bs-toggle="modal" data-bs-target="#updateUserModal" id="button" data-personnelId=${
                 result.data[i].id
@@ -111,13 +111,13 @@ $(document).ready(function () {
                     <td>${
                         element.department
                     }</td>
-                    <td class= "d-none d-sm-none d-md-none">${
+                    <td >${
                         element.jobTitle
                     }</td>
-                    <td class= "d-none d-sm-none d-md-none"${
+                    <td ${
                         element.email
                     }</td>
-                    <td class=".d-none .d-sm-block">
+                    <td >
     
                         <a href="#" class="settings" title="Settings" data-bs-toggle="modal" data-bs-target="#updateUserModal" id="button" data-personnelId=${
                         element.id
@@ -160,13 +160,13 @@ $(document).ready(function () {
                     <td>${
                         element.department
                     }</td>
-                    <td class= "d-none d-sm-none d-md-none">${
+                    <td >${
                         element.jobTitle
                     }</td>
-                    <td class= "d-none d-sm-none d-md-none">${
+                    <td >${
                         element.email
                     }</td>
-                    <td class=".d-none .d-sm-block">
+                    <td c>
     
                         <a href="#" class="settings" title="Settings" data-bs-toggle="modal" data-bs-target="#updateUserModal" id="button" data-personnelId=${
                         element.id
