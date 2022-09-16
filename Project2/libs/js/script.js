@@ -14,13 +14,13 @@ $(document).ready(function () {
 				<td>${
                 result.data[i].department
             }</td>
-				<td>${
+				<td class= "d-none d-sm-none d-md-none">${
                 result.data[i].jobTitle
             }</td>
-				<td>${
+				<td class="d-none d-sm-none d-md-none">${
                 result.data[i].email
             }</td>
-				<td>
+				<td class=".d-none .d-sm-block">
 
 					<a href="#" class="settings" title="Settings" data-bs-toggle="modal" data-bs-target="#updateUserModal" id="button" data-personnelId=${
                 result.data[i].id
@@ -111,13 +111,13 @@ $(document).ready(function () {
                     <td>${
                         element.department
                     }</td>
-                    <td>${
+                    <td class= "d-none d-sm-none d-md-none">${
                         element.jobTitle
                     }</td>
-                    <td>${
+                    <td class= "d-none d-sm-none d-md-none"${
                         element.email
                     }</td>
-                    <td>
+                    <td class=".d-none .d-sm-block">
     
                         <a href="#" class="settings" title="Settings" data-bs-toggle="modal" data-bs-target="#updateUserModal" id="button" data-personnelId=${
                         element.id
@@ -160,13 +160,13 @@ $(document).ready(function () {
                     <td>${
                         element.department
                     }</td>
-                    <td>${
+                    <td class= "d-none d-sm-none d-md-none">${
                         element.jobTitle
                     }</td>
-                    <td>${
+                    <td class= "d-none d-sm-none d-md-none">${
                         element.email
                     }</td>
-                    <td>
+                    <td class=".d-none .d-sm-block">
     
                         <a href="#" class="settings" title="Settings" data-bs-toggle="modal" data-bs-target="#updateUserModal" id="button" data-personnelId=${
                         element.id
@@ -199,6 +199,8 @@ const getAllPersonnel = () => {
 const deleteButton = (el) => {
     let personnelId = $(el).attr("data-personnelId")
     console.log(personnelId);
+    $(el).closest("td").css({"color": "red"})
+
     console.log('working')
     $.ajax({
         url: "libs/php/deletePersonnel.php",
@@ -209,6 +211,8 @@ const deleteButton = (el) => {
         },
         success: function (result) {
             console.log(result)
+            $(el).closest("td").text(`${result.data.firstName} ${result.data.lastName} has been deleted`)
+
         }
     })
 }
