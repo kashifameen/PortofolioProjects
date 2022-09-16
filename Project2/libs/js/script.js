@@ -32,12 +32,13 @@ $(document).ready(function () {
 			</tr>
 				`)
         })
-        $(".delete").on("click", deleteButton) 
-        $(".settings").on("click", settingsButton(result)) 
-        var myfunc = function(){
-            alert(this.name)
-        }
-        myfunc.call(deleteButton)
+        $(".delete").on("click", function(){
+            deleteButton(this)
+        }) 
+        $(".settings").on("click", function(){
+            settingsButton(this)
+        }) 
+      
     })
     $('#updateUserBtn').on("click", function () {
         let updateFirstName = document.getElementById('updatefName').value;
@@ -129,39 +130,14 @@ $(document).ready(function () {
                     `)
                 }
             })
-            $(".settings").on("click", function () {
-                let personnelId = $(this).attr("data-personnelId")
-                console.log('settings button clicked')
-                
-                result.data.forEach(element => {
-                    if (element.id == personnelId) {
-                        document.getElementById('updatefName').value = element.firstName
-                        document.getElementById('updatelName').value = element.lastName;
-                        document.getElementById('updateJob').value = element.jobTitle;
-                        document.getElementById('updateEmail').value = element.email;
-                        document.getElementById('updateDepartment').value = element.departmentID
-    
-                    }
-    
-                })
-            })
+        $(".delete").on("click", function(){
+            deleteButton(this)
+        }) 
+        $(".settings").on("click", function(){
+            settingsButton(this)
+        }) 
         })
-        $(".delete").on("click", function () {
-            let personnelId = $(this).attr("data-personnelId")
-            console.log(personnelId);
-            console.log('working')
-            $.ajax({
-                url: "libs/php/deletePersonnel.php",
-                type: "POST",
-                dataType: "json",
-                data: {
-                    id: personnelId
-                },
-                success: function (result) {
-                    console.log(result)
-                }
-            })
-        })
+        
 
     })
     $('#departmentForm').on("change", function () {
@@ -203,7 +179,14 @@ $(document).ready(function () {
                     `)
                 }
             })
+        $(".delete").on("click", function(){
+            deleteButton(this)
+        }) 
+        $(".settings").on("click", function(){
+            settingsButton(this)
+        }) 
         })
+       
     })
 })
 
@@ -213,8 +196,8 @@ const getAllPersonnel = () => {
 
 }
 
-const deleteButton = () => {
-    let personnelId = $(this).attr("data-personnelId")
+const deleteButton = (el) => {
+    let personnelId = $(el).attr("data-personnelId")
     console.log(personnelId);
     console.log('working')
     $.ajax({
@@ -230,9 +213,10 @@ const deleteButton = () => {
     })
 }
 
-const settingsButton = (result) => {
-    let personnelId = $(this).attr("data-personnelId")
-                console.log('settings button clicked')
+const settingsButton = (el) => {
+    let personnelId = $(el).attr("data-personnelId")
+                console.log(personnelId)
+                getAllPersonnel().done((result) => {
                 result.data.forEach(element => {
                     if (element.id == personnelId) {
                         document.getElementById('updatefName').value = element.firstName
@@ -244,4 +228,5 @@ const settingsButton = (result) => {
                     }
     
                 })
+            })
 }
