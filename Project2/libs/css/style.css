@@ -191,9 +191,9 @@ h5{
   .loader-wrapper {
     --line-width: 5px;
     --curtain-color: #f1faee;
-    --outer-line-color: #a8dadc;
-    --middle-line-color: #457b9d;
-    --inner-line-color: #1d3557;
+    --outer-line-color: #f40b0b;
+    --middle-line-color: #c71ebe;
+    --inner-line-color: #000103;
     position:fixed;
     top:0;
     left:0;
