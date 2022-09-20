@@ -4,6 +4,7 @@ window.addEventListener('load',function(){
   
 $(document).ready(function () {
     getAllPersonnel().done((result) => {
+     console.log(result)
         $.each(result.data, function (i, item) {
             $('#tableBody').append(`<tr>
 				<td>${
@@ -192,6 +193,17 @@ $(document).ready(function () {
         })
        
     })
+    $('#updateDepartmentBtn').on("click", function(){
+        var locationSelect = document.getElementById('updateDepartmentLocation');
+        getAllPersonnel().done((result) => {
+            result.data.forEach(element => {
+                locationSelect.append($("<option></option>").text(element.location).attr("value", element.locationId));
+
+                
+            })
+        })
+})
+
 })
 
 
