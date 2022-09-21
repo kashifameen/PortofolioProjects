@@ -308,3 +308,6 @@ h5{
     transform:translateY(-100%);
     transition: all .3s 1s ease-out;
   }
+  .delete {
+      color: red;
+  }

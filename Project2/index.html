@@ -31,32 +31,18 @@
                               <div class="col">
                                 <select class="form-select w-72" aria-label="Default select example" id="locationForm">
                                   <option disabled selected>Choose Location</option>
-                                  <option value="1">London</option>
-                                  <option value="2">New York</option>
-                                  <option value="3">Paris</option>
-                                  <option value="4">Munich</option>
-                                  <option value="5">Rome</option>
+                                  
                                 </select>
-                                <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addUserModal" id="testo"><i class="material-icons">&#xE147;</i> <span>Add New Location</span></a>
+                                <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addLocationModal" id="addLocationBtn"><i class="material-icons">&#xE147;</i> <span>Add New Location</span></a>
+                                <a href="#" class="btn btn-primary delete" data-bs-toggle="modal" data-bs-target="#deleteLocationModal" id="testo"><i class="material-icons ">&#xe872;</i> <span>Delete Location</span></a>
 
                               </div>
                               <div class="col">
                                 <select class="form-select w-72" id="departmentForm" aria-label="Default select example">
-                                  <option disabled selected >Filter by Department</option>
-                                  <option value="1">Human Resources</option>
-                                  <option value="2">Sales</option>
-                                  <option value="3">Marketing</option>
-                                  <option value="4">Legal</option>
-                                  <option value="5">Services</option>
-                                  <option value="6">Research and Development</option>
-                                  <option value="7">Product Management</option>
-                                  <option value="8">Training</option>
-                                  <option value="9">Support</option>
-                                  <option value="10">Engineering</option>
-                                  <option value="11">Accounting</option>
-                                  <option value="12">Business Development</option>
+                                  <option disabled selected>Choose Department</option>
                                 </select> 
                                 <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateDepartmentModal" id="updateDepartmentBtn"><i class="material-icons">&#xE147;</i> <span>Add New Department</span></a>
+                                <a href="#" class="btn btn-primary delete" data-bs-toggle="modal" data-bs-target="#deleteDepartmentModal" id="deleteDepartmentBtn"><i class="material-icons">&#xe872;</i> <span>Delete Department</span></a>
 
                               </div>
                               <div class="col">
@@ -157,17 +143,24 @@
                                     <input type="text" class="form-control" id="updateJob">
                                   </div>
                                   <div class="mb-3">
+                                    <label for="recipient-name" class="col-form-label">Email:</label>
+                                    <input type="text" class="form-control" id="updateEmail">
+                                  </div>
+                                  <div class="mb-3">
                                     <label for="recipient-name" class="col-form-label">Location: </label>
-                                    <select id="updateDepartmentLocation" class="form-select">
-                                      
+                                    <select id="updateDepartmentLocation" class="form-select"> 
                                     </select>
                                   </div>
-                                
+                                  <div class="mb-3">
+                                    <label for="recipient-name" class="col-form-label">Department: </label>
+                                    <select id="updateDepartment" class="form-select"> 
+                                    </select>
+                                  </div>
                               </form>
                             </div>
                             <div class="modal-footer">
                               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                              <button type="button" class="btn btn-primary" id="updateUserBtn">Department</button>
+                              <button type="button" class="btn btn-primary" id="updateUserBtn">Update User</button>
                             </div>
                           </div>
                         </div>
@@ -176,18 +169,18 @@
                         <div class="modal-dialog">
                           <div class="modal-content">
                             <div class="modal-header">
-                              <h5 class="modal-title" id="updateDepartmentModalLabel">Update User</h5>
+                              <h5 class="modal-title" id="addDepartmentModalLabel">Add Department</h5>
                               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
-                            <div class="modal-body" id="updateDepartmentModalBody">
+                            <div class="modal-body" id="addDepartmentModalBody">
                               <form>
                                  <div class="mb-3">
                                     <label for="recipient-name" class="col-form-label">Add New Department:</label>
-                                    <input type="text" class="form-control" id="updateJob">
+                                    <input type="text" class="form-control" id="addNewDepartment">
                                   </div>
                                   <div class="mb-3">
                                     <label for="recipient-name" class="col-form-label">Location: </label>
-                                    <select id="updateDepartmentLocation" class="form-select">
+                                    <select id="addDepartmentLocation" class="form-select">
                                     </select>
                                   </div>
                                
@@ -195,7 +188,81 @@
                             </div>
                             <div class="modal-footer">
                               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                              <button type="button" class="btn btn-primary" id="updateUserBtn">Update User</button>
+                              <button type="button" class="btn btn-primary" id="submitNewDepartmentBtn">Add Department</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="modal fade" id="deleteDepartmentModal" tabindex="-1" aria-labelledby="deleteDepartmentModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="deleteDepartmentModalLabel">Delete Department</h5>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body" id="deleteDepartmentModalBody">
+                              <form>
+                                 
+                                  <div class="mb-3">
+                                    <label for="recipient-name" class="col-form-label">Department: </label>
+                                    <select id="deleteDepartmentLocation" class="form-select">
+                                    </select>
+                                  </div>
+                               
+                              </form>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                              <button type="button" class="btn btn-primary" id="deleteDepartmentButton">Delete User</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="modal fade" id="addLocationModal" tabindex="-1" aria-labelledby="addLocationModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="addLocationModalLabel">Add Location</h5>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body" id="addLocationModalBody">
+                              <form>
+                                 
+                                  <div class="mb-3">
+                                    <label for="recipient-name" class="col-form-label">Location: </label>
+                                    <input type="text" class="form-control" id="addNewLocation">
+                                  </div>
+                               
+                              </form>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                              <button type="button" class="btn btn-primary" id="addLocationButton">Add Location</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="modal fade" id="deleteLocationModal" tabindex="-1" aria-labelledby="deleteLocationtModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="deleteLocationModalLabel">Delete Location</h5>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body" id="deleteLocationModalBody">
+                              <form>
+                                 
+                                  <div class="mb-3">
+                                    <label for="recipient-name" class="col-form-label">Location: </label>
+                                    <select id="deleteLocation" class="form-select">
+                                    </select>
+                                  </div>
+                               
+                              </form>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                              <button type="button" class="btn btn-primary" id="deleteLocationButton">Delete Location</button>
                             </div>
                           </div>
                         </div>

@@ -1,10 +1,10 @@
-window.addEventListener('load',function(){
-    document.querySelector('body').classList.add("loaded")  
-  });  
-  
+window.addEventListener('load', function () {
+    document.querySelector('body').classList.add("loaded")
+});
+
 $(document).ready(function () {
     getAllPersonnel().done((result) => {
-     console.log(result)
+        console.log(result)
         $.each(result.data, function (i, item) {
             $('#tableBody').append(`<tr>
 				<td>${
@@ -37,14 +37,15 @@ $(document).ready(function () {
 			</tr>
 				`)
         })
-        $(".delete").on("click", function(){
+        $(".delete").on("click", function () {
             deleteButton(this)
-        }) 
-        $(".settings").on("click", function(){
+        })
+        $(".settings").on("click", function () {
             settingsButton(this)
-        }) 
-      
+        })
+
     })
+
     $('#updateUserBtn').on("click", function () {
         let updateFirstName = document.getElementById('updatefName').value;
         let updateLastName = document.getElementById('updatelName').value;
@@ -70,7 +71,7 @@ $(document).ready(function () {
             }
         })
     })
-  
+
     $("#addUserBtn").on("click", function () {
         console.log('Testing!')
         let addFirstName = document.getElementById('addFirstName').value;
@@ -135,14 +136,14 @@ $(document).ready(function () {
                     `)
                 }
             })
-        $(".delete").on("click", function(){
-            deleteButton(this)
-        }) 
-        $(".settings").on("click", function(){
-            settingsButton(this)
-        }) 
+            $(".delete").on("click", function () {
+                deleteButton(this)
+            })
+            $(".settings").on("click", function () {
+                settingsButton(this)
+            })
         })
-        
+
 
     })
     $('#departmentForm').on("change", function () {
@@ -184,25 +185,147 @@ $(document).ready(function () {
                     `)
                 }
             })
-        $(".delete").on("click", function(){
-            deleteButton(this)
-        }) 
-        $(".settings").on("click", function(){
-            settingsButton(this)
-        }) 
-        })
-       
-    })
-    $('#updateDepartmentBtn').on("click", function(){
-        var locationSelect = document.getElementById('updateDepartmentLocation');
-        getAllPersonnel().done((result) => {
-            result.data.forEach(element => {
-                locationSelect.append($("<option></option>").text(element.location).attr("value", element.locationId));
-
-                
+            $(".delete").on("click", function () {
+                deleteButton(this)
+            })
+            $(".settings").on("click", function () {
+                settingsButton(this)
             })
         })
-})
+
+    })
+    var departmentDropdown = document.getElementById('departmentForm');
+    var updateDepartment = document.getElementById('updateDepartment')
+    getAllDepartments().done((result) => {
+        result.data.forEach(element => {
+            let opt = document.createElement('option');
+            let opt2 =document.createElement('option')
+            opt.value = element.id
+            opt.textContent = element.name
+            opt2.value = element.id
+            opt2.textContent = element.name
+            departmentDropdown.appendChild(opt)
+            updateDepartment.appendChild(opt2)
+
+        })
+    })
+    var locationDropdown = document.getElementById('locationForm');
+    var updateLocation = document.getElementById('updateDepartmentLocation');
+    var deleteLocation = document.getElementById('deleteLocation')
+    getAllLocation().done((result)=>{
+        result.data.forEach(element => {
+            let opt = document.createElement('option');
+            let opt2 = document.createElement('option')
+            let opt3 = document.createElement('option');
+            opt.value = element.id
+            opt.textContent = element.name
+            opt2.value = element.id
+            opt2.textContent = element.name
+            opt3.value = element.id
+            opt3.textContent = element.name
+            locationDropdown.appendChild(opt)
+            updateLocation.appendChild(opt2)
+            deleteLocation.appendChild(opt2)
+        })
+    })
+    $('#updateDepartmentBtn').on("click", function () {
+        console.log('Button Clicked')
+        var locationSelect = document.getElementById('addDepartmentLocation');
+        console.log(locationSelect)
+        getAllLocation().done((result) => {
+            result.data.forEach(element => {
+                let opt = document.createElement('option');
+                opt.value = element.id
+                opt.textContent = element.name
+                locationSelect.appendChild(opt)
+            })
+        })
+
+    })
+    
+    $('#submitNewDepartmentBtn').on("click", function(){
+        let addNewDepartment = document.getElementById('addNewDepartment').value;
+        let addDepartmentLocation = document.getElementById('addDepartmentLocation').value;
+        $.ajax({
+            url:"libs/php/insertDepartment.php",
+            type: "POST",
+            dataType: "json",
+            data: {
+                name: addNewDepartment,
+                locationID: addDepartmentLocation
+            },
+            success: function (result){
+                console.log(result)
+                console.log("submited")
+                document.getElementById('addDepartmentModalBody').innerHTML = `<h5> ${addNewDepartment} added to departments </h5>`
+
+            }
+        })
+    })
+    $('#deleteDepartmentBtn').on("click", function(){
+        let deleteDepartmentDropdown = document.getElementById('deleteDepartmentLocation');
+        getAllDepartments().done((result) => {
+            console.log(result)
+            result.data.forEach(element => {
+                let opt = document.createElement('option');
+                opt.value = element.id
+                opt.textContent = element.name
+                deleteDepartmentDropdown.appendChild(opt)
+
+            })
+        })
+    })
+    $('#deleteDepartmentButton').on("click", function() {
+        let departmentDropdownValue = document.getElementById('deleteDepartmentLocation').value;
+        var departmentName= $('#deleteDepartmentLocation option:selected').text()
+        console.log(departmentName)
+        $.ajax({
+            url:"libs/php/deleteDepartmentByID.php",
+            type: "GET",
+            dataType:"json",
+            data: {
+                id: departmentDropdownValue
+            },
+            success: function(result){
+                console.log(result)
+                console.log('Success')
+                document.getElementById('deleteDepartmentModalBody').innerHTML = `<h5>${departmentName} has been deleted from departments.</h5>`
+            }
+        })
+    })
+    $('#addLocationButton').on("click", function(){
+        let addNewLocation = document.getElementById('addNewLocation').value;
+        console.log(addNewLocation)
+        $.ajax({
+            url:"libs/php/insertLocation.php",
+            type:"POST",
+            dataType:"json",
+            data: {
+                name: addNewLocation
+            },
+            success: function(result){
+                console.log('Location Added')
+                document.getElementById('addLocationModalBody').innerHTML = `<h5>${addNewLocation} added as a new location.</h5>`
+            }
+        })
+    })
+    $('#deleteLocationButton').on("click", function(){
+        let deletedLocationId = document.getElementById('deleteLocation').value;
+        var deletedLocationName= $('#deleteLocation option:selected').text()
+
+        console.log(deletedLocationId)
+        $.ajax({
+            url:"libs/php/deleteLocationByID.php",
+            type:"POST",
+            dataType: "json",
+            data: {
+                id: deletedLocationId
+            }, success: function(result){
+                console.log('Location Deleted')
+                document.getElementById('deleteLocationModalBody').innerHTML = `<h5> ${deletedLocationName} has been deleted from locations</h5>`
+            }
+        })
+    })
 
 })
 
@@ -211,7 +334,13 @@ const getAllPersonnel = () => {
     return $.ajax({url: "libs/php/getAll.php", type: "GET", dataType: "json"});
 
 }
+const getAllLocation = () => {
+    return $.ajax({url: "libs/php/getAllLocation.php", type: "GET", dataType: "json"})
+}
 
+const getAllDepartments = () => {
+    return $.ajax({url:"libs/php/getAllDepartments.php", type: "GET", dataType: "json"})
+}
 const deleteButton = (el) => {
     let personnelId = $(el).attr("data-personnelId")
     console.log(personnelId);
@@ -227,7 +356,11 @@ const deleteButton = (el) => {
         },
         success: function (result) {
             console.log(result)
-            $(el).closest("td").text(`${result.data.firstName} ${result.data.lastName} has been deleted`)
+            $(el).closest("td").text(`${
+                result.data.firstName
+            } ${
+                result.data.lastName
+            } has been deleted`)
 
         }
     })
@@ -235,18 +368,16 @@ const deleteButton = (el) => {
 
 const settingsButton = (el) => {
     let personnelId = $(el).attr("data-personnelId")
-                console.log(personnelId)
-                getAllPersonnel().done((result) => {
-                result.data.forEach(element => {
-                    if (element.id == personnelId) {
-                        document.getElementById('updatefName').value = element.firstName
-                        document.getElementById('updatelName').value = element.lastName;
-                        document.getElementById('updateJob').value = element.jobTitle;
-                        document.getElementById('updateEmail').value = element.email;
-                        document.getElementById('updateDepartment').value = element.departmentID
-    
-                    }
-    
-                })
-            })
+    console.log(personnelId)
+    getAllPersonnel().done((result) => {
+        result.data.forEach(element => {
+            if (element.id == personnelId) {
+                document.getElementById('updatefName').value = element.firstName
+                document.getElementById('updatelName').value = element.lastName;
+                document.getElementById('updateJob').value = element.jobTitle;
+                document.getElementById('updateEmail').value = element.email;
+                document.getElementById('updateDepartment').value = element.departmentID
+            }
+        })
+    })
 }
