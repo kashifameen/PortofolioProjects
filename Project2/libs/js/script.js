@@ -16,13 +16,13 @@ $(document).ready(function () {
 				<td>${
                 result.data[i].location
             }</td>
-				<td>${
+				<td class ="d-none d-md-block d-lg-block d-xl-block d-xxl-block">${
                 result.data[i].department
             }</td>
-				<td >${
+				<td class="d-none d-md-block d-lg-block d-xl-block d-xxl-block"" >${
                 result.data[i].jobTitle
             }</td>
-				<td>${
+				<td class="d-none d-md-block d-lg-block d-xl-block d-xxl-block"">${
                 result.data[i].email
             }</td>
 				<td>
@@ -319,10 +319,16 @@ $(document).ready(function () {
             type:"POST",
             dataType: "json",
             data: {
+                locationID: deletedLocationId,
                 id: deletedLocationId
             }, success: function(result){
-                console.log('Location Deleted')
+               if(result.status.code == "200"){
                 document.getElementById('deleteLocationModalBody').innerHTML = `<h5> ${deletedLocationName} has been deleted from locations</h5>`
+               } else {
+                document.getElementById('deleteLocationModalBody').innerHTML = `<h5> Cannot delete location which is linked to a department.</h5>`
+
+               }
+                console.log(result)
             }
         })
     })
