@@ -58,7 +58,7 @@
 			echo json_encode($output); 
 
 	} else {
-		$output['status']['code'] = "1234";
+		$output['status']['code'] = "400";
 		$output['status']['name'] = "executed";
 		$output['status']['description'] = "query failed";	
 		$output['data'] = ['Failed'];
