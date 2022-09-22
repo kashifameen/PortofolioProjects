@@ -44,7 +44,7 @@
 	
 	$result = $query->get_result();
     $numRows = $result->num_rows;
-	if ($numRows == 0) {
+	if (!$numRows) {
 		$query = $conn->prepare('DELETE FROM department where id = ?');
 		$query->bind_param("i", $_REQUEST['id']);
 		$query->execute();

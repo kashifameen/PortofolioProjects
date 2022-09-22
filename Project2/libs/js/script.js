@@ -291,11 +291,10 @@ $(document).ready(function () {
                 console.log(result)
                 console.log('Success')
                
-                if(result.status.code = "200"){
+                if(result.status.code === "200"){
                      document.getElementById('deleteDepartmentModalBody').innerHTML = `<h5>${departmentName} has been deleted from departments.</h5>`
-                } else {
+                } else if(result.status.code === "400") {
                     document.getElementById('deleteDepartmentModalBody').innerHTML = `<h5>Cannot delete department as it is linked to a personnel</h5>`
-                    console.log('Else statement working')
                 }
             }
         })
