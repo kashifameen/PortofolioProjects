@@ -36,35 +36,45 @@
 	// SQL statement accepts parameters and so is prepared to avoid SQL injection.
 	// $_REQUEST used for development / debugging. Remember to change to $_POST for production
 
-	$query = $conn->prepare('DELETE FROM department WHERE id = ?');
+	$query = $conn->prepare('SELECT * FROM personnel WHERE departmentID = ?');
 	
-	$query->bind_param("i", $_REQUEST['id']);
+	$query->bind_param("i", $_REQUEST['departmentID']);
 
 	$query->execute();
 	
-	if (false === $query) {
+	$result = $query->get_result();
+    $numRows = $result->num_rows;
+	print_r($result);
+	// if ($numRows == 0) {
+	// 	$query = $conn->prepare('DELETE FROM department where id = ?');
+	// 	$query->bind_param("i", $_REQUEST['id']);
+	// 	$query->execute();
+	// 	$output['status']['code'] = "200";
+	// 		$output['status']['name'] = "ok";
+	// 		$output['status']['description'] = "success";
+	// 		$output['status']['returnedIn'] = (microtime(true) - $executionStartTime) / 1000 . " ms";
+	// 		$output['data'] = [];
+			
+	// 		mysqli_close($conn);
 
-		$output['status']['code'] = "400";
-		$output['status']['name'] = "executed";
-		$output['status']['description'] = "query failed";	
-		$output['data'] = [];
+	// 		echo json_encode($output); 
 
-		mysqli_close($conn);
 
-		echo json_encode($output); 
+		
 
-		exit;
+	// }else {
+	// 	$output['status']['code'] = "400";
+	// 	$output['status']['name'] = "executed";
+	// 	$output['status']['description'] = "query failed";	
+	// 	$output['data'] = [];
 
-	}
+	// 	mysqli_close($conn);
 
-	$output['status']['code'] = "200";
-	$output['status']['name'] = "ok";
-	$output['status']['description'] = "success";
-	$output['status']['returnedIn'] = (microtime(true) - $executionStartTime) / 1000 . " ms";
-	$output['data'] = [];
+	// 	echo json_encode($output); 
+
+	// 	exit;
 	
-	mysqli_close($conn);
-
-	echo json_encode($output); 
+	// } 
+	
 
 ?>

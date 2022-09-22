@@ -284,6 +284,7 @@ $(document).ready(function () {
             type: "GET",
             dataType:"json",
             data: {
+                locationID: departmentDropdownValue,
                 id: departmentDropdownValue
             },
             success: function(result){
@@ -324,7 +325,7 @@ $(document).ready(function () {
             }, success: function(result){
                if(result.status.code == "200"){
                 document.getElementById('deleteLocationModalBody').innerHTML = `<h5> ${deletedLocationName} has been deleted from locations</h5>`
-               } else {
+               } else if (result.status.code = "400"){
                 document.getElementById('deleteLocationModalBody').innerHTML = `<h5> Cannot delete location which is linked to a department.</h5>`
 
                }
