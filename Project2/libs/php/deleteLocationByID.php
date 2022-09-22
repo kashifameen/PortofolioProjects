@@ -43,7 +43,8 @@
 	$query->execute();
     $result = $query->get_result();
 	//Execute the query and store the result set
-    $numRows = $result->num_rows;
+    print_r($result);
+       $numRows = $result->num_rows;
     if($numRows == 0){
         $query = $conn->prepare('DELETE FROM location WHERE id = ?');
         $query->bind_param("i", $_REQUEST['id']);

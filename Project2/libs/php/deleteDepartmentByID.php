@@ -44,37 +44,32 @@
 	
 	$result = $query->get_result();
     $numRows = $result->num_rows;
-	print_r($result);
-	// if ($numRows == 0) {
-	// 	$query = $conn->prepare('DELETE FROM department where id = ?');
-	// 	$query->bind_param("i", $_REQUEST['id']);
-	// 	$query->execute();
-	// 	$output['status']['code'] = "200";
-	// 		$output['status']['name'] = "ok";
-	// 		$output['status']['description'] = "success";
-	// 		$output['status']['returnedIn'] = (microtime(true) - $executionStartTime) / 1000 . " ms";
-	// 		$output['data'] = [];
+	if ($numRows == 0) {
+		$query = $conn->prepare('DELETE FROM department where id = ?');
+		$query->bind_param("i", $_REQUEST['id']);
+		$query->execute();
+		$output['status']['code'] = "200";
+			$output['status']['name'] = "ok";
+			$output['status']['description'] = "success";
+			$output['status']['returnedIn'] = (microtime(true) - $executionStartTime) / 1000 . " ms";
+			$output['data'] = ['Success'];
 			
-	// 		mysqli_close($conn);
+			mysqli_close($conn);
+			echo json_encode($output); 
 
-	// 		echo json_encode($output); 
+	} else {
+		$output['status']['code'] = "1234";
+		$output['status']['name'] = "executed";
+		$output['status']['description'] = "query failed";	
+		$output['data'] = ['Failed'];
 
+		mysqli_close($conn);
 
-		
+		echo json_encode($output); 
 
-	// }else {
-	// 	$output['status']['code'] = "400";
-	// 	$output['status']['name'] = "executed";
-	// 	$output['status']['description'] = "query failed";	
-	// 	$output['data'] = [];
-
-	// 	mysqli_close($conn);
-
-	// 	echo json_encode($output); 
-
-	// 	exit;
+		exit;
 	
-	// } 
+	} 
 	
 
 ?>

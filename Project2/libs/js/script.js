@@ -284,13 +284,19 @@ $(document).ready(function () {
             type: "GET",
             dataType:"json",
             data: {
-                locationID: departmentDropdownValue,
+                departmentID: departmentDropdownValue,
                 id: departmentDropdownValue
             },
             success: function(result){
                 console.log(result)
                 console.log('Success')
-                document.getElementById('deleteDepartmentModalBody').innerHTML = `<h5>${departmentName} has been deleted from departments.</h5>`
+               
+                if(result.status.code = "200"){
+                     document.getElementById('deleteDepartmentModalBody').innerHTML = `<h5>${departmentName} has been deleted from departments.</h5>`
+                } else {
+                    document.getElementById('deleteDepartmentModalBody').innerHTML = `<h5>Cannot delete department as it is linked to a personnel</h5>`
+                    console.log('Else statement working')
+                }
             }
         })
     })
