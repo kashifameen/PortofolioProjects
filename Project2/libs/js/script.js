@@ -45,7 +45,51 @@ $(document).ready(function () {
         })
 
     })
-
+    $('#department-tab').on("click", function(){
+        console.log('Tab Clicked')
+        getAllDepartments().done((result) => {
+            console.log(result)
+            $.each(result.data, function (i, item) {
+                $('#departmentTableBody').append(`<tr>
+                    <td class="d-none d-xs-none d-sm-table-cell d-md-table-cell d-lg-table-cell d-xl-table-cell d-xxl-table-cell">${
+                    result.data[i].name
+                }</td>               
+                   <td>
+    
+                        <a href="#" class="departmentSettings" title="Settings" data-bs-toggle="modal" data-bs-target="#updateUserModal" id="button" data-personnelId=${
+                    result.data[i].id
+                } ><i class="fa-solid fa-gears"></i></a>
+                        <a href="#" class="departmentDelete" title="Delete" data-personnelId=${
+                    result.data[i].id
+                } ><i class="fa-solid fa-user-xmark"></i></a>
+                    </td>
+                </tr>
+                    `)
+            })
+        })
+    })
+    $('#location-tab').on("click", function(){
+        getAllLocation().done((result) => {
+            console.log(result)
+            $.each(result.data, function (i, item) {
+                $('#locationTableBody').append(`<tr>
+                    <td class="d-none d-xs-none d-sm-table-cell d-md-table-cell d-lg-table-cell d-xl-table-cell d-xxl-table-cell">${
+                    result.data[i].name
+                }</td>               
+                   <td class=text-right>
+    
+                        <a href="#" class="locationSettings" title="Settings" data-bs-toggle="modal" data-bs-target="#updateUserModal" id="button" data-personnelId=${
+                    result.data[i].id
+                } ><i class="fa-solid fa-gears"></i></a>
+                        <a href="#" class="locationDelete" title="Delete" data-personnelId=${
+                    result.data[i].id
+                } ><i class="fa-solid fa-user-xmark"></i></a>
+                    </td>
+                </tr>
+                    `)
+            })
+        })
+    })
     $('#updateUserBtn').on("click", function () {
 
         let updateFirstName = document.getElementById('updatefName').value;
@@ -150,6 +194,13 @@ $(document).ready(function () {
 
 
     })
+    $('#departmentHeader').on("click", function(){
+        console.log('Header Clicked')
+        $('#tableBody').empty()
+        getAllDepartments().done((result)=>{
+            console.log(result)
+        })
+    })
     $('#departmentForm').on("change", function () {
         const chosenValue = this.value;
         console.log(chosenValue)
@@ -234,7 +285,7 @@ $(document).ready(function () {
             
         })
     })
-    $('#updateDepartmentBtn').on("click", function () {
+    $('#addDepartmentBtn').on("click", function () {
         console.log('Button Clicked')
         var locationSelect = document.getElementById('addDepartmentLocation');
         console.log(locationSelect)
