@@ -29,10 +29,10 @@ $(document).ready(function () {
 
 					<a href="#" class="settings" title="Settings" data-bs-toggle="modal" data-bs-target="#updateUserModal" id="button" data-personnelId=${
                 result.data[i].id
-            } ><i class="material-icons">&#xE8B8;</i></a>
+            } ><i class="fa-solid fa-gears"></i></a>
 					<a href="#" class="delete" title="Delete" data-personnelId=${
                 result.data[i].id
-            } ><i class="material-icons">&#xE5C9;</i></a>
+            } ><i class="fa-solid fa-user-xmark"></i></a>
 				</td>
 			</tr>
 				`)

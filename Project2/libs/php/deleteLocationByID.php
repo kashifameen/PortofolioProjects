@@ -45,7 +45,7 @@
 	//Execute the query and store the result set
     print_r($result);
        $numRows = $result->num_rows;
-    if($numRows == 0){
+    if(!$numRows){
         $query = $conn->prepare('DELETE FROM location WHERE id = ?');
         $query->bind_param("i", $_REQUEST['id']);
         $query->execute();
