@@ -13,10 +13,10 @@ $(document).ready(function () {
 				<td>${
                 result.data[i].lastName
             }</td>                        
-				<td>${
+				<td class="d-none d-sm-table-cell d-md-table-cell d-lg-table-cell d-xl-table-cell d-xxl-table-cell">${
                 result.data[i].location
             }</td>
-				<td class ="d-none d-sm-table-cell d-md-table-cell d-lg-table-cell d-xl-table-cell d-xxl-table-cell">${
+				<td >${
                 result.data[i].department
             }</td>
 				<td class="d-none d-md-table-cell d-lg-table-cell d-xl-table-cell d-xxl-table-cell">${
@@ -47,12 +47,15 @@ $(document).ready(function () {
     })
 
     $('#updateUserBtn').on("click", function () {
+
         let updateFirstName = document.getElementById('updatefName').value;
         let updateLastName = document.getElementById('updatelName').value;
         let updateJob = document.getElementById('updateJob').value;
         let updateEmail = document.getElementById('updateEmail').value;
         let updateDepartment = document.getElementById('updateDepartment').value;
+        let personnelId = document.getElementById('personnelId').value;
         console.log(personnelId)
+        
         $.ajax({
             url: "libs/php/updatePersonnel.php",
             type: "POST",
@@ -66,6 +69,7 @@ $(document).ready(function () {
                 id: personnelId
             },
             success: function (result) {
+                console.log(result)
                 document.getElementById('updateUserModalBody').innerHTML = `<h5>${updateFirstName}'s profile has been updated. </h5>`
 
             }
@@ -111,10 +115,10 @@ $(document).ready(function () {
                     <td>${
                         element.lastName
                     }</td>                        
-                    <td>${
+                    <td class="d-none d-sm-table-cell d-md-table-cell d-lg-table-cell d-xl-table-cell d-xxl-table-cell">${
                         element.location
                     }</td>
-                    <td class="d-none d-sm-table-cell d-md-table-cell d-lg-table-cell d-xl-table-cell d-xxl-table-cell">${
+                    <td>${
                         element.department
                     }</td>
                     <td class="d-none d-md-table-cell d-lg-table-cell d-xl-table-cell d-xxl-table-cell">${
@@ -160,10 +164,10 @@ $(document).ready(function () {
                     <td>${
                         element.lastName
                     }</td>                        
-                    <td>${
+                    <td class="d-none d-sm-table-cell d-md-table-cell d-lg-table-cell d-xl-table-cell d-xxl-table-cell">${
                         element.location
                     }</td>
-                    <td class="d-none d-sm-table-cell d-md-table-cell d-lg-table-cell d-xl-table-cell d-xxl-table-cell">${
+                    <td>${
                         element.department
                     }</td>
                     <td class="d-none d-md-table-cell d-lg-table-cell d-xl-table-cell d-xxl-table-cell" >${
@@ -214,7 +218,6 @@ $(document).ready(function () {
     })
     var locationDropdown = document.getElementById('locationForm');
     var deleteLocation = document.getElementById('deleteLocation')
-    let updateLocation = document.getElementById('updateUserLocation')
     getAllLocation().done((result)=>{
         result.data.forEach(element => {
             let opt = document.createElement('option');
@@ -227,7 +230,6 @@ $(document).ready(function () {
             opt3.value = element.id
             opt3.textContent = element.name
            locationDropdown.appendChild(opt)
-            updateLocation.appendChild(opt2)
             deleteLocation.appendChild(opt3)
             
         })
@@ -382,24 +384,26 @@ const deleteButton = (el) => {
         }
     })
 }
-// getAllLocation().done((result)=>{
-//     result.data.forEach(element => {
-//         let opt = document.createElement('option');
-//         let opt2 = document.createElement('option')
-//         let opt3 = document.createElement('option');
-//         opt.value = element.id
+
 const settingsButton = (el) => {
     let personnelId = $(el).attr("data-personnelId")
+    document.getElementById('personnelId').value = personnelId;
     console.log(personnelId)
+    console.log()
      getAllPersonnel().done((result) => {
         result.data.forEach(element => {
             if (element.id == personnelId) {
                 document.getElementById('updatefName').value = element.firstName
-                document.getElementById('updatelName').value = element.lastName;
+                 document.getElementById('updatelName').value = element.lastName;
                 document.getElementById('updateJob').value = element.jobTitle;
                 document.getElementById('updateEmail').value = element.email;
                 document.getElementById('updateDepartment').value = element.departmentID
             }
         })
+        
     })
+  
 }
+
+
+
