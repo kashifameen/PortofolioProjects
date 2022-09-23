@@ -16,13 +16,13 @@ $(document).ready(function () {
 				<td>${
                 result.data[i].location
             }</td>
-				<td class ="d-none d-md-block d-lg-block d-xl-block d-xxl-block">${
+				<td class ="col-lg-2">${
                 result.data[i].department
             }</td>
-				<td class="d-none d-md-block d-lg-block d-xl-block d-xxl-block"" >${
+				<td class="col-lg-2" >${
                 result.data[i].jobTitle
             }</td>
-				<td class="d-none d-md-block d-lg-block d-xl-block d-xxl-block"">${
+				<td class="col-lg-2">${
                 result.data[i].email
             }</td>
 				<td>
@@ -210,8 +210,8 @@ $(document).ready(function () {
         })
     })
     var locationDropdown = document.getElementById('locationForm');
-    var updateLocation = document.getElementById('updateDepartmentLocation');
     var deleteLocation = document.getElementById('deleteLocation')
+    let updateLocation = document.getElementById('updateUserLocation')
     getAllLocation().done((result)=>{
         result.data.forEach(element => {
             let opt = document.createElement('option');
@@ -223,9 +223,10 @@ $(document).ready(function () {
             opt2.textContent = element.name
             opt3.value = element.id
             opt3.textContent = element.name
-            locationDropdown.appendChild(opt)
+           locationDropdown.appendChild(opt)
             updateLocation.appendChild(opt2)
-            deleteLocation.appendChild(opt2)
+            deleteLocation.appendChild(opt3)
+            
         })
     })
     $('#updateDepartmentBtn').on("click", function () {
@@ -377,11 +378,16 @@ const deleteButton = (el) => {
         }
     })
 }
-
+// getAllLocation().done((result)=>{
+//     result.data.forEach(element => {
+//         let opt = document.createElement('option');
+//         let opt2 = document.createElement('option')
+//         let opt3 = document.createElement('option');
+//         opt.value = element.id
 const settingsButton = (el) => {
     let personnelId = $(el).attr("data-personnelId")
     console.log(personnelId)
-    getAllPersonnel().done((result) => {
+     getAllPersonnel().done((result) => {
         result.data.forEach(element => {
             if (element.id == personnelId) {
                 document.getElementById('updatefName').value = element.firstName
