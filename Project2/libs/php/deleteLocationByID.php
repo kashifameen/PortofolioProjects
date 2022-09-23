@@ -6,8 +6,7 @@
 
 	// remove next two lines for production
 	
-	ini_set('display_errors', 'On');
-	error_reporting(E_ALL);
+	
 
 	$executionStartTime = microtime(true);
 
@@ -43,8 +42,7 @@
 	$query->execute();
     $result = $query->get_result();
 	//Execute the query and store the result set
-    print_r($result);
-       $numRows = $result->num_rows;
+    $numRows = $result->num_rows;
     if(!$numRows){
         $query = $conn->prepare('DELETE FROM location WHERE id = ?');
         $query->bind_param("i", $_REQUEST['id']);
@@ -53,7 +51,7 @@
         $output['status']['name'] = "ok";
         $output['status']['description'] = "success";
         $output['status']['returnedIn'] = (microtime(true) - $executionStartTime) / 1000 . " ms";
-        $output['data'] = [];
+        $output['data'] = ['Deleted'];
         
 	mysqli_close($conn);
 
@@ -64,7 +62,7 @@
         $output['status']['code'] = "400";
 		$output['status']['name'] = "executed";
 		$output['status']['description'] = "query failed";	
-		$output['data'] = [];
+		$output['data'] = ['Failed'];
 
 		mysqli_close($conn);
 

@@ -16,13 +16,13 @@ $(document).ready(function () {
 				<td>${
                 result.data[i].location
             }</td>
-				<td class ="col-lg-2">${
+				<td class ="d-none d-sm-table-cell d-md-table-cell d-lg-table-cell d-xl-table-cell d-xxl-table-cell">${
                 result.data[i].department
             }</td>
-				<td class="col-lg-2" >${
+				<td class="d-none d-md-table-cell d-lg-table-cell d-xl-table-cell d-xxl-table-cell">${
                 result.data[i].jobTitle
             }</td>
-				<td class="col-lg-2">${
+				<td class="d-none d-md-table-cell d-lg-table-cell d-xl-table-cell d-xxl-table-cell">${
                 result.data[i].email
             }</td>
 				<td>
@@ -114,23 +114,23 @@ $(document).ready(function () {
                     <td>${
                         element.location
                     }</td>
-                    <td>${
+                    <td class="d-none d-sm-table-cell d-md-table-cell d-lg-table-cell d-xl-table-cell d-xxl-table-cell">${
                         element.department
                     }</td>
-                    <td >${
+                    <td class="d-none d-md-table-cell d-lg-table-cell d-xl-table-cell d-xxl-table-cell">${
                         element.jobTitle
                     }</td>
-                    <td ${
+                    <td class="d-none d-md-table-cell d-lg-table-cell d-xl-table-cell d-xxl-table-cell"> ${
                         element.email
                     }</td>
                     <td >
     
                         <a href="#" class="settings" title="Settings" data-bs-toggle="modal" data-bs-target="#updateUserModal" id="button" data-personnelId=${
                         element.id
-                    } ><i class="material-icons">&#xE8B8;</i></a>
+                    } ><i class="fa-solid fa-gears"></i></a>
                         <a href="#" class="delete" title="Delete" data-personnelId=${
                         element.id
-                    } ><i class="material-icons">&#xE5C9;</i></a>
+                    } ><i class="fa-solid fa-user-xmark"></i></a>
                     </td>
                 </tr>
                     `)
@@ -163,23 +163,22 @@ $(document).ready(function () {
                     <td>${
                         element.location
                     }</td>
-                    <td>${
+                    <td class="d-none d-sm-table-cell d-md-table-cell d-lg-table-cell d-xl-table-cell d-xxl-table-cell">${
                         element.department
                     }</td>
-                    <td >${
+                    <td class="d-none d-md-table-cell d-lg-table-cell d-xl-table-cell d-xxl-table-cell" >${
                         element.jobTitle
                     }</td>
-                    <td >${
+                    <td class="d-none d-md-table-cell d-lg-table-cell d-xl-table-cell d-xxl-table-cell">${
                         element.email
                     }</td>
-                    <td c>
-    
+                    <td>
                         <a href="#" class="settings" title="Settings" data-bs-toggle="modal" data-bs-target="#updateUserModal" id="button" data-personnelId=${
                         element.id
-                    } ><i class="material-icons">&#xE8B8;</i></a>
+                    } ><i class="fa-solid fa-gears"></i></a>
                         <a href="#" class="delete" title="Delete" data-personnelId=${
                         element.id
-                    } ><i class="material-icons">&#xE5C9;</i></a>
+                    } ><i class="fa-solid fa-user-xmark"></i></a>
                     </td>
                 </tr>
                     `)
@@ -196,17 +195,21 @@ $(document).ready(function () {
     })
     var departmentDropdown = document.getElementById('departmentForm');
     var updateDepartment = document.getElementById('updateDepartment')
+    var addDepartment = document.getElementById('addDepartment')
     getAllDepartments().done((result) => {
         result.data.forEach(element => {
             let opt = document.createElement('option');
             let opt2 =document.createElement('option')
+            let opt3 = document.createElement('option')
             opt.value = element.id
             opt.textContent = element.name
             opt2.value = element.id
             opt2.textContent = element.name
+            opt3.value = element.id
+            opt3.textContent = element.name
             departmentDropdown.appendChild(opt)
             updateDepartment.appendChild(opt2)
-
+            addDepartment.appendChild(opt3)
         })
     })
     var locationDropdown = document.getElementById('locationForm');
@@ -329,13 +332,14 @@ $(document).ready(function () {
                 locationID: deletedLocationId,
                 id: deletedLocationId
             }, success: function(result){
+                console.log(result)
+
                if(result.status.code == "200"){
                 document.getElementById('deleteLocationModalBody').innerHTML = `<h5> ${deletedLocationName} has been deleted from locations</h5>`
                } else if (result.status.code = "400"){
                 document.getElementById('deleteLocationModalBody').innerHTML = `<h5> Cannot delete location which is linked to a department.</h5>`
 
                }
-                console.log(result)
             }
         })
     })
