@@ -96,8 +96,11 @@ $(document).ready(function () {
                 deleteLocationButton(this)
             })
             $('.locationSettings').on("click", function(){
-                updateLocationButton(this)
-                
+                let locationId = $(this).attr("data-locationId")
+                $('#updateLocationButtonTab').on("click", function(){
+                     updateLocationButton(locationId)               
+
+                })
             })
         })
     })
@@ -446,8 +449,7 @@ const deleteLocationButton = (el) => {
 
 }
 
-const updateLocationButton = (el) => {
-    let locationId = $(el).attr("data-locationid")
+const updateLocationButton = (locationId) => {
     let updatedLocationValue = document.getElementById('updateLocationTab').value;
     console.log(updatedLocationValue)
     console.log(locationId)
@@ -461,6 +463,7 @@ const updateLocationButton = (el) => {
         }, 
         success: function(result){
             console.log(result)
+            document.getElementById('updateLocationModalBody').innerHTML = `<h5> Location has been updated to ${updatedLocationValue}</h5>`
         }
     }) 
 }
@@ -495,7 +498,6 @@ const settingsButton = (el) => {
     let personnelId = $(el).attr("data-personnelId")
     document.getElementById('personnelId').value = personnelId;
     console.log(personnelId)
-    console.log()
      getAllPersonnel().done((result) => {
         result.data.forEach(element => {
             if (element.id == personnelId) {
