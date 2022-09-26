@@ -43,7 +43,11 @@ $(document).ready(function () {
         $(".settings").on("click", function () {
             settingsButton(this)
         })
-
+        $(".delete locationDelete").on("click", function(){
+            deleteLocationButton(this)
+            console.log('TESt this')
+        })
+        
     })
     $('#department-tab').on("click", function(){
         console.log('Tab Clicked')
@@ -56,10 +60,10 @@ $(document).ready(function () {
                 }</td>               
                    <td>
     
-                        <a href="#" class="departmentSettings" title="Settings" data-bs-toggle="modal" data-bs-target="#updateUserModal" id="button" data-personnelId=${
+                        <a href="#" class="departmentSettings settings" title="Settings" data-bs-toggle="modal" data-bs-target="#updateUserModal" id="button" data-personnelId=${
                     result.data[i].id
                 } ><i class="fa-solid fa-gears"></i></a>
-                        <a href="#" class="departmentDelete" title="Delete" data-personnelId=${
+                        <a href="#" class="departmentDelete delete" title="Delete" data-personnelId=${
                     result.data[i].id
                 } ><i class="fa-solid fa-user-xmark"></i></a>
                     </td>
@@ -78,15 +82,22 @@ $(document).ready(function () {
                 }</td>               
                    <td class=text-right>
     
-                        <a href="#" class="locationSettings" title="Settings" data-bs-toggle="modal" data-bs-target="#updateUserModal" id="button" data-personnelId=${
+                        <a href="#" class="settings locationSettings" title="Settings" data-bs-toggle="modal" data-bs-target="#updateLocationModal" id="button" data-locationId=${
                     result.data[i].id
                 } ><i class="fa-solid fa-gears"></i></a>
-                        <a href="#" class="locationDelete" title="Delete" data-personnelId=${
+                        <a href="#" class="delete locationDelete" title="Delete" data-locationId=${
                     result.data[i].id
                 } ><i class="fa-solid fa-user-xmark"></i></a>
                     </td>
                 </tr>
                     `)
+            })
+            $('.locationDelete').on("click", function(){
+                deleteLocationButton(this)
+            })
+            $('.locationSettings').on("click", function(){
+                updateLocationButton(this)
+                
             })
         })
     })
@@ -190,8 +201,10 @@ $(document).ready(function () {
             $(".settings").on("click", function () {
                 settingsButton(this)
             })
+            
+           
         })
-
+        
 
     })
     $('#departmentHeader').on("click", function(){
@@ -244,6 +257,7 @@ $(document).ready(function () {
             })
             $(".settings").on("click", function () {
                 settingsButton(this)
+                console.log('Working')
             })
         })
 
@@ -411,8 +425,49 @@ const getAllLocation = () => {
 const getAllDepartments = () => {
     return $.ajax({url:"libs/php/getAllDepartments.php", type: "GET", dataType: "json"})
 }
+//delete button when you are viewing locations in the locations tab
+const deleteLocationButton = (el) => {
+    let locationId = $(el).attr("data-locationId")
+    console.log(locationId)
+    $(el).closest("td").css({"color": "red"})
+    console.log('delete Location tab button workin')
+    $.ajax({
+        url:"libs/php/deleteLocationByID.php",
+        type:"POST",
+        dataType :"json",
+        data: {
+            locationID: locationId,
+            id: locationId
+        }, success: function(result){
+            console.log(result)
+            $(el).closest("td").text('Location Deleted')
+        }
+    })
+
+}
+
+const updateLocationButton = (el) => {
+    let locationId = $(el).attr("data-locationid")
+    let updatedLocationValue = document.getElementById('updateLocationTab').value;
+    console.log(updatedLocationValue)
+    console.log(locationId)
+    $.ajax({
+        url:"libs/php/updateLocation.php",
+        type: "POST",
+        dataType: "json",
+        data: {
+            name: updatedLocationValue,
+            id: locationId
+        }, 
+        success: function(result){
+            console.log(result)
+        }
+    }) 
+}
+
 const deleteButton = (el) => {
     let personnelId = $(el).attr("data-personnelId")
+
     console.log(personnelId);
     $(el).closest("td").css({"color": "red"})
 
