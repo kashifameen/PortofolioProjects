@@ -371,27 +371,94 @@
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
           <button type="button" class="btn btn-primary" id="updateDepartmentButtonTab">Update Department</button>
         </div>
-      </div>
-      
+      </div> 
     </div>
-    </div>
-    
-
-
-    <div class="toast align-items-center text-white bg-primary border-0" id="departmentUpdateToast" role="alert" aria-live="assertive" aria-atomic="true">
-      <div class="d-flex">
-        <div class="toast-body" id="updateDepartmentToastBody">
-        </div>
-        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-      </div>
-    </div>
-<div class="toast align-items-center text-white bg-danger border-0" id="departmentDeleteToast" role="alert" aria-live="assertive" aria-atomic="true">
-  <div class="d-flex">
-    <div class="toast-body" id="departmentDeletedToastBody">Department Deleted.
-    </div>
-    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
   </div>
-</div>
+  <div aria-live="polite" aria-atomic="true">
+    <!-- Position it: -->
+    <!-- - `.toast-container` for spacing between toasts -->
+    <!-- - `.position-absolute`, `top-0` & `end-0` to position the toasts in the upper right corner -->
+    <!-- - `.p-3` to prevent the toasts from sticking to the edge of the container  -->
+    <div class="toast-container position-absolute top-0 end-0 p-3">
+      <div class="toast align-items-center text-white bg-success border-0  "  id="departmentAddedToast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+          <div class="toast-body" id=addedDepartmentToastBody">
+          </div>
+          <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+      </div>
+      <div class="toast align-items-center text-white bg-success border-0  "  id="locationAddedToast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+          <div class="toast-body" id="addedLocationToastBody">
+          </div>
+          <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+      </div>
+      <div class="toast align-items-center text-white bg-success border-0  "  id="personnelAddedToast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+          <div class="toast-body" id="addPersonnelToastBody">Personnel Added
+          </div>
+          <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+      </div> 
+      <div class="toast align-items-center text-white bg-success border-0  "  id="personnelDeletedToast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+          <div class="toast-body" id="deletePersonnelToastBody">
+          </div>
+          <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+      </div>    
+      <div class="toast align-items-center text-white bg-info border-0  "  id="personnelUpdatedToast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+          <div class="toast-body" id="updatePersonnelToastBody">
+          </div>
+          <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+      </div>    
+ <div class="toast align-items-center text-white bg-info border-0  "  id="departmentUpdateToast" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="d-flex">
+      <div class="toast-body" id="updateDepartmentToastBody">Department Updated
+      </div>
+      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+  </div>
+  <div class="toast align-items-center text-white bg-danger border-0 " id="departmentDeleteToast" role="alert" aria-live="assertive" aria-atomic="true">
+  <div class="d-flex">
+  <div class="toast-body" id="departmentDeletedToastBody">Department Deleted.
+  </div>
+  <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+  </div>
+  </div>
+  <div class="toast align-items-center text-white bg-info border-0  "  id="locationUpdateToast" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="d-flex">
+      <div class="toast-body" id="updateLocationToastBody">Location Updated
+      </div>
+      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+  </div>
+  <div class="toast align-items-center text-white bg-danger border-0 " id="locationDeleteToast" role="alert" aria-live="assertive" aria-atomic="true">
+  <div class="d-flex">
+  <div class="toast-body" id="locationDeletedToastBody">Location Deleted.
+  </div>
+  <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+  </div>
+  
+  </div>
+
+
+
+
+
+
+
+      </div>
+ 
+  
+   
+
+
+
+  
 
 </body>
 <script type="application/javascript" src="libs/js/jquery-2.2.3.min.js"></script>

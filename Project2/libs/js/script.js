@@ -140,7 +140,9 @@ $(document).ready(function () {
             },
             success: function (result) {
                 console.log(result)
-                document.getElementById('updateUserModalBody').innerHTML = `<h5>${updateFirstName}'s profile has been updated. </h5>`
+                $('#updateUserModal').modal('hide')
+                $('#personnelUpdatedToast').toast('show')
+                document.getElementById('updatePersonnelToastBody').innerHTML = `${updateFirstName}'s profile has been updated.`
 
             }
         })
@@ -166,7 +168,9 @@ $(document).ready(function () {
             },
             success: function (result) {
                 console.log('New User Added')
-                document.getElementById('addUserModalBody').innerHTML = `<h5>${addFirstName} ${addLastName} added to database </h5>`
+                $('#addUserModal').modal('hide')
+                $('#personnelAddedToast').toast('show')
+                document.getElementById('addPersonnelToastBody').innerHTML = `${addFirstName} ${addLastName} added to database `
 
             }
         })
@@ -326,7 +330,6 @@ $(document).ready(function () {
                 locationSelect.appendChild(opt)
             })
         })
-
     })
 
     $('#submitNewDepartmentBtn').on("click", function () {
@@ -341,9 +344,9 @@ $(document).ready(function () {
                 locationID: addDepartmentLocation
             },
             success: function (result) {
-                console.log(result)
-                console.log("submited")
-                document.getElementById('addDepartmentModalBody').innerHTML = `<h5> ${addNewDepartment} added to departments </h5>`
+                $('#addDepartmentModal').modal('hide')
+                document.getElementById('addedDepartmentToastBody').innerHTML = ` ${addNewDepartment} added to departments `
+                $('#departmentAddedToast').toast('show')
 
             }
         })
@@ -379,7 +382,9 @@ $(document).ready(function () {
                 console.log('Success')
 
                 if (result.status.code === "200") {
-                    document.getElementById('deleteDepartmentModalBody').innerHTML = `<h5>${departmentName} has been deleted from departments.</h5>`
+                    $('#deleteDepartmentModal').modal('hide')
+                    $('#deleteDepartmentToast').toast('show')
+                    document.getElementById('departmentDeletedToastBody').innerHTML = `${departmentName} has been deleted from departments.`
                 } else if (result.status.code === "400") {
                     document.getElementById('deleteDepartmentModalBody').innerHTML = `<h5>Cannot delete department as it is linked to a personnel</h5>`
                 }
@@ -398,7 +403,9 @@ $(document).ready(function () {
             },
             success: function (result) {
                 console.log('Location Added')
-                document.getElementById('addLocationModalBody').innerHTML = `<h5>${addNewLocation} added as a new location.</h5>`
+                $('#addLocationModal').modal('hide')
+                $('#locationAddedToast').toast('show')
+                document.getElementById('addedLocationToastBody').innerHTML = `${addNewLocation} added as a new location.`
             }
         })
     })
@@ -419,9 +426,12 @@ $(document).ready(function () {
                 console.log(result)
 
                 if (result.status.code == "200") {
-                    document.getElementById('deleteLocationModalBody').innerHTML = `<h5> ${deletedLocationName} has been deleted from locations</h5>`
+                    $('#deleteLocationModal').modal('hide')
+                    $('#locationDeleteToast').toast('show')
+
+
                 } else if (result.status.code = "400") {
-                    document.getElementById('deleteLocationModalBody').innerHTML = `<h5> Cannot delete location which is linked to a department.</h5>`
+                    alert("Cannot delete location which is linked to a department")
 
                 }
             }
@@ -459,6 +469,8 @@ const deleteLocationButton = (el) => {
         success: function (result) {
             console.log(result)
             $(el).closest("td").text('Location Deleted')
+            $('#locationDeleteToast').toast('show')
+
         }
     })
 
@@ -502,14 +514,13 @@ const updateLocationButton = (locationId) => {
         },
         success: function (result) {
             console.log(result)
-            document.getElementById('updateLocationModalBody').innerHTML = `<h5> Location has been updated to ${updatedLocationValue}</h5>`
+            $('#updateLocationModal').modal('hide');
+            document.getElementById('updateLocationToastBody').innerHTML = `Location updated to ${updatedLocationValue}`
+            $('#locationUpdateToast').toast('show')
+
         }
     })
 }
-var today = new Date()
-var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-
-console.log(time)
 const updateDepartmentButton = (departmentId) => {
     let updatedDepartmentValue = document.getElementById('updateDepartmentTab').value;
     console.log(updatedDepartmentValue);
@@ -524,11 +535,10 @@ const updateDepartmentButton = (departmentId) => {
             id: departmentId
         },
         success: function (result) {
-            console.log(result)
-            // $('#updateDepartmentTabModal').modal('toggle');
             $('#updateDepartmentTabModal').modal('hide');
-            document.getElementById('updateDepartmentToastBody').innerText = `Department has been updated to ${updatedDepartmentValue}`
             $('#departmentUpdateToast').toast('show')
+
+            document.getElementById('updateDepartmentToastBody').innerText = `Department updated to ${updatedDepartmentValue}`
 
         }
     })
@@ -554,7 +564,8 @@ const deleteButton = (el) => {
             } ${
                 result.data.lastName
             } has been deleted`)
-
+            $('personnelDeletedToast').toast('show')
+            document.getElementById('deletePersonnelToastBody').innerHTML = `${result.data.firstName} ${result.data.lastName} has been deleted`
         }
     })
 }
