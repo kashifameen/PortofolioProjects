@@ -43,41 +43,53 @@ $(document).ready(function () {
         $(".settings").on("click", function () {
             settingsButton(this)
         })
-        $(".delete locationDelete").on("click", function(){
+        $(".delete locationDelete").on("click", function () {
             deleteLocationButton(this)
             console.log('TESt this')
         })
-        
+
     })
-    $('#department-tab').on("click", function(){
-        console.log('Tab Clicked')
+    $('#department-tab').on("click", function () {
+        $('#departmentTableBody').empty()
         getAllDepartments().done((result) => {
-            console.log(result)
             $.each(result.data, function (i, item) {
                 $('#departmentTableBody').append(`<tr>
-                    <td class="d-none d-xs-none d-sm-table-cell d-md-table-cell d-lg-table-cell d-xl-table-cell d-xxl-table-cell">${
+                    <td>${
                     result.data[i].name
                 }</td>               
                    <td>
     
-                        <a href="#" class="departmentSettings settings" title="Settings" data-bs-toggle="modal" data-bs-target="#updateUserModal" id="button" data-personnelId=${
+                        <a href="#" class="departmentSettings settings" title="Settings" data-bs-toggle="modal" data-bs-target="#updateDepartmentTabModal" id="button" data-departmentId=${
                     result.data[i].id
                 } ><i class="fa-solid fa-gears"></i></a>
-                        <a href="#" class="departmentDelete delete" title="Delete" data-personnelId=${
+                        <a href="#" class="departmentDelete delete" title="Delete" data-departmentId=${
                     result.data[i].id
                 } ><i class="fa-solid fa-user-xmark"></i></a>
                     </td>
                 </tr>
                     `)
             })
+            $('.departmentDelete').on("click", function () {
+                deleteDepartmentButton(this)
+            })
+            $('.departmentSettings').on("click", function () {
+                let departmentId = $(this).attr("data-departmentId")
+                console.log(departmentId)
+                $('#updateDepartmentButtonTab').on("click", function () {
+                    updateDepartmentButton(departmentId)
+                })
+
+
+            })
         })
     })
-    $('#location-tab').on("click", function(){
+    $('#location-tab').on("click", function () {
+        $('#locationTableBody').empty()
         getAllLocation().done((result) => {
             console.log(result)
             $.each(result.data, function (i, item) {
                 $('#locationTableBody').append(`<tr>
-                    <td class="d-none d-xs-none d-sm-table-cell d-md-table-cell d-lg-table-cell d-xl-table-cell d-xxl-table-cell">${
+                    <td>${
                     result.data[i].name
                 }</td>               
                    <td class=text-right>
@@ -92,13 +104,13 @@ $(document).ready(function () {
                 </tr>
                     `)
             })
-            $('.locationDelete').on("click", function(){
+            $('.locationDelete').on("click", function () {
                 deleteLocationButton(this)
             })
-            $('.locationSettings').on("click", function(){
+            $('.locationSettings').on("click", function () {
                 let locationId = $(this).attr("data-locationId")
-                $('#updateLocationButtonTab').on("click", function(){
-                     updateLocationButton(locationId)               
+                $('#updateLocationButtonTab').on("click", function () {
+                    updateLocationButton(locationId)
 
                 })
             })
@@ -113,7 +125,7 @@ $(document).ready(function () {
         let updateDepartment = document.getElementById('updateDepartment').value;
         let personnelId = document.getElementById('personnelId').value;
         console.log(personnelId)
-        
+
         $.ajax({
             url: "libs/php/updatePersonnel.php",
             type: "POST",
@@ -204,16 +216,16 @@ $(document).ready(function () {
             $(".settings").on("click", function () {
                 settingsButton(this)
             })
-            
-           
+
+
         })
-        
+
 
     })
-    $('#departmentHeader').on("click", function(){
+    $('#departmentHeader').on("click", function () {
         console.log('Header Clicked')
         $('#tableBody').empty()
-        getAllDepartments().done((result)=>{
+        getAllDepartments().done((result) => {
             console.log(result)
         })
     })
@@ -271,7 +283,7 @@ $(document).ready(function () {
     getAllDepartments().done((result) => {
         result.data.forEach(element => {
             let opt = document.createElement('option');
-            let opt2 =document.createElement('option')
+            let opt2 = document.createElement('option')
             let opt3 = document.createElement('option')
             opt.value = element.id
             opt.textContent = element.name
@@ -286,7 +298,7 @@ $(document).ready(function () {
     })
     var locationDropdown = document.getElementById('locationForm');
     var deleteLocation = document.getElementById('deleteLocation')
-    getAllLocation().done((result)=>{
+    getAllLocation().done((result) => {
         result.data.forEach(element => {
             let opt = document.createElement('option');
             let opt2 = document.createElement('option')
@@ -297,9 +309,9 @@ $(document).ready(function () {
             opt2.textContent = element.name
             opt3.value = element.id
             opt3.textContent = element.name
-           locationDropdown.appendChild(opt)
+            locationDropdown.appendChild(opt)
             deleteLocation.appendChild(opt3)
-            
+
         })
     })
     $('#addDepartmentBtn').on("click", function () {
@@ -316,19 +328,19 @@ $(document).ready(function () {
         })
 
     })
-    
-    $('#submitNewDepartmentBtn').on("click", function(){
+
+    $('#submitNewDepartmentBtn').on("click", function () {
         let addNewDepartment = document.getElementById('addNewDepartment').value;
         let addDepartmentLocation = document.getElementById('addDepartmentLocation').value;
         $.ajax({
-            url:"libs/php/insertDepartment.php",
+            url: "libs/php/insertDepartment.php",
             type: "POST",
             dataType: "json",
             data: {
                 name: addNewDepartment,
                 locationID: addDepartmentLocation
             },
-            success: function (result){
+            success: function (result) {
                 console.log(result)
                 console.log("submited")
                 document.getElementById('addDepartmentModalBody').innerHTML = `<h5> ${addNewDepartment} added to departments </h5>`
@@ -336,7 +348,7 @@ $(document).ready(function () {
             }
         })
     })
-    $('#deleteDepartmentBtn').on("click", function(){
+    $('#deleteDepartmentBtn').on("click", function () {
         let deleteDepartmentDropdown = document.getElementById('deleteDepartmentLocation');
         getAllDepartments().done((result) => {
             console.log(result)
@@ -349,67 +361,69 @@ $(document).ready(function () {
             })
         })
     })
-    $('#deleteDepartmentButton').on("click", function() {
+    $('#deleteDepartmentButton').on("click", function () {
         let departmentDropdownValue = document.getElementById('deleteDepartmentLocation').value;
-        var departmentName= $('#deleteDepartmentLocation option:selected').text()
+        var departmentName = $('#deleteDepartmentLocation option:selected').text()
         console.log(departmentName)
+        console.log(departmentDropdownValue)
         $.ajax({
-            url:"libs/php/deleteDepartmentByID.php",
+            url: "libs/php/deleteDepartmentByID.php",
             type: "GET",
-            dataType:"json",
+            dataType: "json",
             data: {
                 departmentID: departmentDropdownValue,
                 id: departmentDropdownValue
             },
-            success: function(result){
+            success: function (result) {
                 console.log(result)
                 console.log('Success')
-               
-                if(result.status.code === "200"){
-                     document.getElementById('deleteDepartmentModalBody').innerHTML = `<h5>${departmentName} has been deleted from departments.</h5>`
-                } else if(result.status.code === "400") {
+
+                if (result.status.code === "200") {
+                    document.getElementById('deleteDepartmentModalBody').innerHTML = `<h5>${departmentName} has been deleted from departments.</h5>`
+                } else if (result.status.code === "400") {
                     document.getElementById('deleteDepartmentModalBody').innerHTML = `<h5>Cannot delete department as it is linked to a personnel</h5>`
                 }
             }
         })
     })
-    $('#addLocationButton').on("click", function(){
+    $('#addLocationButton').on("click", function () {
         let addNewLocation = document.getElementById('addNewLocation').value;
         console.log(addNewLocation)
         $.ajax({
-            url:"libs/php/insertLocation.php",
-            type:"POST",
-            dataType:"json",
+            url: "libs/php/insertLocation.php",
+            type: "POST",
+            dataType: "json",
             data: {
                 name: addNewLocation
             },
-            success: function(result){
+            success: function (result) {
                 console.log('Location Added')
                 document.getElementById('addLocationModalBody').innerHTML = `<h5>${addNewLocation} added as a new location.</h5>`
             }
         })
     })
-    $('#deleteLocationButton').on("click", function(){
+    $('#deleteLocationButton').on("click", function () {
         let deletedLocationId = document.getElementById('deleteLocation').value;
-        var deletedLocationName= $('#deleteLocation option:selected').text()
+        var deletedLocationName = $('#deleteLocation option:selected').text()
 
         console.log(deletedLocationId)
         $.ajax({
-            url:"libs/php/deleteLocationByID.php",
-            type:"POST",
+            url: "libs/php/deleteLocationByID.php",
+            type: "POST",
             dataType: "json",
             data: {
                 locationID: deletedLocationId,
                 id: deletedLocationId
-            }, success: function(result){
+            },
+            success: function (result) {
                 console.log(result)
 
-               if(result.status.code == "200"){
-                document.getElementById('deleteLocationModalBody').innerHTML = `<h5> ${deletedLocationName} has been deleted from locations</h5>`
-               } else if (result.status.code = "400"){
-                document.getElementById('deleteLocationModalBody').innerHTML = `<h5> Cannot delete location which is linked to a department.</h5>`
+                if (result.status.code == "200") {
+                    document.getElementById('deleteLocationModalBody').innerHTML = `<h5> ${deletedLocationName} has been deleted from locations</h5>`
+                } else if (result.status.code = "400") {
+                    document.getElementById('deleteLocationModalBody').innerHTML = `<h5> Cannot delete location which is linked to a department.</h5>`
 
-               }
+                }
             }
         })
     })
@@ -426,46 +440,88 @@ const getAllLocation = () => {
 }
 
 const getAllDepartments = () => {
-    return $.ajax({url:"libs/php/getAllDepartments.php", type: "GET", dataType: "json"})
+    return $.ajax({url: "libs/php/getAllDepartments.php", type: "GET", dataType: "json"})
 }
-//delete button when you are viewing locations in the locations tab
+// delete button when you are viewing locations in the locations tab
 const deleteLocationButton = (el) => {
     let locationId = $(el).attr("data-locationId")
     console.log(locationId)
     $(el).closest("td").css({"color": "red"})
     console.log('delete Location tab button workin')
     $.ajax({
-        url:"libs/php/deleteLocationByID.php",
-        type:"POST",
-        dataType :"json",
+        url: "libs/php/deleteLocationByID.php",
+        type: "GET",
+        dataType: "json",
         data: {
             locationID: locationId,
             id: locationId
-        }, success: function(result){
+        },
+        success: function (result) {
             console.log(result)
             $(el).closest("td").text('Location Deleted')
         }
     })
 
 }
+const deleteDepartmentButton = (el) => {
+    let departmentId = $(el).attr("data-departmentId")
+    console.log(departmentId)
 
+    $(el).closest("td").css({"color": "red"})
+    $.ajax({
+        url: "libs/php/deleteDepartmentById.php",
+        type: "POST",
+        dataType: "json",
+        data: {
+            departmentID: departmentId,
+            id: departmentId
+
+        },
+        success: function (result) {
+            if (result.status.code == "200") {
+                $(el).closest("td").text('Department Deleted')
+            } else if (result.status.code = "400") {
+                alert("Cannot delete department which is linked to a location.")
+            }
+        }
+    })
+}
 const updateLocationButton = (locationId) => {
     let updatedLocationValue = document.getElementById('updateLocationTab').value;
     console.log(updatedLocationValue)
     console.log(locationId)
     $.ajax({
-        url:"libs/php/updateLocation.php",
+        url: "libs/php/updateLocation.php",
         type: "POST",
         dataType: "json",
         data: {
             name: updatedLocationValue,
             id: locationId
-        }, 
-        success: function(result){
+        },
+        success: function (result) {
             console.log(result)
             document.getElementById('updateLocationModalBody').innerHTML = `<h5> Location has been updated to ${updatedLocationValue}</h5>`
         }
-    }) 
+    })
+}
+const updateDepartmentButton = (departmentId) => {
+    let updatedDepartmentValue = document.getElementById('updateDepartmentTab').value;
+    console.log(updatedDepartmentValue);
+    console.log(departmentId);
+    console.log('Button Clicked')
+    $.ajax({
+        url: "libs/php/updateDepartment.php",
+        type: "POST",
+        dataType: "json",
+        data: {
+            name: updatedDepartmentValue,
+            id: departmentId
+        },
+        success: function (result) {
+            console.log(result)
+            document.getElementById('updateDepartmentTabModalBody').innerHTML = `<h5> Department has been updated to ${updatedDepartmentValue} </h5>`
+        }
+    })
 }
 
 const deleteButton = (el) => {
@@ -498,20 +554,17 @@ const settingsButton = (el) => {
     let personnelId = $(el).attr("data-personnelId")
     document.getElementById('personnelId').value = personnelId;
     console.log(personnelId)
-     getAllPersonnel().done((result) => {
+    getAllPersonnel().done((result) => {
         result.data.forEach(element => {
             if (element.id == personnelId) {
                 document.getElementById('updatefName').value = element.firstName
-                 document.getElementById('updatelName').value = element.lastName;
+                document.getElementById('updatelName').value = element.lastName;
                 document.getElementById('updateJob').value = element.jobTitle;
                 document.getElementById('updateEmail').value = element.email;
                 document.getElementById('updateDepartment').value = element.departmentID
             }
         })
-        
+
     })
-  
+
 }
-
-
-
