@@ -479,6 +479,8 @@ const deleteDepartmentButton = (el) => {
         },
         success: function (result) {
             if (result.status.code == "200") {
+               $('#departmentDeleteToast').toast('show')
+
                 $(el).closest("td").text('Department Deleted')
             } else if (result.status.code = "400") {
                 alert("Cannot delete department which is linked to a location.")
@@ -504,6 +506,10 @@ const updateLocationButton = (locationId) => {
         }
     })
 }
+var today = new Date()
+var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+
+console.log(time)
 const updateDepartmentButton = (departmentId) => {
     let updatedDepartmentValue = document.getElementById('updateDepartmentTab').value;
     console.log(updatedDepartmentValue);
@@ -519,11 +525,14 @@ const updateDepartmentButton = (departmentId) => {
         },
         success: function (result) {
             console.log(result)
-            document.getElementById('updateDepartmentTabModalBody').innerHTML = `<h5> Department has been updated to ${updatedDepartmentValue} </h5>`
+            // $('#updateDepartmentTabModal').modal('toggle');
+            $('#updateDepartmentTabModal').modal('hide');
+            document.getElementById('updateDepartmentToastBody').innerText = `Department has been updated to ${updatedDepartmentValue}`
+            $('#departmentUpdateToast').toast('show')
+
         }
     })
 }
-
 const deleteButton = (el) => {
     let personnelId = $(el).attr("data-personnelId")
 
