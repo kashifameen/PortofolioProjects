@@ -231,7 +231,7 @@ $(document).ready(function () {
     //     })
     // })
    
-    $('#addUserModalBtn').on("click", function(){
+    $('#addUserModalBtn').on("mouseover", function(){
         var addDepartment = document.getElementById('addDepartment')
         $('#addDepartment').empty()
         
@@ -245,7 +245,7 @@ $(document).ready(function () {
            
         })
     })
-    $('#departmentForm').on("click", function(){
+    $('#departmentForm').on("mouseover", function(){
         $('#departmentForm').empty()
         var departmentDropdown = document.getElementById('departmentForm');
         getAllDepartments().done((result)=> {
@@ -623,7 +623,7 @@ $('#updateUserBtn').on("click", function () {
     let updateLastName = document.getElementById('updatelName').value;
     let updateJob = document.getElementById('updateJob').value;
     let updateEmail = document.getElementById('updateEmail').value;
-    let updateDepartment = document.getElementById('updateDepartment').value;
+    let updateDepartment = document.getElementById('updateDepartmentPersonnel').value;
     let personnelId = document.getElementById('personnelId').value;
     console.log(personnelId)
 
