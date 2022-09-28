@@ -653,7 +653,7 @@ const populateDepartmentTab = () => {
                 result.data.forEach(element => {
                     if (element.departmentID == departmentId) {
                         document.getElementById('updateDepartmentTab').placeholder = element.department
-                        
+                        document.getElementById('updateLocationDepartmentTab').value = element.locationId
                     }
                 })
         
@@ -667,7 +667,6 @@ const populateDepartmentTab = () => {
                 })
             })
         
-            console.log(departmentId)
             $('#updateDepartmentButtonTab').on("click", function () {
                 updateDepartmentButton(departmentId)
             })
