@@ -41,7 +41,7 @@
                 <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addLocationModal"
                   id="addLocationBtn"><i class="fa-solid fa-circle-plus"></i> <span>Add New Location</span></a>
                 <a href="#" class="btn btn-primary delete" data-bs-toggle="modal" data-bs-target="#deleteLocationModal"
-                  id="testo"><i class="fa-solid fa-trash-can"></i><span>Delete Location</span></a>
+                  id="deleteLocationModalBtn"><i class="fa-solid fa-trash-can"></i><span>Delete Location</span></a>
 
               </div>
               <div class="col">
@@ -56,7 +56,7 @@
 
               </div>
               <div class="col">
-                <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addUserModal" id="testo"><i
+                <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addUserModal" id="addUserModalBtn"><i
                     class="fa-solid fa-user-plus"></i> <span>Add New User</span></a>
 
               </div>
@@ -105,6 +105,7 @@
             <thead>
               <tr>
                 <th>Department</th>
+                <th>Location</th>
                 <th class="text-right">Action</th>
               </tr>
             </thead>
@@ -199,7 +200,7 @@
                 </div>
                 <div class="mb-3">
                   <label for="recipient-name" class="col-form-label">Department: </label>
-                  <select id="updateDepartment" class="form-select">
+                  <select id="updateDepartmentPersonnel" class="form-select">
                     <input type="hidden" id="personnelId">
 
                   </select>
@@ -379,10 +380,10 @@
     <!-- - `.toast-container` for spacing between toasts -->
     <!-- - `.position-absolute`, `top-0` & `end-0` to position the toasts in the upper right corner -->
     <!-- - `.p-3` to prevent the toasts from sticking to the edge of the container  -->
-    <div class="toast-container position-absolute top-0 end-0 p-3">
-      <div class="toast align-items-center text-white bg-success border-0  "  id="departmentAddedToast" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast-container position-absolute bottom-0 end-0 p-3">
+      <div class="toast align-items-center text-white bg-success border-0"  id="departmentAddedToast" role="alert" aria-live="assertive" aria-atomic="true">
         <div class="d-flex">
-          <div class="toast-body" id=addedDepartmentToastBody">
+          <div class="toast-body" id=addedDepartmentToastBody">Department Added
           </div>
           <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
         </div>
@@ -394,21 +395,21 @@
           <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
         </div>
       </div>
-      <div class="toast align-items-center text-white bg-success border-0  "  id="personnelAddedToast" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="toast align-items-center text-white bg-success border-0"  id="personnelAddedToast" role="alert" aria-live="assertive" aria-atomic="true">
         <div class="d-flex">
           <div class="toast-body" id="addPersonnelToastBody">Personnel Added
           </div>
           <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
         </div>
       </div> 
-      <div class="toast align-items-center text-white bg-success border-0  "  id="personnelDeletedToast" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="toast align-items-center text-white bg-danger border-0"  id="personnelDeletedToast" role="alert" aria-live="assertive" aria-atomic="true">
         <div class="d-flex">
           <div class="toast-body" id="deletePersonnelToastBody">
           </div>
           <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
         </div>
       </div>    
-      <div class="toast align-items-center text-white bg-info border-0  "  id="personnelUpdatedToast" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="toast align-items-center text-white bg-info border-0"  id="personnelUpdatedToast" role="alert" aria-live="assertive" aria-atomic="true">
         <div class="d-flex">
           <div class="toast-body" id="updatePersonnelToastBody">
           </div>
@@ -422,14 +423,14 @@
       <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
     </div>
   </div>
-  <div class="toast align-items-center text-white bg-danger border-0 " id="departmentDeleteToast" role="alert" aria-live="assertive" aria-atomic="true">
+  <div class="toast align-items-center text-white bg-danger border-0" id="departmentDeleteToast" role="alert" aria-live="assertive" aria-atomic="true">
   <div class="d-flex">
   <div class="toast-body" id="departmentDeletedToastBody">Department Deleted.
   </div>
   <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
   </div>
   </div>
-  <div class="toast align-items-center text-white bg-info border-0  "  id="locationUpdateToast" role="alert" aria-live="assertive" aria-atomic="true">
+  <div class="toast align-items-center text-white bg-info border-0"  id="locationUpdateToast" role="alert" aria-live="assertive" aria-atomic="true">
     <div class="d-flex">
       <div class="toast-body" id="updateLocationToastBody">Location Updated
       </div>
