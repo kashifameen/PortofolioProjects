@@ -147,11 +147,11 @@ $(document).ready(function () {
                 console.log('Working')
             })
         })
-
+ 
     })
    
    
-    $('#addUserModalBtn').on("mouseover", function(){
+    $('#addUserModalBtn').on("click", function(){
         var addDepartment = document.getElementById('addDepartment')
         $('#addDepartment').empty()
         
@@ -165,10 +165,11 @@ $(document).ready(function () {
            
         })
     })
-    $('#departmentForm').on("mouseover", function(){
-        $('#departmentForm').empty()
+    $('#departmentForm').on("click", function(){
+        $('#departmentDropdown').empty()
         var departmentDropdown = document.getElementById('departmentForm');
-        getAllDepartments().done((result)=> {
+       
+          getAllDepartments().done((result)=> {
             result.data.forEach(element => {
             let opt = document.createElement('option');
             opt.value = element.departmentID;
@@ -176,7 +177,8 @@ $(document).ready(function () {
             departmentDropdown.appendChild(opt)
             })
            
-        })
+        })  
+        
     })
     $('#locationForm').on("click", function(){
         $('#locationForm').empty()
@@ -427,6 +429,7 @@ const updateLocationButton = (locationId) => {
     })
 }
 const updateDepartmentButton = (departmentId) => {
+  
     let updatedDepartmentValue = document.getElementById('updateDepartmentTab').value;
     console.log(updatedDepartmentValue);
     console.log(departmentId);
@@ -645,6 +648,25 @@ const populateDepartmentTab = () => {
         })
         $('.departmentSettings').on("click", function () {
             let departmentId = $(this).attr("data-departmentId")
+            var updatedDepartmentTabLocation = document.getElementById('updateLocationDepartmentTab')
+            getAllDepartments().done((result) => {
+                result.data.forEach(element => {
+                    if (element.departmentID == departmentId) {
+                        document.getElementById('updateDepartmentTab').placeholder = element.department
+                        
+                    }
+                })
+        
+            })
+            getAllLocation().done((result) => {
+                result.data.forEach(element => {
+                    let opt = document.createElement('option');
+                    opt.value = element.id
+                    opt.textContent = element.name
+                    updatedDepartmentTabLocation.appendChild(opt)
+                })
+            })
+        
             console.log(departmentId)
             $('#updateDepartmentButtonTab').on("click", function () {
                 updateDepartmentButton(departmentId)
