@@ -6,72 +6,12 @@ $(document).ready(function () {
     populatePersonnel()
     $('#department-tab').on("click", function () {
         $('#departmentTableBody').empty()
-        getAllDepartments().done((result) => {
-            console.log(result)
-            $.each(result.data, function (i, item) {
-                $('#departmentTableBody').append(`<tr>
-                    <td>${
-                    result.data[i].department
-                }</td>
-                <td>${result.data[i].location}               
-                   <td>
-    
-                        <a href="#" class="departmentSettings settings" title="Settings" data-bs-toggle="modal" data-bs-target="#updateDepartmentTabModal" id="button" data-departmentId=${
-                    result.data[i].departmentID
-                } ><i class="fa-solid fa-gears"></i></a>
-                        <a href="#" class="departmentDelete delete" title="Delete" data-departmentId=${
-                    result.data[i].departmentID
-                } ><i class="fa-solid fa-user-xmark"></i></a>
-                    </td>
-                </tr>
-                    `)
-            })
-            $('.departmentDelete').on("click", function () {
-                deleteDepartmentButton(this)
-            })
-            $('.departmentSettings').on("click", function () {
-                let departmentId = $(this).attr("data-departmentId")
-                console.log(departmentId)
-                $('#updateDepartmentButtonTab').on("click", function () {
-                    updateDepartmentButton(departmentId)
-                })
-
-
-            })
-        })
+        populateDepartmentTab()
+        
     })
     $('#location-tab').on("click", function () {
         $('#locationTableBody').empty()
-        getAllLocation().done((result) => {
-            console.log(result)
-            $.each(result.data, function (i, item) {
-                $('#locationTableBody').append(`<tr>
-                    <td>${
-                    result.data[i].name
-                }</td>               
-                   <td class=text-right>
-    
-                        <a href="#" class="settings locationSettings" title="Settings" data-bs-toggle="modal" data-bs-target="#updateLocationModal" id="button" data-locationId=${
-                    result.data[i].id
-                } ><i class="fa-solid fa-gears"></i></a>
-                        <a href="#" class="delete locationDelete" title="Delete" data-locationId=${
-                    result.data[i].id
-                } ><i class="fa-solid fa-user-xmark"></i></a>
-                    </td>
-                </tr>
-                    `)
-            })
-            $('.locationDelete').on("click", function () {
-                deleteLocationButton(this)
-            })
-            $('.locationSettings').on("click", function () {
-                let locationId = $(this).attr("data-locationId")
-                $('#updateLocationButtonTab').on("click", function () {
-                    updateLocationButton(locationId)
-
-                })
-            })
-        })
+        populateLocationTab()
     })
     
    
@@ -159,9 +99,7 @@ $(document).ready(function () {
     $('#departmentHeader').on("click", function () {
         console.log('Header Clicked')
         $('#tableBody').empty()
-        getAllDepartments().done((result) => {
-            console.log(result)
-        })
+        populateDepartmentTab()
     })
     $('#departmentForm').on("change", function () {
         const chosenValue = this.value;
@@ -211,25 +149,7 @@ $(document).ready(function () {
         })
 
     })
-    // var departmentDropdown = document.getElementById('departmentForm');
-    // var updateDepartment = document.getElementById('updateDepartment')
-    // // var addDepartment = document.getElementById('addDepartment')
-    // getAllDepartments().done((result) => {
-    //     result.data.forEach(element => {
-    //         let opt = document.createElement('option');
-    //         let opt2 = document.createElement('option')
-    //         let opt3 = document.createElement('option')
-    //         opt.value = element.id
-    //         opt.textContent = element.name
-    //         opt2.value = element.id
-    //         opt2.textContent = element.name
-    //         opt3.value = element.id
-    //         opt3.textContent = element.name
-    //         departmentDropdown.appendChild(opt)
-    //         updateDepartment.appendChild(opt2)
-    //         // addDepartment.appendChild(opt3)
-    //     })
-    // })
+   
    
     $('#addUserModalBtn').on("mouseover", function(){
         var addDepartment = document.getElementById('addDepartment')
@@ -351,6 +271,8 @@ $(document).ready(function () {
                 if (result.status.code === "200") {
                     $('#deleteDepartmentModal').modal('hide')
                     $('#departmentDeleteToast').toast('show')
+                    $('#departmentTableBody').empty()
+                    populateDepartmentTab()
                     document.getElementById('departmentDeletedToastBody').innerHTML = `${departmentName} has been deleted from departments.`
                 } else if (result.status.code === "400") {
                     document.getElementById('deleteDepartmentModalBody').innerHTML = `<h5>Cannot delete department as it is linked to a personnel</h5>`
@@ -373,6 +295,8 @@ $(document).ready(function () {
                 $('#addLocationModal').modal('hide')
                 $('#locationAddedToast').toast('show')
                 document.getElementById('addedLocationToastBody').innerHTML = `${addNewLocation} added as a new location.`
+                $('#locationTableBody').empty()
+                populateLocationTab()
             }
         })
     })
@@ -395,7 +319,8 @@ $(document).ready(function () {
                 if (result.status.code == "200") {
                     $('#deleteLocationModal').modal('hide')
                     $('#locationDeleteToast').toast('show')
-
+                    $('#locationTableBody').empty()
+                    populateLocationTab()
 
                 } else if (result.status.code = "400") {
                     alert("Cannot delete location which is linked to a department")
@@ -438,6 +363,8 @@ const deleteLocationButton = (el) => {
             if(result.data == "success"){
               $(el).closest("td").text('Location Deleted')
             $('#locationDeleteToast').toast('show')  
+            $('#departmentTabBody').empty();
+            populateDepartmentTab()
             } else {
                 alert("Cannot delete location linked to a department")
             }
@@ -464,7 +391,8 @@ const deleteDepartmentButton = (el) => {
             console.log('deleted')
             if (result.status.code == "200") {
                $('#departmentDeleteToast').toast('show')
-
+               $('#departmentTabBody').empty();
+               populateDepartmentTab()
                 $(el).closest("td").text('Department Deleted')
             } else if (result.status.code = "400") {
                 alert("Cannot delete department which is linked to a location.")
@@ -474,6 +402,9 @@ const deleteDepartmentButton = (el) => {
 }
 const updateLocationButton = (locationId) => {
     let updatedLocationValue = document.getElementById('updateLocationTab').value;
+    $('#locationTableBody').empty()
+    
+
     console.log(updatedLocationValue)
     console.log(locationId)
     $.ajax({
@@ -489,6 +420,8 @@ const updateLocationButton = (locationId) => {
             $('#updateLocationModal').modal('hide');
             document.getElementById('updateLocationToastBody').innerHTML = `Location updated to ${updatedLocationValue}`
             $('#locationUpdateToast').toast('show')
+            $('#locationTableBody').empty()
+            populateLocationTab()
 
         }
     })
@@ -509,9 +442,9 @@ const updateDepartmentButton = (departmentId) => {
         success: function (result) {
             $('#updateDepartmentTabModal').modal('hide');
             $('#departmentUpdateToast').toast('show')
-
+            $('#departmentTableBody').empty
             document.getElementById('updateDepartmentToastBody').innerText = `Department updated to ${updatedDepartmentValue}`
-
+            populateDepartmentTab()
         }
     })
 }
@@ -536,8 +469,11 @@ const deleteButton = (el) => {
             } ${
                 result.data.lastName
             } has been deleted`)
-            $('#personnelDeletedToast').toast('show')
+            $('#tableBody').empty()
+            populatePersonnel()
             document.getElementById('deletePersonnelToastBody').innerHTML = `${result.data.firstName} ${result.data.lastName} has been deleted`
+            $('#personnelDeletedToast').toast('show')
+
         }
     })
 }
@@ -618,7 +554,7 @@ const populatePersonnel = ()=>{
     })
 }
 $('#updateUserBtn').on("click", function () {
-     
+     $('#tableBody').empty()
     let updateFirstName = document.getElementById('updatefName').value;
     let updateLastName = document.getElementById('updatelName').value;
     let updateJob = document.getElementById('updateJob').value;
@@ -644,8 +580,77 @@ $('#updateUserBtn').on("click", function () {
             $('#updateUserModal').modal('hide')
             $('#personnelUpdatedToast').toast('show')
             document.getElementById('updatePersonnelToastBody').innerHTML = `${updateFirstName}'s profile has been updated.`
+            $('#tableBody').empty()
             populatePersonnel()
 
         }
     })
 })
+
+const populateLocationTab = () => {
+    getAllLocation().done((result) => {
+        console.log(result)
+        $.each(result.data, function (i, item) {
+            $('#locationTableBody').append(`<tr>
+                <td>${
+                result.data[i].name
+            }</td>               
+               <td class=text-right>
+
+                    <a href="#" class="settings locationSettings" title="Settings" data-bs-toggle="modal" data-bs-target="#updateLocationModal" id="button" data-locationId=${
+                result.data[i].id
+            } ><i class="fa-solid fa-gears"></i></a>
+                    <a href="#" class="delete locationDelete" title="Delete" data-locationId=${
+                result.data[i].id
+            } ><i class="fa-solid fa-user-xmark"></i></a>
+                </td>
+            </tr>
+                `)
+        })
+        $('.locationDelete').on("click", function () {
+            deleteLocationButton(this)
+        })
+        $('.locationSettings').on("click", function () {
+            let locationId = $(this).attr("data-locationId")
+            $('#updateLocationButtonTab').on("click", function () {
+                updateLocationButton(locationId)
+
+            })
+        })
+    })
+}
+const populateDepartmentTab = () => {
+    getAllDepartments().done((result) => {
+        console.log(result)
+        $.each(result.data, function (i, item) {
+            $('#departmentTableBody').append(`<tr>
+                <td>${
+                result.data[i].department
+            }</td>
+            <td>${result.data[i].location}               
+               <td>
+
+                    <a href="#" class="departmentSettings settings" title="Settings" data-bs-toggle="modal" data-bs-target="#updateDepartmentTabModal" id="button" data-departmentId=${
+                result.data[i].departmentID
+            } ><i class="fa-solid fa-gears"></i></a>
+                    <a href="#" class="departmentDelete delete" title="Delete" data-departmentId=${
+                result.data[i].departmentID
+            } ><i class="fa-solid fa-user-xmark"></i></a>
+                </td>
+            </tr>
+                `)
+        })
+        $('.departmentDelete').on("click", function () {
+            deleteDepartmentButton(this)
+        })
+        $('.departmentSettings').on("click", function () {
+            let departmentId = $(this).attr("data-departmentId")
+            console.log(departmentId)
+            $('#updateDepartmentButtonTab').on("click", function () {
+                updateDepartmentButton(departmentId)
+            })
+
+
+        })
+    })
+}
