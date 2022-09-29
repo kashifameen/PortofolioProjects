@@ -142,11 +142,11 @@
               <form>
                 <div class="mb-3">
                   <label for="recipient-name" class="col-form-label">First Name:</label>
-                  <input type="text" class="form-control" id="addFirstName">
+                  <input type="text" class="form-control" id="addFirstName" required>
                 </div>
                 <div class="mb-3">
                   <label for="recipient-name" class="col-form-label">Last Name:</label>
-                  <input type="text" class="form-control" id="addLastName">
+                  <input type="text" class="form-control" id="addLastName" required>
                 </div>
 
                 <div class="mb-3">
@@ -160,7 +160,7 @@
                 </div>
                 <div class="mb-3">
                   <label for="message-text" class="col-form-label">Email:</label>
-                  <input type="text" class="form-control" id="addEmail">
+                  <input type="text" class="form-control" id="addEmail" required>
                 </div>
               </form>
             </div>
@@ -183,11 +183,11 @@
               <form>
                 <div class="mb-3">
                   <label for="fName" class="col-form-label">First Name:</label>
-                  <input type="text" class="form-control" id="updatefName">
+                  <input type="text" class="form-control" id="updatefName" required>
                 </div>
                 <div class="mb-3">
                   <label for="lName" class="col-form-label">Last Name:</label>
-                  <input type="text" class="form-control" id="updatelName">
+                  <input type="text" class="form-control" id="updatelName" required>
                 </div>
 
                 <div class="mb-3">
@@ -196,7 +196,7 @@
                 </div>
                 <div class="mb-3">
                   <label for="recipient-name" class="col-form-label">Email:</label>
-                  <input type="text" class="form-control" id="updateEmail">
+                  <input type="text" class="form-control" id="updateEmail" required>
                 </div>
                 <div class="mb-3">
                   <label for="recipient-name" class="col-form-label">Department: </label>
@@ -226,7 +226,7 @@
               <form>
                 <div class="mb-3">
                   <label for="recipient-name" class="col-form-label">Add New Department:</label>
-                  <input type="text" class="form-control" id="addNewDepartment">
+                  <input type="text" class="form-control" id="addNewDepartment" required>
                 </div>
                 <div class="mb-3">
                   <label for="recipient-name" class="col-form-label">Location: </label>
@@ -282,7 +282,7 @@
 
                 <div class="mb-3">
                   <label for="recipient-name" class="col-form-label">Location: </label>
-                  <input type="text" class="form-control" id="addNewLocation">
+                  <input type="text" class="form-control" id="addNewLocation" required>
                 </div>
 
               </form>
@@ -337,7 +337,7 @@
 
             <div class="mb-3">
               <label for="recipient-name" class="col-form-label">Location: </label>
-              <input type="text" class="form-control" id="updateLocationTab">
+              <input type="text" class="form-control" id="updateLocationTab" required>
             </div>
 
           </form>
@@ -363,7 +363,7 @@
 
             <div class="mb-3">
               <label for="recipient-name" class="col-form-label">Department: </label>
-              <input type="text" class="form-control" id="updateDepartmentTab">
+              <input type="text" class="form-control" id="updateDepartmentTab" required>
             </div>
             <div class="mb-3">
               <label for="recipient-name" class="col-form-label">Location: </label>
@@ -434,6 +434,13 @@
   <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
   </div>
   </div>
+  <div class="toast align-items-center text-white bg-danger border-0" id="cannotDeleteDepartmentToast" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="d-flex">
+    <div class="toast-body" id="departmentDeletedToastBody">Cannot delete department which is linked to a person.
+    </div>
+    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+    </div>
   <div class="toast align-items-center text-white bg-info border-0"  id="locationUpdateToast" role="alert" aria-live="assertive" aria-atomic="true">
     <div class="d-flex">
       <div class="toast-body" id="updateLocationToastBody">Location Updated
@@ -447,9 +454,14 @@
   </div>
   <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
   </div>
-  
   </div>
-
+  <div class="toast align-items-center text-white bg-danger border-0 " id="cannotDeleteLocationToast" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="d-flex">
+    <div class="toast-body" id="locationDeletedToastBody">Cannot delete location which is linked to a department.
+    </div>
+    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+    </div>
 
 
 

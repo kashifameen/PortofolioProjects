@@ -22,7 +22,7 @@
 		$output['status']['name'] = "failure";
 		$output['status']['description'] = "database unavailable";
 		$output['status']['returnedIn'] = (microtime(true) - $executionStartTime) / 1000 . " ms";
-		$output['data'] = [];
+		$output['data'] = ["failed"];
 
 		mysqli_close($conn);
 

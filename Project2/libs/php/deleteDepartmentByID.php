@@ -1,14 +1,5 @@
 <?php
 
-	// example use from browser
-	// use insertDepartment.php first to create new dummy record and then specify it's id in the command below
-	// http://localhost/companydirectory/libs/php/deleteDepartmentByID.php?id=<id>
-
-	// remove next two lines for production
-	
-	ini_set('display_errors', 'On');
-	error_reporting(E_ALL);
-
 	$executionStartTime = microtime(true);
 
 	include("config.php");
@@ -38,7 +29,7 @@
 
 	$query = $conn->prepare('SELECT * FROM personnel WHERE departmentID = ?');
 	
-	$query->bind_param("i", $_REQUEST['departmentID']);
+	$query->bind_param("i", $_POST['departmentID']);
 
 	$query->execute();
 	
@@ -46,7 +37,7 @@
     $numRows = $result->num_rows;
 	if (!$numRows) {
 		$query = $conn->prepare('DELETE FROM department where id = ?');
-		$query->bind_param("i", $_REQUEST['id']);
+		$query->bind_param("i", $_POST['id']);
 		$query->execute();
 		$output['status']['code'] = "200";
 			$output['status']['name'] = "ok";

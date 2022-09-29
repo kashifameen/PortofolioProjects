@@ -17,13 +17,19 @@ $(document).ready(function () {
    
 
     $("#addUserBtn").on("click", function () {
-        $('#tableBody').empty()
+        
+
         let addFirstName = document.getElementById('addFirstName').value;
         let addLastName = document.getElementById('addLastName').value;
         let addJob = document.getElementById('addJob').value;
         let addEmail = document.getElementById('addEmail').value;
         let addDepartment = document.getElementById('addDepartment').value;
-        $.ajax({
+        if(addFirstName == "" || addLastName == "" || addJob == "" || addEmail == "" || addDepartment ==""){
+            alert("Please fill all fields")
+        } else {
+            $('#tableBody').empty()
+
+         $.ajax({
             url: "libs/php/insertPersonnel.php",
             type: "POST",
             dataType: 'json',
@@ -41,11 +47,15 @@ $(document).ready(function () {
                 populatePersonnel()
 
             }
-        })
+        })   
+        }
+
+        
     })
     $('#locationForm').on("change", function () {
         const chosenValue = this.value;
         $('#tableBody').empty()
+
         getAllPersonnel().done((result) => {
             result.data.forEach(element => {
                 if (element.locationId == chosenValue) {
@@ -210,12 +220,20 @@ $(document).ready(function () {
                 locationSelect.appendChild(opt)
             })
         })
+
+
+
+
     })
 
     $('#submitNewDepartmentBtn').on("click", function () {
         let addNewDepartment = document.getElementById('addNewDepartment').value;
+
         let addDepartmentLocation = document.getElementById('addDepartmentLocation').value;
-        $.ajax({
+        if(addNewDepartment == ""){
+            alert('Department field not filled')
+        } else {
+         $.ajax({
             url: "libs/php/insertDepartment.php",
             type: "POST",
             dataType: "json",
@@ -225,11 +243,14 @@ $(document).ready(function () {
             },
             success: function (result) {
                 $('#addDepartmentModal').modal('hide')
-                // document.getElementById('addedDepartmentToastBody').innerHTML = `${addNewDepartment} added to departments`
                 $('#departmentAddedToast').toast('show')
+                $('#departmentTableBody').empty()
+                populateDepartmentTab()
 
             }
-        })
+        })   
+        }
+        
     })
     $('#deleteDepartmentBtn').on("click", function () {
         $('#deleteDepartmentLocation').empty()
@@ -249,30 +270,34 @@ $(document).ready(function () {
         var departmentName = $('#deleteDepartmentLocation option:selected').text()
         $.ajax({
             url: "libs/php/deleteDepartmentByID.php",
-            type: "GET",
+            type: "POST",
             dataType: "json",
+            contentType:"application/json; charset=utf-8",
             data: {
                 departmentID: departmentDropdownValue,
                 id: departmentDropdownValue
             },
             success: function (result) {
-                
-
+                console.log(result)
                 if (result.status.code === "200") {
                     $('#deleteDepartmentModal').modal('hide')
                     $('#departmentDeleteToast').toast('show')
                     $('#departmentTableBody').empty()
                     populateDepartmentTab()
-                    document.getElementById('departmentDeletedToastBody').innerHTML = `${departmentName} has been deleted from departments.`
                 } else if (result.status.code === "400") {
+                    $('#cannotDeleteDepartmentToast').toast('show')
                     document.getElementById('deleteDepartmentModalBody').innerHTML = `<h5>Cannot delete department as it is linked to a personnel</h5>`
                 }
             }
         })
     })
     $('#addLocationButton').on("click", function () {
+
         let addNewLocation = document.getElementById('addNewLocation').value;
-        $.ajax({
+        if(addNewLocation == ""){
+            alert('Location field not filled')
+        } else {
+          $.ajax({
             url: "libs/php/insertLocation.php",
             type: "POST",
             dataType: "json",
@@ -280,13 +305,16 @@ $(document).ready(function () {
                 name: addNewLocation
             },
             success: function (result) {
+
                 $('#addLocationModal').modal('hide')
                 $('#locationAddedToast').toast('show')
                 document.getElementById('addedLocationToastBody').innerHTML = `${addNewLocation} added as a new location.`
                 $('#locationTableBody').empty()
                 populateLocationTab()
             }
-        })
+        })  
+        }
+        
     })
     $('#deleteLocationButton').on("click", function () {
         let deletedLocationId = document.getElementById('deleteLocation').value;
@@ -301,15 +329,15 @@ $(document).ready(function () {
                 id: deletedLocationId
             },
             success: function (result) {
-
-                if (result.status.code == "200") {
+                console.log(result)
+                if(result.status.code == "200") {
                     $('#deleteLocationModal').modal('hide')
                     $('#locationDeleteToast').toast('show')
                     $('#locationTableBody').empty()
                     populateLocationTab()
 
-                } else if (result.status.code = "400") {
-                    alert("Cannot delete location which is linked to a department")
+                } else if(result.status.code = "400") {
+                    $('#cannotDeleteLocationToast').toast('show')
 
                 }
             }
@@ -343,13 +371,14 @@ const deleteLocationButton = (el) => {
             id: locationId
         },
         success: function (result) {
-            if(result.data == "success"){
+            console.log(result)
+            if(result.status.code == "200"){
               $(el).closest("td").text('Location Deleted')
             $('#locationDeleteToast').toast('show')  
-            $('#departmentTabBody').empty();
-            populateDepartmentTab()
-            } else {
-                alert("Cannot delete location linked to a department")
+            $('#locationTableBody').empty();
+            populateLocationTab()
+            } else if (result.status.code == "400"){
+                $('#cannotDeleteLocationToast').toast('show')
             }
           }
     })
@@ -357,10 +386,10 @@ const deleteLocationButton = (el) => {
 }
 const deleteDepartmentButton = (el) => {
     let departmentId = $(el).attr("data-departmentId")
-
+    console.log('delete BUtton GGGG')
     $(el).closest("td").css({"color": "red"})
     $.ajax({
-        url: "libs/php/deleteDepartmentById.php",
+        url: "libs/php/deleteDepartmentByID.php",
         type: "POST",
         dataType: "json",
         data: {
@@ -369,62 +398,75 @@ const deleteDepartmentButton = (el) => {
 
         },
         success: function (result) {
-            
+            console.log(result)
+            console.log('This is the button')
             if (result.status.code == "200") {
                $('#departmentDeleteToast').toast('show')
-               $('#departmentTabBody').empty();
-               populateDepartmentTab()
+               
                 $(el).closest("td").text('Department Deleted')
             } else if (result.status.code = "400") {
-                alert("Cannot delete department which is linked to a location.")
+                $('#cannotDeleteDepartmentToast').toast('show')
+
             }
         }
     })
 }
 const updateLocationButton = (locationId) => {
     let updatedLocationValue = document.getElementById('updateLocationTab').value;
+    if(updatedLocationValue == ""){
+        alert('Please enter location')
+    } else {
     $('#locationTableBody').empty()
+        $.ajax({
+                url: "libs/php/updateLocation.php",
+                type: "POST",
+                dataType: "json",
+                data: {
+                    name: updatedLocationValue,
+                    id: locationId
+                },
+                success: function (result) {
+                    $('#updateLocationModal').modal('hide');
+                    document.getElementById('updateLocationToastBody').innerHTML = `Location updated to ${updatedLocationValue}`
+                    $('#locationUpdateToast').toast('show')
+                    $('#locationTableBody').empty()
+                    populateLocationTab()
+
+                }
+            })
+
+    }
     
 
   
-    $.ajax({
-        url: "libs/php/updateLocation.php",
-        type: "POST",
-        dataType: "json",
-        data: {
-            name: updatedLocationValue,
-            id: locationId
-        },
-        success: function (result) {
-            $('#updateLocationModal').modal('hide');
-            document.getElementById('updateLocationToastBody').innerHTML = `Location updated to ${updatedLocationValue}`
-            $('#locationUpdateToast').toast('show')
-            $('#locationTableBody').empty()
-            populateLocationTab()
-
-        }
-    })
+   
 }
 const updateDepartmentButton = (departmentId) => {
-  
     let updatedDepartmentValue = document.getElementById('updateDepartmentTab').value;
-  
-    $.ajax({
+    let updateLocationDepartmentTabDropdown = document.getElementById('updateLocationDepartmentTab').value;
+    console.log(updateLocationDepartmentTabDropdown)
+    if(updatedDepartmentValue == ""){
+        alert('Please enter department')
+    } else {
+      $.ajax({
         url: "libs/php/updateDepartment.php",
         type: "POST",
         dataType: "json",
         data: {
             name: updatedDepartmentValue,
+            locationID: updateLocationDepartmentTabDropdown,
             id: departmentId
         },
         success: function (result) {
             $('#updateDepartmentTabModal').modal('hide');
             $('#departmentUpdateToast').toast('show')
-            $('#departmentTableBody').empty
+            $('#departmentTableBody').empty()
             document.getElementById('updateDepartmentToastBody').innerText = `Department updated to ${updatedDepartmentValue}`
             populateDepartmentTab()
         }
-    })
+    })  
+    }
+    
 }
 const deleteButton = (el) => {
     let personnelId = $(el).attr("data-personnelId")
@@ -454,6 +496,7 @@ const deleteButton = (el) => {
 }
 
 const settingsButton = (el) => {
+    $('#updateDepartmentPersonnel').empty()
     let updateDepartmentDropdown = document.getElementById('updateDepartmentPersonnel')
     getAllDepartments().done((result) => {
             result.data.forEach(element => {
@@ -526,15 +569,17 @@ const populatePersonnel = ()=>{
     })
 }
 $('#updateUserBtn').on("click", function () {
-     $('#tableBody').empty()
     let updateFirstName = document.getElementById('updatefName').value;
     let updateLastName = document.getElementById('updatelName').value;
     let updateJob = document.getElementById('updateJob').value;
     let updateEmail = document.getElementById('updateEmail').value;
     let updateDepartment = document.getElementById('updateDepartmentPersonnel').value;
     let personnelId = document.getElementById('personnelId').value;
-
-    $.ajax({
+    if(updateFirstName =="" || updateLastName == "" ||  updateEmail == "" || updateDepartment== ""){
+        alert('Fill All Fields')
+    } else {
+             $('#tableBody').empty()
+      $.ajax({
         url: "libs/php/updatePersonnel.php",
         type: "POST",
         dataType: 'json',
@@ -554,7 +599,9 @@ $('#updateUserBtn').on("click", function () {
             populatePersonnel()
 
         }
-    })
+    })  
+    }
+    
 })
 
 const populateLocationTab = () => {
@@ -581,6 +628,13 @@ const populateLocationTab = () => {
         })
         $('.locationSettings').on("click", function () {
             let locationId = $(this).attr("data-locationId")
+            getAllLocation().done((result) => {
+                result.data.forEach(element =>{
+                    if (element.id == locationId){
+                        document.getElementById('updateLocationTab').value = element.name
+                    }
+                })
+            })
             $('#updateLocationButtonTab').on("click", function () {
                 updateLocationButton(locationId)
 
@@ -609,15 +663,18 @@ const populateDepartmentTab = () => {
                 `)
         })
         $('.departmentDelete').on("click", function () {
+            $('#departmentTableBody').empty()
             deleteDepartmentButton(this)
+            populateDepartmentTab()
         })
         $('.departmentSettings').on("click", function () {
             let departmentId = $(this).attr("data-departmentId")
+            $('#updateLocationDepartmentTab').empty();
             var updatedDepartmentTabLocation = document.getElementById('updateLocationDepartmentTab')
             getAllDepartments().done((result) => {
                 result.data.forEach(element => {
                     if (element.departmentID == departmentId) {
-                        document.getElementById('updateDepartmentTab').placeholder = element.department
+                        document.getElementById('updateDepartmentTab').value = element.department
                         document.getElementById('updateLocationDepartmentTab').value = element.locationId
                     }
                 })
