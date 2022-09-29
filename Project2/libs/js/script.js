@@ -267,26 +267,24 @@ $(document).ready(function () {
     })
     $('#deleteDepartmentButton').on("click", function () {
         let departmentDropdownValue = document.getElementById('deleteDepartmentLocation').value;
-        var departmentName = $('#deleteDepartmentLocation option:selected').text()
         $.ajax({
             url: "libs/php/deleteDepartmentByID.php",
             type: "POST",
             dataType: "json",
-            contentType:"application/json; charset=utf-8",
             data: {
                 departmentID: departmentDropdownValue,
                 id: departmentDropdownValue
             },
             success: function (result) {
                 console.log(result)
-                if (result.status.code === "200") {
+                if (result.status.code == 200) {
+                    console.log('this passed')
                     $('#deleteDepartmentModal').modal('hide')
                     $('#departmentDeleteToast').toast('show')
                     $('#departmentTableBody').empty()
                     populateDepartmentTab()
-                } else if (result.status.code === "400") {
+                } else if (result.status.code == 400) {
                     $('#cannotDeleteDepartmentToast').toast('show')
-                    document.getElementById('deleteDepartmentModalBody').innerHTML = `<h5>Cannot delete department as it is linked to a personnel</h5>`
                 }
             }
         })
