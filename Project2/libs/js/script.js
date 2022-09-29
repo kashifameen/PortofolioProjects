@@ -17,7 +17,6 @@ $(document).ready(function () {
    
 
     $("#addUserBtn").on("click", function () {
-        console.log('Testing!')
         $('#tableBody').empty()
         let addFirstName = document.getElementById('addFirstName').value;
         let addLastName = document.getElementById('addLastName').value;
@@ -36,7 +35,6 @@ $(document).ready(function () {
                 departmentID: addDepartment
             },
             success: function (result) {
-                console.log('New User Added')
                 $('#addUserModal').modal('hide')
                 $('#personnelAddedToast').toast('show')
                 document.getElementById('addPersonnelToastBody').innerHTML = `${addFirstName} ${addLastName} added to database `
@@ -47,7 +45,6 @@ $(document).ready(function () {
     })
     $('#locationForm').on("change", function () {
         const chosenValue = this.value;
-        console.log(chosenValue)
         $('#tableBody').empty()
         getAllPersonnel().done((result) => {
             result.data.forEach(element => {
@@ -97,13 +94,11 @@ $(document).ready(function () {
 
     })
     $('#departmentHeader').on("click", function () {
-        console.log('Header Clicked')
         $('#tableBody').empty()
         populateDepartmentTab()
     })
     $('#departmentForm').on("change", function () {
         const chosenValue = this.value;
-        console.log(chosenValue)
         $('#tableBody').empty()
         getAllPersonnel().done((result) => {
             result.data.forEach(element => {
@@ -144,7 +139,6 @@ $(document).ready(function () {
             })
             $(".settings").on("click", function () {
                 settingsButton(this)
-                console.log('Working')
             })
         })
  
@@ -207,9 +201,7 @@ $(document).ready(function () {
    
     $('#addDepartmentBtn').on("click", function () {
         $('#addDepartmentLocation').empty()
-        console.log('Button Clicked')
         var locationSelect = document.getElementById('addDepartmentLocation');
-        console.log(locationSelect)
         getAllLocation().done((result) => {
             result.data.forEach(element => {
                 let opt = document.createElement('option');
@@ -243,7 +235,6 @@ $(document).ready(function () {
         $('#deleteDepartmentLocation').empty()
         let deleteDepartmentDropdown = document.getElementById('deleteDepartmentLocation');
         getAllDepartments().done((result) => {
-            console.log(result)
             result.data.forEach(element => {
                 let opt = document.createElement('option');
                 opt.value = element.departmentID
@@ -256,8 +247,6 @@ $(document).ready(function () {
     $('#deleteDepartmentButton').on("click", function () {
         let departmentDropdownValue = document.getElementById('deleteDepartmentLocation').value;
         var departmentName = $('#deleteDepartmentLocation option:selected').text()
-        console.log(departmentName)
-        console.log(departmentDropdownValue)
         $.ajax({
             url: "libs/php/deleteDepartmentByID.php",
             type: "GET",
@@ -267,8 +256,7 @@ $(document).ready(function () {
                 id: departmentDropdownValue
             },
             success: function (result) {
-                console.log(result)
-                console.log('Success')
+                
 
                 if (result.status.code === "200") {
                     $('#deleteDepartmentModal').modal('hide')
@@ -284,7 +272,6 @@ $(document).ready(function () {
     })
     $('#addLocationButton').on("click", function () {
         let addNewLocation = document.getElementById('addNewLocation').value;
-        console.log(addNewLocation)
         $.ajax({
             url: "libs/php/insertLocation.php",
             type: "POST",
@@ -293,7 +280,6 @@ $(document).ready(function () {
                 name: addNewLocation
             },
             success: function (result) {
-                console.log('Location Added')
                 $('#addLocationModal').modal('hide')
                 $('#locationAddedToast').toast('show')
                 document.getElementById('addedLocationToastBody').innerHTML = `${addNewLocation} added as a new location.`
@@ -306,7 +292,6 @@ $(document).ready(function () {
         let deletedLocationId = document.getElementById('deleteLocation').value;
         var deletedLocationName = $('#deleteLocation option:selected').text()
 
-        console.log(deletedLocationId)
         $.ajax({
             url: "libs/php/deleteLocationByID.php",
             type: "POST",
@@ -316,7 +301,6 @@ $(document).ready(function () {
                 id: deletedLocationId
             },
             success: function (result) {
-                console.log(result)
 
                 if (result.status.code == "200") {
                     $('#deleteLocationModal').modal('hide')
@@ -349,9 +333,7 @@ const getAllDepartments = () => {
 // delete button when you are viewing locations in the locations tab
 const deleteLocationButton = (el) => {
     let locationId = $(el).attr("data-locationId")
-    console.log(locationId)
     $(el).closest("td").css({"color": "red"})
-    console.log('delete Location tab button workin')
     $.ajax({
         url: "libs/php/deleteLocationByID.php",
         type: "GET",
@@ -361,7 +343,6 @@ const deleteLocationButton = (el) => {
             id: locationId
         },
         success: function (result) {
-            console.log(result)
             if(result.data == "success"){
               $(el).closest("td").text('Location Deleted')
             $('#locationDeleteToast').toast('show')  
@@ -376,7 +357,6 @@ const deleteLocationButton = (el) => {
 }
 const deleteDepartmentButton = (el) => {
     let departmentId = $(el).attr("data-departmentId")
-    console.log(departmentId)
 
     $(el).closest("td").css({"color": "red"})
     $.ajax({
@@ -389,8 +369,7 @@ const deleteDepartmentButton = (el) => {
 
         },
         success: function (result) {
-            console.log(result)
-            console.log('deleted')
+            
             if (result.status.code == "200") {
                $('#departmentDeleteToast').toast('show')
                $('#departmentTabBody').empty();
@@ -407,8 +386,7 @@ const updateLocationButton = (locationId) => {
     $('#locationTableBody').empty()
     
 
-    console.log(updatedLocationValue)
-    console.log(locationId)
+  
     $.ajax({
         url: "libs/php/updateLocation.php",
         type: "POST",
@@ -418,7 +396,6 @@ const updateLocationButton = (locationId) => {
             id: locationId
         },
         success: function (result) {
-            console.log(result)
             $('#updateLocationModal').modal('hide');
             document.getElementById('updateLocationToastBody').innerHTML = `Location updated to ${updatedLocationValue}`
             $('#locationUpdateToast').toast('show')
@@ -431,9 +408,7 @@ const updateLocationButton = (locationId) => {
 const updateDepartmentButton = (departmentId) => {
   
     let updatedDepartmentValue = document.getElementById('updateDepartmentTab').value;
-    console.log(updatedDepartmentValue);
-    console.log(departmentId);
-    console.log('Button Clicked')
+  
     $.ajax({
         url: "libs/php/updateDepartment.php",
         type: "POST",
@@ -454,10 +429,8 @@ const updateDepartmentButton = (departmentId) => {
 const deleteButton = (el) => {
     let personnelId = $(el).attr("data-personnelId")
 
-    console.log(personnelId);
     $(el).closest("td").css({"color": "red"})
 
-    console.log('working')
     $.ajax({
         url: "libs/php/deletePersonnel.php",
         type: "POST",
@@ -466,7 +439,6 @@ const deleteButton = (el) => {
             id: personnelId
         },
         success: function (result) {
-            console.log(result)
             $(el).closest("td").text(`${
                 result.data.firstName
             } ${
@@ -493,7 +465,6 @@ const settingsButton = (el) => {
         })
     let personnelId = $(el).attr("data-personnelId")
     document.getElementById('personnelId').value = personnelId;
-    console.log(personnelId)
     getAllPersonnel().done((result) => {
         result.data.forEach(element => {
             if (element.id == personnelId) {
@@ -510,7 +481,6 @@ const settingsButton = (el) => {
 
 const populatePersonnel = ()=>{
     getAllPersonnel().done((result) => {
-        console.log(result)
         $.each(result.data, function (i, item) {
             $('#tableBody').append(`<tr>
 				<td>${
@@ -551,7 +521,6 @@ const populatePersonnel = ()=>{
         })
         $(".delete locationDelete").on("click", function () {
             deleteLocationButton(this)
-            console.log('TESt this')
         })
 
     })
@@ -564,7 +533,6 @@ $('#updateUserBtn').on("click", function () {
     let updateEmail = document.getElementById('updateEmail').value;
     let updateDepartment = document.getElementById('updateDepartmentPersonnel').value;
     let personnelId = document.getElementById('personnelId').value;
-    console.log(personnelId)
 
     $.ajax({
         url: "libs/php/updatePersonnel.php",
@@ -579,7 +547,6 @@ $('#updateUserBtn').on("click", function () {
             id: personnelId
         },
         success: function (result) {
-            console.log(result)
             $('#updateUserModal').modal('hide')
             $('#personnelUpdatedToast').toast('show')
             document.getElementById('updatePersonnelToastBody').innerHTML = `${updateFirstName}'s profile has been updated.`
@@ -592,7 +559,6 @@ $('#updateUserBtn').on("click", function () {
 
 const populateLocationTab = () => {
     getAllLocation().done((result) => {
-        console.log(result)
         $.each(result.data, function (i, item) {
             $('#locationTableBody').append(`<tr>
                 <td>${
@@ -624,7 +590,6 @@ const populateLocationTab = () => {
 }
 const populateDepartmentTab = () => {
     getAllDepartments().done((result) => {
-        console.log(result)
         $.each(result.data, function (i, item) {
             $('#departmentTableBody').append(`<tr>
                 <td>${
