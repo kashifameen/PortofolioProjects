@@ -166,7 +166,7 @@ $(document).ready(function () {
         })
     })
     $('#departmentForm').on("click", function(){
-        $('#departmentDropdown').empty()
+        $('#departmentForm').empty()
         var departmentDropdown = document.getElementById('departmentForm');
        
           getAllDepartments().done((result)=> {
