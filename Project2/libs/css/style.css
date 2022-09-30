@@ -97,10 +97,10 @@ table.table td a {
     text-decoration: none;
 }
 table.table td a:hover {
-    color: #2196F3;
+    color: #e2f321;
 }
-table.table td a.settings {
-    color: #2196F3;
+table.table td a.edit {
+    color: #e5f321;
 }
 table.table td a.delete {
     color: #F44336;
@@ -141,7 +141,7 @@ table.table .avatar {
     font-size: 13px;
     min-width: 30px;
     min-height: 30px;
-    color: #999;
+    color: rgb(209, 251, 2);
     margin: 0 2px;
     line-height: 30px;
     border-radius: 2px !important;
@@ -149,7 +149,7 @@ table.table .avatar {
     padding: 0 6px;
 }
 .pagination li a:hover {
-    color: #666;
+    color: rgb(216, 244, 9);
 }	
 .pagination li.active a, .pagination li.active a.page-link {
     background: #03A9F4;

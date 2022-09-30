@@ -58,7 +58,7 @@
               <div class="col">
                 <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addUserModal" id="addUserModalBtn"><i
                     class="fa-solid fa-user-plus"></i> <span>Add</span></a>
-
+                  <button id="testinButton"></button>
               </div>
             </div>
 
@@ -68,7 +68,7 @@
       </div>
       <ul class="nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item" role="presentation">
-          <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button"
+          <button class="nav-link active" id="employee-tab" data-bs-toggle="tab" data-bs-target="#home" type="button"
             role="tab" aria-controls="home" aria-selected="true">Employees</button>
         </li>
         <li class="nav-item" role="presentation">
@@ -78,6 +78,7 @@
         <li class="nav-item" role="presentation">
           <button class="nav-link" id="location-tab" data-bs-toggle="tab" data-bs-target="#locationTab" type="button"
             role="tab" aria-controls="contact" aria-selected="false">Location</button>
+            
         </li>
       </ul>
       <div class="tab-content" id="myTabContent">
@@ -163,26 +164,27 @@
                   <label for="message-text" class="col-form-label">Email:</label>
                   <input type="text" class="form-control" id="addEmail" required>
                 </div>
-              </form>
+              
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary" id="addUserBtn">Add User</button>
+              <button type="submit" class="btn btn-primary" id="addUserBtn">Add User</button>
             </div>
             </form>
           </div>
         </div>
       </div>
-      <div class="modal fade" id="updateUserModal" tabindex="-1" aria-labelledby="updateUserModalLabel"
+      <div class="modal fade" id="updateUserModal" tabindex="-1" data-bs-backdrop="false" data-bs-keyboard="false" aria-labelledby="updateUserModalLabel"
         aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
+        <div class="modal-dialog modal-md modal-dialog-centered modal-dialog-scrollable">
+          <div class="modal-content shadow">
+            <form id="updateUserForm">
             <div class="modal-header">
               <h5 class="modal-title" id="updateUserModalLabel">Update User</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body" id="updateUserModalBody">
-              <form>
+              <input id="personnelID" type="hidden">
                 <div class="mb-3">
                   <label for="fName" class="col-form-label">First Name:</label>
                   <input type="text" class="form-control" id="updatefName" required>
@@ -206,12 +208,13 @@
                     <input type="hidden" id="personnelId">
                   </select>
                 </div>
-              </form>
+              
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary" id="updateUserBtn">Update User</button>
+              <button type="submit" class="btn btn-primary" id="updateUserBtn">Update User</button>
             </div>
+            </form>
           </div>
         </div>
       </div>
