@@ -14,8 +14,16 @@ $(document).ready(function () {
         populateLocationTab()
     })
     
-   
+    $('.nav-tabs li').click(function() {
+           
+        $(this).siblings('li').removeClass('active');
+        $(this).addClass('active');
+    });
+    let test = document.querySelector('.nav-items').classList.contains('active');
 
+    if (test){
+        console.log('has the class')
+    }
     $("#addUserBtn").on("click", function () {
         
 
@@ -61,11 +69,12 @@ $(document).ready(function () {
                 if (element.locationId == chosenValue) {
                     $('#tableBody').append(`<tr>
                     <td>${
+                        element.lastName
+                    },
+                    ${
                         element.firstName
                     }</td>
-                    <td>${
-                        element.lastName
-                    }</td>                        
+                                           
                     <td class="d-none d-sm-table-cell d-md-table-cell d-lg-table-cell d-xl-table-cell d-xxl-table-cell">${
                         element.location
                     }</td>
@@ -115,11 +124,11 @@ $(document).ready(function () {
                 if (element.departmentID == chosenValue) {
                     $('#tableBody').append(`<tr>
                     <td>${
+                        element.lastName
+                    }, ${
                         element.firstName
                     }</td>
-                    <td>${
-                        element.lastName
-                    }</td>                        
+                                          
                     <td class="d-none d-sm-table-cell d-md-table-cell d-lg-table-cell d-xl-table-cell d-xxl-table-cell">${
                         element.location
                     }</td>
@@ -135,7 +144,7 @@ $(document).ready(function () {
                     <td>
                         <a href="#" class="settings" title="Settings" data-bs-toggle="modal" data-bs-target="#updateUserModal" id="button" data-personnelId=${
                         element.id
-                    } ><i class="fa-solid fa-gears"></i></a>
+                    } ><i class="fa-solid fa-pencil"></i></a>
                         <a href="#" class="delete" title="Delete" data-personnelId=${
                         element.id
                     } ><i class="fa-solid fa-user-xmark"></i></a>
@@ -397,7 +406,6 @@ const deleteDepartmentButton = (el) => {
         },
         success: function (result) {
             console.log(result)
-            console.log('This is the button')
             if (result.status.code == "200") {
                $('#departmentDeleteToast').toast('show')
                
@@ -524,12 +532,13 @@ const populatePersonnel = ()=>{
     getAllPersonnel().done((result) => {
         $.each(result.data, function (i, item) {
             $('#tableBody').append(`<tr>
-				<td>${
-                result.data[i].firstName
-            }</td>
-				<td>${
+				<td class="text-nowrap">
+               ${
                 result.data[i].lastName
-            }</td>                        
+            }, ${
+                result.data[i].firstName
+            }
+				</td>                        
 				<td class="d-none d-sm-table-cell d-md-table-cell d-lg-table-cell d-xl-table-cell d-xxl-table-cell">${
                 result.data[i].location
             }</td>
@@ -546,7 +555,7 @@ const populatePersonnel = ()=>{
 
 					<a href="#" class="settings" title="Settings" data-bs-toggle="modal" data-bs-target="#updateUserModal" id="button" data-personnelId=${
                 result.data[i].id
-            } ><i class="fa-solid fa-gears"></i></a>
+            } ><i class="fa-solid fa-pencil"></i></a>
 					<a href="#" class="delete" title="Delete" data-personnelId=${
                 result.data[i].id
             } ><i class="fa-solid fa-user-xmark"></i></a>
@@ -606,14 +615,14 @@ const populateLocationTab = () => {
     getAllLocation().done((result) => {
         $.each(result.data, function (i, item) {
             $('#locationTableBody').append(`<tr>
-                <td>${
+                <td class="text-nowrap">${
                 result.data[i].name
             }</td>               
                <td class=text-right>
 
                     <a href="#" class="settings locationSettings" title="Settings" data-bs-toggle="modal" data-bs-target="#updateLocationModal" id="button" data-locationId=${
                 result.data[i].id
-            } ><i class="fa-solid fa-gears"></i></a>
+            } ><i class="fa-solid fa-pencil"></i></a>
                     <a href="#" class="delete locationDelete" title="Delete" data-locationId=${
                 result.data[i].id
             } ><i class="fa-solid fa-user-xmark"></i></a>
@@ -644,15 +653,15 @@ const populateDepartmentTab = () => {
     getAllDepartments().done((result) => {
         $.each(result.data, function (i, item) {
             $('#departmentTableBody').append(`<tr>
-                <td>${
+                <td class="text-nowrap">${
                 result.data[i].department
             }</td>
-            <td>${result.data[i].location}               
+            <td class="text-nowrap">${result.data[i].location}               
                <td>
 
                     <a href="#" class="departmentSettings settings" title="Settings" data-bs-toggle="modal" data-bs-target="#updateDepartmentTabModal" id="button" data-departmentId=${
                 result.data[i].departmentID
-            } ><i class="fa-solid fa-gears"></i></a>
+            } ><i class="fa-solid fa-pencil"></i></a>
                     <a href="#" class="departmentDelete delete" title="Delete" data-departmentId=${
                 result.data[i].departmentID
             } ><i class="fa-solid fa-user-xmark"></i></a>

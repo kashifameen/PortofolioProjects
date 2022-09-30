@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="libs/css/bootstrap.min.css">
   <link rel="stylesheet" href="libs/css/style.css">
   <link rel="icon" type="image/x-icon" href="images/favicon.png">
-  <title>Personnel Management</title>
+  <title>Company Directory</title>
 </head>
 
 <body>
@@ -30,7 +30,7 @@
         <div class="table-title">
           <div class="row">
             <div class="col-xs-5">
-              <h2>Personnel <b>Management</b></h2>
+              <h2>Company <b>Directory</b></h2>
             </div>
             <div class="row">
               <div class="col">
@@ -38,26 +38,26 @@
                   <option disabled selected>Choose Location</option>
 
                 </select>
-                <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addLocationModal"
+                <!-- <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addLocationModal"
                   id="addLocationBtn"><i class="fa-solid fa-circle-plus"></i> <span>Add New Location</span></a>
                 <a href="#" class="btn btn-primary delete" data-bs-toggle="modal" data-bs-target="#deleteLocationModal"
-                  id="deleteLocationModalBtn"><i class="fa-solid fa-trash-can"></i><span>Delete Location</span></a>
+                  id="deleteLocationModalBtn"><i class="fa-solid fa-trash-can"></i><span>Delete Location</span></a> -->
 
               </div>
               <div class="col">
                 <select class="form-select w-72" id="departmentForm" aria-label="Default select example">
                   <option disabled selected>Choose Department</option>
                 </select>
-                <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addDepartmentModal"
+                <!-- <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addDepartmentModal"
                   id="addDepartmentBtn"><i class="fa-solid fa-circle-plus"></i><span>Add New Department</span></a>
                 <a href="#" class="btn btn-primary delete" data-bs-toggle="modal"
                   data-bs-target="#deleteDepartmentModal" id="deleteDepartmentBtn"><i class="fa-solid fa-trash-can"></i>
-                  <span>Delete Department</span></a>
+                  <span>Delete Department</span></a> -->
 
               </div>
               <div class="col">
                 <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addUserModal" id="addUserModalBtn"><i
-                    class="fa-solid fa-user-plus"></i> <span>Add New User</span></a>
+                    class="fa-solid fa-user-plus"></i> <span>Add</span></a>
 
               </div>
             </div>
@@ -85,8 +85,8 @@
           <table class="table table-striped table-hover ">
             <thead>
               <tr>
-                <th>First Name</th>
-                <th>Last Name</th>
+                <th>Name</th>
+                
                 <th class="d-none d-sm-table-cell d-md-table-cell d-lg-table-cell d-xl-table-cell d-xxl-table-cell">
                   Location</th>
                 <th class="d-none d-sm-table-cell d-md-table-cell d-lg-table-cell d-xl-table-cell d-xxl-table-cell">
@@ -131,9 +131,10 @@
         </div>
       </div>
 
-      <div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
+      <div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true" data-bs-backdrop="false" data-bs-keyboard="false">
+        <div class="modal-dialog modal-md modal-dialog-centered modal-dialog-scrollable">
+          <div class="modal-content shadow">
+            <form id="addUserForm">
             <div class="modal-header">
               <h5 class="modal-title" id="addUserModalLabel">Add New User</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -142,11 +143,11 @@
               <form>
                 <div class="mb-3">
                   <label for="recipient-name" class="col-form-label">First Name:</label>
-                  <input type="text" class="form-control" id="addFirstName" required>
+                  <input type="text" class="form-control" id="addFirstName" required/>
                 </div>
                 <div class="mb-3">
                   <label for="recipient-name" class="col-form-label">Last Name:</label>
-                  <input type="text" class="form-control" id="addLastName" required>
+                  <input type="text" class="form-control" id="addLastName" required/>
                 </div>
 
                 <div class="mb-3">
@@ -168,6 +169,7 @@
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
               <button type="button" class="btn btn-primary" id="addUserBtn">Add User</button>
             </div>
+            </form>
           </div>
         </div>
       </div>
@@ -202,7 +204,6 @@
                   <label for="recipient-name" class="col-form-label">Department: </label>
                   <select id="updateDepartmentPersonnel" class="form-select">
                     <input type="hidden" id="personnelId">
-
                   </select>
                 </div>
               </form>
