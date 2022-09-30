@@ -97,7 +97,7 @@
                 <th>Action</th>
               </tr>
             </thead>
-            <tbody id="tableBody"></tbody>
+            <tbody id="tableBody">
             </tbody>
           </table>
         </div>
@@ -141,7 +141,7 @@
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body" id="addUserModalBody">
-              <form>
+      
                 <div class="mb-3">
                   <label for="recipient-name" class="col-form-label">First Name:</label>
                   <input type="text" class="form-control" id="addFirstName" required/>
@@ -218,16 +218,17 @@
           </div>
         </div>
       </div>
-      <div class="modal fade" id="addDepartmentModal" tabindex="-1" aria-labelledby="updateDepartmentModalLabel"
+      <div class="modal fade" id="addDepartmentModal" tabindex="-1"  data-bs-backdrop="false" data-bs-keyboard="false" aria-labelledby="updateDepartmentModalLabel"
         aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
+        <div class="modal-dialog modal-md modal-dialog-centered modal-dialog-scrollable">
+          <div class="modal-content shadow">
+            <form id="addNewDepartmentForm">
             <div class="modal-header">
               <h5 class="modal-title" id="addDepartmentModalLabel">Add Department</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body" id="addDepartmentModalBody">
-              <form>
+              
                 <div class="mb-3">
                   <label for="recipient-name" class="col-form-label">Add New Department:</label>
                   <input type="text" class="form-control" id="addNewDepartment" required>
@@ -238,41 +239,40 @@
                   </select>
                 </div>
 
-              </form>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary" id="submitNewDepartmentBtn">Add Department</button>
+              <button type="submit" class="btn btn-primary" id="submitNewDepartmentBtn">Add Department</button>
             </div>
+            </form>
           </div>
         </div>
       </div>
-      <div class="modal fade" id="deleteDepartmentModal" tabindex="-1" aria-labelledby="deleteDepartmentModalLabel"
+      <!-- <div class="modal fade" id="deleteDepartmentModal" tabindex="-1" aria-labelledby="deleteDepartmentModalLabel"
         aria-hidden="true">
         <div class="modal-dialog">
-          <div class="modal-content">
+          <div class="modal-content shadow">
             <div class="modal-header">
               <h5 class="modal-title" id="deleteDepartmentModalLabel">Delete Department</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body" id="deleteDepartmentModalBody">
-              <form>
-
                 <div class="mb-3">
                   <label for="recipient-name" class="col-form-label">Department: </label>
                   <select id="deleteDepartmentLocation" class="form-select">
                   </select>
                 </div>
 
-              </form>
+              
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
               <button type="button" class="btn btn-primary" id="deleteDepartmentButton">Delete User</button>
             </div>
+          </form>
           </div>
         </div>
-      </div>
+      </div> -->
       <div class="modal fade" id="addLocationModal" tabindex="-1" aria-labelledby="addLocationModalLabel"
         aria-hidden="true">
         <div class="modal-dialog">
@@ -355,15 +355,16 @@
 
   </div>
   <div class="modal fade" id="updateDepartmentTabModal" tabindex="-1" aria-labelledby="updateDepartmentTabModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
+    aria-hidden="true" data-bs-backdrop="false" data-bs-keyboard="false">
+    <div class="modal-dialog modal-md modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content shadow">
+        <form id="updateDepartmentForm">
         <div class="modal-header">
           <h5 class="modal-title" id="updateDepartmentTabModalLabel">Update Department</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body" id="updateDepartmentTabModalBody">
-          <form>
+          
 
             <div class="mb-3">
               <label for="recipient-name" class="col-form-label">Department: </label>
@@ -374,12 +375,13 @@
               <select id="updateLocationDepartmentTab" class="form-select"> </select>
             </div>
 
-          </form>
+          
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" id="updateDepartmentButtonTab">Update Department</button>
+          <button type="submit" class="btn btn-primary" id="updateDepartmentButtonTab">Update Department</button>
         </div>
+        </form>
       </div> 
     </div>
   </div>

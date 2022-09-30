@@ -7,7 +7,7 @@ $(document).ready(function () {
     $('#department-tab').on("click", function () {
         $('#departmentTableBody').empty()
         populateDepartmentTab()
-        
+
     })
     $('#location-tab').on("click", function () {
         $('#locationTableBody').empty()
@@ -88,9 +88,9 @@ $(document).ready(function () {
         }
     }) 
     })
-    $('#updateUserModal').on('show.bs.modal', function(){
-        console.log('modal shown update user')
-
+    $('#updateUserModal').on('show.bs.modal', function(e){
+        var target = e.relatedTarget;
+        var personnelId=$(target).attr('data-personnelid')
         //Populates the department dropdown for the update user modal
         $('#updateDepartmentPersonnel').empty()
             let updateDepartmentDropdown = document.getElementById('updateDepartmentPersonnel')
@@ -108,7 +108,7 @@ $(document).ready(function () {
             type:"GET",
             dataType: "json",
             data:{
-                id: 1
+                id: personnelId
             }, success: function(result){
                 console.log(result)
             document.getElementById('updatefName').value = result.data.personnel[0].firstName
@@ -120,6 +120,29 @@ $(document).ready(function () {
             
         })
     })
+    $('#addNewDepartmentForm').on("submit", function(){
+        let addNewDepartment = document.getElementById('addNewDepartment').value;
+        let addDepartmentLocation = document.getElementById('addDepartmentLocation').value;
+         $.ajax({
+            url: "libs/php/insertDepartment.php",
+            type: "POST",
+            dataType: "json",
+            data: {
+                name: addNewDepartment,
+                locationID: addDepartmentLocation
+            },
+            success: function (result) {
+                $('#addDepartmentModal').modal('hide')
+                $('#departmentAddedToast').toast('show')
+                $('#departmentTableBody').empty()
+                populateDepartmentTab()
+
+            }
+        })   
+        
+    })
+    $('#updateDepartmentForm').on("submit", function(){})
+
     $('#locationForm').on("change", function () {
         const chosenValue = this.value;
         $('#tableBody').empty()
@@ -222,9 +245,11 @@ $(document).ready(function () {
         })
  
     })
-   
+
    
     $('#testingButton').on("click", function(){
+        $('#addDepartmentModal').modal('show')
+
         if($('.nav-link active').attr('id') == "location-tab"){
             console.log('location tab')
             $('#addLocationModal').modal('show')
