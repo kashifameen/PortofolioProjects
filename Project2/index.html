@@ -34,7 +34,7 @@
             </div>
             <div class="row">
               <div class="col">
-                <select class="form-select w-72" aria-label="Default select example" id="locationForm">
+                <select class="form-select w-72" aria-label="Default select example" id="locationFormDropdown">
                   <option disabled selected>Choose Location</option>
 
                 </select>
@@ -56,9 +56,9 @@
 
               </div>
               <div class="col">
-                <a href="#" class="btn btn-primary" data-bs-toggle="modal"  id="addUserModalBtn"><i
+                <a href="#" class="btn btn-primary" id="addBtn"><i
                     class="fa-solid fa-user-plus"></i> <span>Add</span></a>
-                  <button id="testinButton"></button>
+                  
               </div>
             </div>
 
@@ -68,7 +68,7 @@
       </div>
       <ul class="nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item" role="presentation" id="employee-tab" >
-          <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#home" type="button"
+          <button class="nav-link active" id="employee-tab" data-bs-toggle="tab" data-bs-target="#home" type="button"
             role="tab" aria-controls="home" aria-selected="true">Employees</button>
         </li>
         <li class="nav-item" role="presentation">
@@ -248,53 +248,32 @@
           </div>
         </div>
       </div>
-      <!-- <div class="modal fade" id="deleteDepartmentModal" tabindex="-1" aria-labelledby="deleteDepartmentModalLabel"
+      
+      <div class="modal fade" id="addLocationModal" tabindex="-1" aria-labelledby="addLocationModalLabel"
         aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
           <div class="modal-content shadow">
+            <form id="locationForm">
             <div class="modal-header">
-              <h5 class="modal-title" id="deleteDepartmentModalLabel">Delete Department</h5>
+              <h5 class="modal-title" id="addLocationModalLabel">Add Location</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body" id="deleteDepartmentModalBody">
+            <div class="modal-body" id="addLocationModalBody">
+              
+
                 <div class="mb-3">
-                  <label for="recipient-name" class="col-form-label">Department: </label>
-                  <select id="deleteDepartmentLocation" class="form-select">
-                  </select>
+                  <label for="recipient-name" class="col-form-label">Location: </label>
+                  <input type="text" class="form-control" id="addNewLocation" required>
+                  <input type="hidden" id="locationID">
                 </div>
 
               
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary" id="deleteDepartmentButton">Delete User</button>
+              <button type="submit" class="btn btn-primary" id="addLocationButton">Add Location</button>
             </div>
-          </form>
-          </div>
-        </div>
-      </div> -->
-      <div class="modal fade" id="addLocationModal" tabindex="-1" aria-labelledby="addLocationModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="addLocationModalLabel">Add Location</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body" id="addLocationModalBody">
-              <form>
-
-                <div class="mb-3">
-                  <label for="recipient-name" class="col-form-label">Location: </label>
-                  <input type="text" class="form-control" id="addNewLocation" required>
-                </div>
-
-              </form>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary" id="addLocationButton">Add Location</button>
-            </div>
+            </form>
           </div>
         </div>
       </div>
@@ -330,26 +309,29 @@
   
   <div class="modal fade" id="updateLocationModal" tabindex="-1" aria-labelledby="updateLocationModalLabel"
     aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
+    <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollableialog">
+      <div class="modal-content shadow">
+        <form id="updateLocationForm">
         <div class="modal-header">
           <h5 class="modal-title" id="updateLocationModalLabel">Update Location</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body" id="updateLocationModalBody">
-          <form>
+          
 
             <div class="mb-3">
               <label for="recipient-name" class="col-form-label">Location: </label>
               <input type="text" class="form-control" id="updateLocationTab" required>
+              <input type="hidden" id="updateLocationId">
             </div>
 
-          </form>
+          
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" id="updateLocationButtonTab">Update Location</button>
+          <button type="submit" class="btn btn-primary" id="updateLocationButtonTab">Update Location</button>
         </div>
+        </form>
       </div>
     </div>
 
@@ -369,6 +351,7 @@
             <div class="mb-3">
               <label for="recipient-name" class="col-form-label">Department: </label>
               <input type="text" class="form-control" id="updateDepartmentTab" required>
+              <input type="hidden" id="departmentPersonnelId">
             </div>
             <div class="mb-3">
               <label for="recipient-name" class="col-form-label">Location: </label>
