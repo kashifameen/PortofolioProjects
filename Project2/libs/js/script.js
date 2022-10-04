@@ -171,6 +171,8 @@ $(document).ready(function () {
     $('#updateDepartmentForm').on("submit", function(e){
         e.preventDefault()
         let updatedDepartmentValue = document.getElementById('updateDepartmentTab').value;
+        let departmentId = document.getElementById('updateDepartmentId').value 
+
         let updateLocationDepartmentTabDropdown = document.getElementById('updateLocationDepartmentTab').value;
         console.log(updateLocationDepartmentTabDropdown)
           $.ajax({
@@ -191,38 +193,13 @@ $(document).ready(function () {
             }
         }) 
     })
-    $('#updateDepartmentTabModal').on('show.bs.modal',function(){
-        let updatedDepartmentValue = document.getElementById('updateDepartmentTab').value;
-        let updateLocationDepartmentTabDropdown = document.getElementById('updateLocationDepartmentTab').value;
-        console.log(updateLocationDepartmentTabDropdown)
+    $('#updateDepartmentTabModal').on('show.bs.modal',function(e){
+        e.preventDefault()
+        var departmentId = $(e.relatedTarget).data('departmentid')
         console.log(departmentId)
-
-        var updatedDepartmentTabLocation = document.getElementById('updateLocationDepartmentTab')
-            getAllDepartments().done((result) => {
-                result.data.forEach(element => {
-                    if (element.departmentID == departmentId) {
-                        document.getElementById('updateDepartmentTab').value = element.department
-                        document.getElementById('updateLocationDepartmentTab').value = element.locationId
-                    }
-                })
-            })
-          $.ajax({
-            url: "libs/php/updateDepartment.php",
-            type: "POST",
-            dataType: "json",
-            data: {
-                name: updatedDepartmentValue,
-                locationID: updateLocationDepartmentTabDropdown,
-                id: departmentId
-            },
-            success: function (result) {
-                $('#updateDepartmentTabModal').modal('hide');
-                $('#departmentUpdateToast').toast('show')
-                $('#departmentTableBody').empty()
-                document.getElementById('updateDepartmentToastBody').innerText = `Department updated to ${updatedDepartmentValue}`
-                populateDepartmentTab()
-            }
-        }) 
+        // document.getElementById('updateDepartmentId').value = departmentId
+        
+        
     })
    
     $('#updateLocationForm').on("submit", function(e){
