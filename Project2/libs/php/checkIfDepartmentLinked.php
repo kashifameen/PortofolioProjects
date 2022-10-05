@@ -37,7 +37,7 @@
 	$query->bind_param("i", $_REQUEST['id']);
 
 	$query->execute();
-	print_r($query);
+	
 	if (false === $query) {
 
 		$output['status']['code'] = "400";
@@ -54,19 +54,21 @@
 
 	$result = $query->get_result();
 
-   	$data = [];
-    
+   	
+    $hasMore = False;
 	while ($row = mysqli_fetch_assoc($result)) {
-
-		array_push($data, $row);
-
+     
+		if($row["pc"]>1){
+            $hasMore = False;
+        }
+       break;
 	}
 
 	$output['status']['code'] = "200";
 	$output['status']['name'] = "ok";
 	$output['status']['description'] = "success";
 	$output['status']['returnedIn'] = (microtime(true) - $executionStartTime) / 1000 . " ms";
-	$output['data'] = $data;
+	$output['linked-to-personnel'] = $hasMore;
 
 	echo json_encode($output); 
 
