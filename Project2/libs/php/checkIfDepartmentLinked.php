@@ -58,8 +58,8 @@
     $hasMore = False;
 	while ($row = mysqli_fetch_assoc($result)) {
      
-		if($row["pc"]>1){
-            $hasMore = False;
+		if($row["pc"]>0){
+            $hasMore = True;
         }
        break;
 	}
