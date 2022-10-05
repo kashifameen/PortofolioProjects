@@ -402,3 +402,14 @@ h5{
 #iconBox{
     color: green;
 }
+#tabBtnRow{
+    position:relative
+}
+#myTab{
+    position: absolute;
+    margin-top: 42px;
+    right: 6px;
+}
+#myTabContent{
+    margin-top: 51px;
+}
