@@ -35,23 +35,18 @@
 	// SQL statement accepts parameters and so is prepared to avoid SQL injection.
 	// $_REQUEST used for development / debugging. Remember to change to $_POST for production
 
-	$query = $conn->prepare('SELECT * FROM department WHERE locationID = ?');
+	$query = $conn->prepare('DELETE FROM location WHERE id = ?');
 	
-	$query->bind_param("i", $_REQUEST['locationID']);
+	$query->bind_param("i", $_REQUEST['id']);
 
 	$query->execute();
-    $result = $query->get_result();
-	//Execute the query and store the result set
-    $numRows = $result->num_rows;
-    if(!$numRows){
-        $query = $conn->prepare('DELETE FROM location WHERE id = ?');
-        $query->bind_param("i", $_REQUEST['id']);
-        $query->execute();
-        $output['status']['code'] = "200";
-        $output['status']['name'] = "ok";
-        $output['status']['description'] = "success";
+    if(false === $query){
+       
+        $output['status']['code'] = "400";
+        $output['status']['name'] = "Fail";
+        $output['status']['description'] = "Query Failed";
         $output['status']['returnedIn'] = (microtime(true) - $executionStartTime) / 1000 . " ms";
-        $output['data'] = ['Deleted'];
+        $output['data'] = ['Failed'];
         
 	mysqli_close($conn);
 
@@ -59,10 +54,10 @@
     } 
 	
     else {
-        $output['status']['code'] = "400";
-		$output['status']['name'] = "executed";
-		$output['status']['description'] = "query failed";	
-		$output['data'] = ['Failed'];
+        $output['status']['code'] = "200";
+		$output['status']['name'] = "ok";
+		$output['status']['description'] = "query successful";	
+		$output['data'] = ['Success'];
 
 		mysqli_close($conn);
 

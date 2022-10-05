@@ -32,7 +32,7 @@
 	// SQL statement accepts parameters and so is prepared to avoid SQL injection.
 	// $_REQUEST used for development / debugging. Remember to change to $_POST for production
 
-	$query = $conn->prepare('SELECT count(id) as pc FROM personnel WHERE departmentID = ?');
+	$query = $conn->prepare('SELECT count(id) as dep FROM department WHERE locationID = ?');
 
 	$query->bind_param("i", $_REQUEST['id']);
 
@@ -57,7 +57,7 @@
 
     $hasMore = False;
 	while ($row = mysqli_fetch_assoc($result)) {
-		if($row["pc"]>0){
+		if($row["dep"]>0){
             $hasMore = True;
         }
        break;
@@ -67,7 +67,7 @@
 	$output['status']['name'] = "ok";
 	$output['status']['description'] = "success";
 	$output['status']['returnedIn'] = (microtime(true) - $executionStartTime) / 1000 . " ms";
-	$output['linkedToPersonnel'] = $hasMore;
+	$output['linkedToDepartment'] = $hasMore;
 
 	echo json_encode($output); 
 

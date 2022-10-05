@@ -1,5 +1,13 @@
 <?php
 
+	// example use from browser
+	// use insertDepartment.php first to create new dummy record and then specify it's id in the command below
+	// http://localhost/companydirectory/libs/php/deleteDepartmentByID.php?id=<id>
+
+	// remove next two lines for production
+	
+	
+
 	$executionStartTime = microtime(true);
 
 	include("config.php");
@@ -14,7 +22,7 @@
 		$output['status']['name'] = "failure";
 		$output['status']['description'] = "database unavailable";
 		$output['status']['returnedIn'] = (microtime(true) - $executionStartTime) / 1000 . " ms";
-		$output['data'] = [];
+		$output['data'] = ["failed"];
 
 		mysqli_close($conn);
 
@@ -27,40 +35,38 @@
 	// SQL statement accepts parameters and so is prepared to avoid SQL injection.
 	// $_REQUEST used for development / debugging. Remember to change to $_POST for production
 
-	$query = $conn->prepare('SELECT * FROM personnel WHERE departmentID = ?');
+	$query = $conn->prepare('DELETE FROM department WHERE id = ?');
 	
-	$query->bind_param("i", $_POST['departmentID']);
+	$query->bind_param("i", $_REQUEST['id']);
 
 	$query->execute();
-	
-	$result = $query->get_result();
-    $numRows = $result->num_rows;
-	if (!$numRows) {
-		$query = $conn->prepare('DELETE FROM department where id = ?');
-		$query->bind_param("i", $_POST['id']);
-		$query->execute();
-		$output['status']['code'] = "200";
-			$output['status']['name'] = "ok";
-			$output['status']['description'] = "success";
-			$output['status']['returnedIn'] = (microtime(true) - $executionStartTime) / 1000 . " ms";
-			$output['data'] = ['Success'];
-			
-			mysqli_close($conn);
-			echo json_encode($output); 
+    if(false === $query){
+       
+        $output['status']['code'] = "400";
+        $output['status']['name'] = "Fail";
+        $output['status']['description'] = "Query Failed";
+        $output['status']['returnedIn'] = (microtime(true) - $executionStartTime) / 1000 . " ms";
+        $output['data'] = ['Failed'];
+        
+	mysqli_close($conn);
 
-	} else {
-		$output['status']['code'] = "400";
-		$output['status']['name'] = "executed";
-		$output['status']['description'] = "query failed";	
-		$output['data'] = ['Failed'];
+	echo json_encode($output); 
+    } 
+	
+    else {
+        $output['status']['code'] = "200";
+		$output['status']['name'] = "ok";
+		$output['status']['description'] = "query successful";	
+		$output['data'] = ['Success'];
 
 		mysqli_close($conn);
 
 		echo json_encode($output); 
 
 		exit;
-	
-	} 
+
+	}
+
 	
 
 ?>
