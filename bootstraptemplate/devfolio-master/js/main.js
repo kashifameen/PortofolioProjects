@@ -9,33 +9,7 @@
     }
   })
   const form = document.getElementById("contact-form")
-
-  function email(data) {
-	  const message = document.getElementById("sendmessage")
-	  fetch("", {
-		  method: "POST",
-		  body: data,
-		  headers: {
-			 'X-Requested-With' : 'XMLHttpRequest'
-		  }
-	  })
-		  .then(response => response.json())
-		  .then(response => {message.innerHTML = response.message})
-		  .catch(error => {
-			//   error.json().then(response => {
-			// 	  document.getElementById(errorMessage).innerHTML = response.message
-			//   })
-		  })
-  }
-
-
-  const submitEvent = form.addEventListener("submit", (event) => {
-	  event.preventDefault();
-	console.log('Button clicked')
-	  const formData = new FormData(form);
-
-	  email(formData);
-  })
+  
   // Preloader
   $(window).on('load', function () {
     if ($('#preloader').length) {
@@ -44,6 +18,51 @@
       });
     }
   });
+  $('#contactForm').validate({
+	rules: {
+		name: "required",            
+		email: {
+			required: true,
+			email: true
+		},
+		subject: "required"
+	},
+	errorElement: "span" ,                            
+	messages: {
+		fullname: "Please enter your name",
+		email: "Please enter valid email address",
+		subject: "Please enter a subject"
+	},
+	submitHandler: function(form) {
+		var dataparam = $('#contactForm').serialize();
+
+		$.ajax({
+			type: 'POST',
+			async: true,
+			url: './lib/sendEmail.php',
+			data: dataparam,
+			datatype: 'json',
+			cache: true,
+			global: false,
+			beforeSend: function() { 
+				$('#loader').show();
+			},
+			success: function(data) {
+				if(data == 'success'){
+					console.log(data);
+				} else {
+					$('.no-config').show();
+					console.log(data);
+				}
+
+			},
+			complete: function() { 
+				$('#loader').hide();
+			}
+		});
+	}                
+})
+
 
   // Back to top button
   $(window).scroll(function() {
