@@ -1,0 +1,126 @@
+* {
+    box-sizing: border-box;
+}
+body {
+    background: #3197d6;
+    margin: 0;
+    color: #ffffff;
+}
+
+.intro {
+    padding-top: 30vh;
+}
+.cvButton {
+    border: 1px solid black;
+    border-radius: 8px;
+    background: none;
+    color: white;
+    padding: 5px 5px 5px 5px;
+}
+header {
+    width: 80%;
+    height: 100vh;
+    margin: 0 auto;
+    display: flex;
+    align-items: stretch;
+}
+header img {
+    width: 50%;
+}
+img {
+    border-style: none;
+}
+
+h1 {
+    font-size: 2em;
+    margin: .67em 0;
+}
+a{
+    text-decoration: none;
+    color: black;
+}
+@keyframes bounce {
+    0% {
+        bottom: 0;
+    }
+
+    100% {
+        bottom: 8px;
+    }
+}
+.arrow {
+    position: absolute;
+    bottom: 5px;
+    left:0;
+    width: 100%;
+    font-size: 55px;
+    text-align: center;
+}
+.arrow i {
+    position: relative;
+    animation: alternate bounce 0.7s infinite;
+    color: #ffffff;
+}
+
+.fa .fas {
+    font-weight: 900;
+}
+section {
+    padding: 50px 0;
+}
+.alt-bg {
+    background: black;
+}
+
+.project {
+    border: 1px solid #2a3749;
+    padding: 20px;
+    margin-bottom: 50px;
+}
+.project h3 {
+    margin: 0 0 10px 0;
+    font-size: 30px;
+}
+
+.project .content {
+    display:flex;
+    justify-content: space-between;
+}
+
+.project .content img {
+    max-height: 320px;
+    max-width: 200px;
+}
+
+.project .desc {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.project .desc p {
+    margin: 0px 0px 0px 10px;
+
+}
+.project .desc .links {
+    text-align: right;
+}
+
+.project .desc a {
+    display: inline-block;
+    margin-right: 20px;
+}
+
+#contact a {
+    display: inline-block;
+    margin-right: 20px;
+}
+#contact i {
+    font-size: 75px;
+}
+#contact i:hover{
+    border: 1px solid white;
+    border-radius: 8px;
+}
+.alt-bg a {
+    color: #f1534d;
+}
